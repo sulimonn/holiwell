@@ -2,21 +2,15 @@ import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import { Box, Drawer, useMediaQuery } from '@mui/material';
+import { Box, Drawer } from '@mui/material';
 
 // project import
 import DrawerHeader from './DrawerHeader';
 import DrawerContent from './DrawerContent';
-import MiniDrawerStyled from './MiniDrawerStyled';
-import { drawerWidth } from 'config';
 
 // ==============================|| MAIN LAYOUT - DRAWER ||============================== //
 
 const MainDrawer = ({ open, handleDrawerToggle, window }) => {
-  const theme = useTheme();
-  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
-
   // responsive drawer container
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -25,34 +19,46 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
   const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open]);
 
   return (
-    <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: 1300 }} aria-label="mailbox folders">
-      {!matchDownMD ? (
-        <MiniDrawerStyled variant="permanent" open={open}>
-          {drawerHeader}
-          {drawerContent}
-        </MiniDrawerStyled>
-      ) : (
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={open}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: 'block', lg: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-              borderRight: `1px solid ${theme.palette.divider}`,
-              backgroundImage: 'none',
-              boxShadow: 'inherit'
-            }
-          }}
-        >
-          {open && drawerHeader}
-          {open && drawerContent}
-        </Drawer>
-      )}
+    <Box
+      component="nav"
+      sx={{ flexShrink: { md: 0 }, zIndex: 1300, display: { xs: 'block', md: 'none' } }}
+      aria-label="mailbox folders"
+    >
+      <Box
+        position="fixed"
+        zIndex={1299}
+        sx={{ display: { xs: 'block', lg: 'none' } }}
+        inset="0"
+        onClick={() => handleDrawerToggle(false)}
+      />
+      <Drawer
+        container={container}
+        variant="temporary"
+        anchor="bottom"
+        open={open}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', lg: 'none' },
+          zIndex: 1300,
+          backgroundColor: 'transparent',
+          '& .MuiBackdrop-root': {
+            backgroundColor: 'transparent',
+          },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: '100vw',
+            height: '96vh',
+            backgroundImage: 'none',
+            boxShadow: 'inherit',
+            backgroundColor: 'primary.main',
+            color: 'primary.contrastText',
+          },
+        }}
+      >
+        {open && drawerHeader}
+        {open && drawerContent}
+      </Drawer>
     </Box>
   );
 };
@@ -60,7 +66,7 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
 MainDrawer.propTypes = {
   open: PropTypes.bool,
   handleDrawerToggle: PropTypes.func,
-  window: PropTypes.object
+  window: PropTypes.object,
 };
 
 export default MainDrawer;

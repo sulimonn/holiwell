@@ -23,7 +23,7 @@ const Palette = (mode) => {
     '#595959',
     '#262626',
     '#141414',
-    '#000000'
+    '#000000',
   ];
   const greyAscent = ['#fafafa', '#bfbfbf', '#434343', '#1f1f1f'];
   const greyConstant = ['#fafafb', '#e6ebf1'];
@@ -31,29 +31,37 @@ const Palette = (mode) => {
   colors.grey = [...greyPrimary, ...greyAscent, ...greyConstant];
 
   const paletteColor = ThemeOption(colors);
+  paletteColor.primary = {
+    ...paletteColor.primary,
+    dark: '#121212',
+    main: '#303030',
+    light: '#A2A2A2',
+    lighter: '#D9D9D9',
+    contrastText: '#F8F8F8',
+  };
 
   return createTheme({
     palette: {
       mode,
       common: {
-        black: '#000',
-        white: '#fff'
+        black: '#252525',
+        white: '#F8F8F8',
       },
       ...paletteColor,
       text: {
-        primary: paletteColor.grey[700],
-        secondary: paletteColor.grey[500],
-        disabled: paletteColor.grey[400]
+        primary: '#121212',
+        secondary: '#A2A2A2',
+        disabled: '#A2A2A2',
       },
       action: {
-        disabled: paletteColor.grey[300]
+        disabled: '#A2A2A2',
       },
-      divider: paletteColor.grey[200],
+      divider: '#D9D9D9',
       background: {
-        paper: paletteColor.grey[0],
-        default: paletteColor.grey.A50
-      }
-    }
+        paper: '#f4f4f4',
+        default: '#f4f4f4',
+      },
+    },
   });
 };
 

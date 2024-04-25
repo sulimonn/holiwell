@@ -1,39 +1,40 @@
 // material-ui
-import { Box, IconButton, Link, useMediaQuery } from '@mui/material';
-import { GithubOutlined } from '@ant-design/icons';
+import { Box, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 // project import
-import Search from './Search';
-import Profile from './Profile';
-import Notification from './Notification';
-import MobileSection from './MobileSection';
+import menuItems from 'menu-items/index';
+import Logo from 'components/Logo/Logo';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 
 const HeaderContent = () => {
-  const matchesXs = useMediaQuery((theme) => theme.breakpoints.down('md'));
-
   return (
-    <>
-      {!matchesXs && <Search />}
-      {matchesXs && <Box sx={{ width: '100%', ml: 1 }} />}
-
-      <IconButton
-        component={Link}
-        href="https://github.com/codedthemes/mantis-free-react-admin-template"
-        target="_blank"
-        disableRipple
-        color="secondary"
-        title="Download Free Version"
-        sx={{ color: 'text.primary', bgcolor: 'grey.100' }}
-      >
-        <GithubOutlined />
-      </IconButton>
-
-      <Notification />
-      {!matchesXs && <Profile />}
-      {matchesXs && <MobileSection />}
-    </>
+    <Box
+      sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'space-between', py: 3 }}
+    >
+      <Box width="160px" height="min-content" display="flex" alignItems="center">
+        <Logo />
+      </Box>
+      {[]
+        .concat(...menuItems.items.map((item) => item.children))
+        .filter((child) => !child.mobile)
+        .map((child) => {
+          return (
+            <Typography
+              component={Link}
+              to={child.url}
+              variant="h5"
+              key={child.id}
+              color="primary"
+              textTransform="uppercase"
+              sx={{ textDecoration: 'none ' }}
+            >
+              {child.title}{' '}
+            </Typography>
+          );
+        })}
+    </Box>
   );
 };
 

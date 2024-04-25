@@ -1,36 +1,32 @@
-// assets
-import { LoginOutlined, ProfileOutlined } from '@ant-design/icons';
-
-// icons
-const icons = {
-  LoginOutlined,
-  ProfileOutlined
-};
-
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
 
 const pages = {
-  id: 'authentication',
-  title: 'Authentication',
+  id: 'pages',
+  title: '',
   type: 'group',
   children: [
     {
-      id: 'login1',
-      title: 'Login',
+      id: 'training1',
+      title: 'Тренируйся',
       type: 'item',
-      url: '/login',
-      icon: icons.LoginOutlined,
-      target: true
+      url: '/training',
+      mobile: false,
     },
     {
-      id: 'register1',
-      title: 'Register',
+      id: 'listening1',
+      title: 'СЛУШАЙ',
       type: 'item',
-      url: '/register',
-      icon: icons.ProfileOutlined,
-      target: true
-    }
-  ]
+      url: '/listening',
+      mobile: false,
+    },
+    {
+      id: 'meditation1',
+      title: 'МЕДИТИРУЙ',
+      type: 'item',
+      url: '/meditation',
+      mobile: false,
+    },
+  ],
 };
 
 export default pages;

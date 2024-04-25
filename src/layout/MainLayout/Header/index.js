@@ -2,68 +2,59 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { AppBar, IconButton, Toolbar, useMediaQuery } from '@mui/material';
+import { AppBar, IconButton, Toolbar, useMediaQuery, Container } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 // project import
-import AppBarStyled from './AppBarStyled';
 import HeaderContent from './HeaderContent';
-
-// assets
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 
 // ==============================|| MAIN LAYOUT - HEADER ||============================== //
 
 const Header = ({ open, handleDrawerToggle }) => {
   const theme = useTheme();
-  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
-
-  const iconBackColor = 'grey.100';
-  const iconBackColorOpen = 'grey.200';
+  const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
 
   // common header
   const mainHeader = (
-    <Toolbar>
-      <IconButton
-        disableRipple
-        aria-label="open drawer"
-        onClick={handleDrawerToggle}
-        edge="start"
-        color="secondary"
-        sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor, ml: { xs: 0, lg: -2 } }}
-      >
-        {!open ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      </IconButton>
-      <HeaderContent />
+    <Toolbar sx={{ backgroundColor: 'transparent', p: 0 }}>
+      <Container maxWidth="lg">
+        {matchDownMD ? (
+          <IconButton
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+            color="secondary"
+            sx={{
+              color: 'primary.main',
+            }}
+          >
+            <MenuIcon fontSize="large" />
+          </IconButton>
+        ) : (
+          <HeaderContent />
+        )}
+      </Container>
     </Toolbar>
   );
 
   // app-bar params
   const appBar = {
-    position: 'fixed',
     color: 'inherit',
+    position: 'absolute',
     elevation: 0,
     sx: {
-      borderBottom: `1px solid ${theme.palette.divider}`
+      top: 0,
+      backgroundColor: { xs: 'transparent !important', md: theme.palette.background.paper },
+      borderBottom: `1px solid ${theme.palette.divider}`,
       // boxShadow: theme.customShadows.z1
-    }
+    },
   };
 
-  return (
-    <>
-      {!matchDownMD ? (
-        <AppBarStyled open={open} {...appBar}>
-          {mainHeader}
-        </AppBarStyled>
-      ) : (
-        <AppBar {...appBar}>{mainHeader}</AppBar>
-      )}
-    </>
-  );
+  return <AppBar {...appBar}>{mainHeader}</AppBar>;
 };
 
 Header.propTypes = {
   open: PropTypes.bool,
-  handleDrawerToggle: PropTypes.func
+  handleDrawerToggle: PropTypes.func,
 };
 
 export default Header;

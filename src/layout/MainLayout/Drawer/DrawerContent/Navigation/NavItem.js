@@ -5,7 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import {
+  Avatar,
+  Chip,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 
 // project import
 import { activeItem } from 'store/reducers/menu';
@@ -24,7 +31,11 @@ const NavItem = ({ item, level }) => {
     itemTarget = '_blank';
   }
 
-  let listItemProps = { component: forwardRef((props, ref) => <Link ref={ref} {...props} to={item.url} target={itemTarget} />) };
+  let listItemProps = {
+    component: forwardRef((props, ref) => (
+      <Link ref={ref} {...props} to={item.url} target={itemTarget} />
+    )),
+  };
   if (item?.external) {
     listItemProps = { component: 'a', href: item.url, target: itemTarget };
   }
@@ -34,7 +45,11 @@ const NavItem = ({ item, level }) => {
   };
 
   const Icon = item.icon;
-  const itemIcon = item.icon ? <Icon style={{ fontSize: drawerOpen ? '1rem' : '1.25rem' }} /> : false;
+  const itemIcon = item.icon ? (
+    <Icon style={{ fontSize: drawerOpen ? '1rem' : '1.25rem' }} />
+  ) : (
+    false
+  );
 
   const isSelected = openItem.findIndex((id) => id === item.id) > -1;
   // active menu item on page load
@@ -45,7 +60,7 @@ const NavItem = ({ item, level }) => {
     // eslint-disable-next-line
   }, [pathname]);
 
-  const textColor = 'text.primary';
+  const textColor = 'primary.contrastText';
   const iconSelectedColor = 'primary.main';
 
   return (
@@ -59,30 +74,27 @@ const NavItem = ({ item, level }) => {
         pl: drawerOpen ? `${level * 28}px` : 1.5,
         py: !drawerOpen && level === 1 ? 1.25 : 1,
         ...(drawerOpen && {
-          '&:hover': {
-            bgcolor: 'primary.lighter'
-          },
           '&.Mui-selected': {
             bgcolor: 'primary.lighter',
             borderRight: `2px solid ${theme.palette.primary.main}`,
             color: iconSelectedColor,
             '&:hover': {
               color: iconSelectedColor,
-              bgcolor: 'primary.lighter'
-            }
-          }
+              bgcolor: 'primary.lighter',
+            },
+          },
         }),
         ...(!drawerOpen && {
           '&:hover': {
-            bgcolor: 'transparent'
+            bgcolor: 'transparent',
           },
           '&.Mui-selected': {
             '&:hover': {
-              bgcolor: 'transparent'
+              bgcolor: 'transparent',
             },
-            bgcolor: 'transparent'
-          }
-        })
+            bgcolor: 'transparent',
+          },
+        }),
       }}
     >
       {itemIcon && (
@@ -97,16 +109,16 @@ const NavItem = ({ item, level }) => {
               alignItems: 'center',
               justifyContent: 'center',
               '&:hover': {
-                bgcolor: 'secondary.lighter'
-              }
+                bgcolor: 'secondary.lighter',
+              },
             }),
             ...(!drawerOpen &&
               isSelected && {
                 bgcolor: 'primary.lighter',
                 '&:hover': {
-                  bgcolor: 'primary.lighter'
-                }
-              })
+                  bgcolor: 'primary.lighter',
+                },
+              }),
           }}
         >
           {itemIcon}
@@ -136,7 +148,7 @@ const NavItem = ({ item, level }) => {
 
 NavItem.propTypes = {
   item: PropTypes.object,
-  level: PropTypes.number
+  level: PropTypes.number,
 };
 
 export default NavItem;
