@@ -4,18 +4,15 @@ import { Link as RouterLink } from 'react-router-dom';
 // material-ui
 import {
   Button,
-  Checkbox,
   Divider,
-  FormControlLabel,
   FormHelperText,
   Grid,
   Link,
   IconButton,
   InputAdornment,
-  InputLabel,
   OutlinedInput,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
 
 // third party
@@ -32,8 +29,6 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
-  const [checked, setChecked] = React.useState(false);
-
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -47,13 +42,16 @@ const AuthLogin = () => {
     <>
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
-          submit: null
+          email: '',
+          password: '',
+          submit: null,
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          email: Yup.string()
+            .email('Email-адрес введен некорректно')
+            .max(255)
+            .required('Email обязателен'),
+          password: Yup.string().max(255).required('Пароль обязателен'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -68,10 +66,9 @@ const AuthLogin = () => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
+                <Stack spacing={0}>
                   <OutlinedInput
                     id="email-login"
                     type="email"
@@ -79,7 +76,7 @@ const AuthLogin = () => {
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter email address"
+                    placeholder="Email"
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
                   />
@@ -92,7 +89,6 @@ const AuthLogin = () => {
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="password-login">Password</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
@@ -115,7 +111,7 @@ const AuthLogin = () => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    placeholder="Enter password"
+                    placeholder="Пароль"
                   />
                   {touched.password && errors.password && (
                     <FormHelperText error id="standard-weight-helper-text-password-login">
@@ -126,21 +122,15 @@ const AuthLogin = () => {
               </Grid>
 
               <Grid item xs={12} sx={{ mt: -1 }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checked}
-                        onChange={(event) => setChecked(event.target.checked)}
-                        name="checked"
-                        color="primary"
-                        size="small"
-                      />
-                    }
-                    label={<Typography variant="h6">Keep me sign in</Typography>}
-                  />
-                  <Link variant="h6" component={RouterLink} to="" color="text.primary">
-                    Forgot Password?
+                <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
+                  <Link
+                    variant="body2"
+                    component={RouterLink}
+                    to="/password-recovery"
+                    color="text.primary"
+                    fontWeight="100"
+                  >
+                    Забыли пароль?
                   </Link>
                 </Stack>
               </Grid>
@@ -151,14 +141,24 @@ const AuthLogin = () => {
               )}
               <Grid item xs={12}>
                 <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Login
+                  <Button
+                    disableElevation
+                    disabled={isSubmitting}
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                  >
+                    Войти
                   </Button>
                 </AnimateButton>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ my: 1 }}>
                 <Divider>
-                  <Typography variant="caption"> Login with</Typography>
+                  <Typography variant="body2" fontWeight="100">
+                    Войдите с помощью
+                  </Typography>
                 </Divider>
               </Grid>
               <Grid item xs={12}>

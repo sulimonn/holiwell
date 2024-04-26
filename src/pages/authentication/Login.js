@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 // material-ui
-import { Grid, Stack, Typography } from '@mui/material';
+import { Grid, Typography, Box } from '@mui/material';
 
 // project import
 import AuthLogin from './auth-forms/AuthLogin';
@@ -13,15 +13,41 @@ const Login = () => (
   <AuthWrapper>
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-          <Typography variant="h3">Login</Typography>
-          <Typography component={Link} to="/register" variant="body1" sx={{ textDecoration: 'none' }} color="primary">
-            Don&apos;t have an account?
-          </Typography>
-        </Stack>
+        <Typography variant="h3" textAlign="center" textTransform="uppercase">
+          Войти в профиль
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <AuthLogin />
+      </Grid>
+      <Grid item xs={12}>
+        <Box
+          sx={{
+            textAlign: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 1,
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{ textDecoration: 'none' }}
+            fontWeight="100"
+            color="primary"
+          >
+            Нет профиля?
+          </Typography>{' '}
+          <Typography
+            component={Link}
+            to="/register"
+            variant="body2"
+            fontWeight="100"
+            color="primary"
+          >
+            Зарегистрируйтесь здесь
+          </Typography>
+        </Box>
       </Grid>
     </Grid>
   </AuthWrapper>

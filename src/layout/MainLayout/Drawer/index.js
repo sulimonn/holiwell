@@ -28,9 +28,10 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
         position="fixed"
         zIndex={1299}
         sx={{ display: { xs: 'block', lg: 'none' } }}
-        inset="0"
+        width="100%"
+        height={open ? '100vh' : 0}
         onClick={() => handleDrawerToggle(false)}
-      />
+      ></Box>
       <Drawer
         container={container}
         variant="temporary"
@@ -53,6 +54,7 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
             boxShadow: 'inherit',
             backgroundColor: 'primary.main',
             color: 'primary.contrastText',
+            py: 1,
           },
         }}
       >

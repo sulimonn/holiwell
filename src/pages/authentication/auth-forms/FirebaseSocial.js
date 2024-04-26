@@ -1,64 +1,62 @@
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import { useMediaQuery, Button, Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
-// assets
-import Google from 'assets/images/icons/google.svg';
-import Twitter from 'assets/images/icons/twitter.svg';
-import Facebook from 'assets/images/icons/facebook.svg';
+// ==============================|| FIREBASE - SOCIAL ICON ||============================== //
+import Icon, { AppleFilled } from '@ant-design/icons';
 
-// ==============================|| FIREBASE - SOCIAL BUTTON ||============================== //
+import VK from 'assets/images/icons/vk.js';
 
 const FirebaseSocial = () => {
-  const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const googleHandler = async () => {
+  const VkIcon = (props) => <Icon component={VK} {...props} />;
+  const appleHandler = async () => {
     // login || singup
   };
 
-  const twitterHandler = async () => {
-    // login || singup
-  };
-
-  const facebookHandler = async () => {
+  const vkHandler = async () => {
     // login || singup
   };
 
   return (
     <Stack
       direction="row"
-      spacing={matchDownSM ? 1 : 2}
-      justifyContent={matchDownSM ? 'space-around' : 'space-between'}
-      sx={{ '& .MuiButton-startIcon': { mr: matchDownSM ? 0 : 1, ml: matchDownSM ? 0 : -0.5 } }}
+      justifyContent={'center'}
+      sx={{
+        '& .MuiButton-startIcon': { mr: 0, ml: 0 },
+        gap: '20px',
+      }}
     >
       <Button
-        variant="outlined"
-        color="secondary"
-        fullWidth={!matchDownSM}
-        startIcon={<img src={Google} alt="Google" />}
-        onClick={googleHandler}
-      >
-        {!matchDownSM && 'Google'}
-      </Button>
+        color="primary"
+        variant="contained"
+        size="large"
+        sx={{
+          width: '60px',
+          height: '60px',
+          borderRadius: '50%',
+          p: 2,
+          minWidth: 'unset',
+          '& .MuiButton-startIcon': { mr: 0, ml: 0 },
+        }}
+        startIcon={<VkIcon style={{ fontSize: '2.4rem' }} />}
+        onClick={vkHandler}
+      />
       <Button
-        variant="outlined"
-        color="secondary"
-        fullWidth={!matchDownSM}
-        startIcon={<img src={Twitter} alt="Twitter" />}
-        onClick={twitterHandler}
-      >
-        {!matchDownSM && 'Twitter'}
-      </Button>
-      <Button
-        variant="outlined"
-        color="secondary"
-        fullWidth={!matchDownSM}
-        startIcon={<img src={Facebook} alt="Facebook" />}
-        onClick={facebookHandler}
-      >
-        {!matchDownSM && 'Facebook'}
-      </Button>
+        color="primary"
+        variant="contained"
+        size="large"
+        sx={{
+          width: '60px',
+          height: '60px',
+          borderRadius: '50%',
+          p: 2,
+          minWidth: 'unset',
+          '& .MuiButton-startIcon': { mr: 0, ml: 0 },
+        }}
+        startIcon={
+          <AppleFilled style={{ fontSize: '2.1rem', position: 'relative', top: '-2px' }} />
+        }
+        onClick={appleHandler}
+      />
     </Stack>
   );
 };

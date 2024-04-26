@@ -4,15 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import {
-  Avatar,
-  Chip,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from '@mui/material';
+import { ListItemButton, ListItemText, Typography } from '@mui/material';
 
 // project import
 import { activeItem } from 'store/reducers/menu';
@@ -20,7 +12,6 @@ import { activeItem } from 'store/reducers/menu';
 // ==============================|| NAVIGATION - LIST ITEM ||============================== //
 
 const NavItem = ({ item, level }) => {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
@@ -44,13 +35,6 @@ const NavItem = ({ item, level }) => {
     dispatch(activeItem({ openItem: [id] }));
   };
 
-  const Icon = item.icon;
-  const itemIcon = item.icon ? (
-    <Icon style={{ fontSize: drawerOpen ? '1rem' : '1.25rem' }} />
-  ) : (
-    false
-  );
-
   const isSelected = openItem.findIndex((id) => id === item.id) > -1;
   // active menu item on page load
   useEffect(() => {
@@ -61,7 +45,6 @@ const NavItem = ({ item, level }) => {
   }, [pathname]);
 
   const textColor = 'primary.contrastText';
-  const iconSelectedColor = 'primary.main';
 
   return (
     <ListItemButton
@@ -71,75 +54,27 @@ const NavItem = ({ item, level }) => {
       selected={isSelected}
       sx={{
         zIndex: 1201,
-        pl: drawerOpen ? `${level * 28}px` : 1.5,
-        py: !drawerOpen && level === 1 ? 1.25 : 1,
-        ...(drawerOpen && {
-          '&.Mui-selected': {
-            bgcolor: 'primary.lighter',
-            borderRight: `2px solid ${theme.palette.primary.main}`,
-            color: iconSelectedColor,
-            '&:hover': {
-              color: iconSelectedColor,
-              bgcolor: 'primary.lighter',
-            },
-          },
-        }),
-        ...(!drawerOpen && {
-          '&:hover': {
-            bgcolor: 'transparent',
-          },
-          '&.Mui-selected': {
-            '&:hover': {
-              bgcolor: 'transparent',
-            },
-            bgcolor: 'transparent',
-          },
-        }),
+        py: 1.5,
+        '&.Mui-selected': {
+          '&:hover': {},
+        },
+        '&:hover': {},
       }}
     >
-      {itemIcon && (
-        <ListItemIcon
-          sx={{
-            minWidth: 28,
-            color: isSelected ? iconSelectedColor : textColor,
-            ...(!drawerOpen && {
-              borderRadius: 1.5,
-              width: 36,
-              height: 36,
-              alignItems: 'center',
-              justifyContent: 'center',
-              '&:hover': {
-                bgcolor: 'secondary.lighter',
-              },
-            }),
-            ...(!drawerOpen &&
-              isSelected && {
-                bgcolor: 'primary.lighter',
-                '&:hover': {
-                  bgcolor: 'primary.lighter',
-                },
-              }),
-          }}
-        >
-          {itemIcon}
-        </ListItemIcon>
-      )}
       {(drawerOpen || (!drawerOpen && level !== 1)) && (
         <ListItemText
           primary={
-            <Typography variant="h6" sx={{ color: isSelected ? iconSelectedColor : textColor }}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: textColor,
+                textAlign: 'center',
+                textTransform: 'uppercase',
+              }}
+            >
               {item.title}
             </Typography>
           }
-        />
-      )}
-      {(drawerOpen || (!drawerOpen && level !== 1)) && item.chip && (
-        <Chip
-          color={item.chip.color}
-          variant={item.chip.variant}
-          size={item.chip.size}
-          label={item.chip.label}
-          avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
         />
       )}
     </ListItemButton>

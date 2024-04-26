@@ -14,7 +14,9 @@ const HeaderContent = () => {
       sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'space-between', py: 3 }}
     >
       <Box width="160px" height="min-content" display="flex" alignItems="center">
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
       </Box>
       {[]
         .concat(...menuItems.items.map((item) => item.children))
@@ -28,9 +30,13 @@ const HeaderContent = () => {
               key={child.id}
               color="primary"
               textTransform="uppercase"
-              sx={{ textDecoration: 'none ' }}
+              sx={{
+                textDecoration: 'none ',
+                transition: 'color 0.2s ease',
+                '&:hover': { color: 'text.secondary' },
+              }}
             >
-              {child.title}{' '}
+              {child.title}
             </Typography>
           );
         })}

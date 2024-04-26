@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 // material-ui
-import { Grid, Stack, Typography } from '@mui/material';
+import { Grid, Typography, Box } from '@mui/material';
 
 // project import
 import FirebaseRegister from './auth-forms/AuthRegister';
@@ -13,15 +13,35 @@ const Register = () => (
   <AuthWrapper>
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-          <Typography variant="h3">Sign up</Typography>
-          <Typography component={Link} to="/login" variant="body1" sx={{ textDecoration: 'none' }} color="primary">
-            Already have an account?
-          </Typography>
-        </Stack>
+        <Typography variant="h3" textAlign="center" textTransform="uppercase">
+          Регистрация
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <FirebaseRegister />
+      </Grid>
+      <Grid item xs={12}>
+        <Box
+          sx={{
+            textAlign: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 1,
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{ textDecoration: 'none' }}
+            fontWeight="100"
+            color="primary"
+          >
+            Уже есть профиль?
+          </Typography>{' '}
+          <Typography component={Link} to="/login" variant="body2" fontWeight="100" color="primary">
+            Войдите здесь
+          </Typography>
+        </Box>
       </Grid>
     </Grid>
   </AuthWrapper>

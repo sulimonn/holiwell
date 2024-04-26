@@ -39,13 +39,12 @@ const Header = ({ open, handleDrawerToggle }) => {
   // app-bar params
   const appBar = {
     color: 'inherit',
-    position: 'absolute',
     elevation: 0,
     sx: {
+      position: { xs: 'absolute', md: 'relative' },
       top: 0,
       backgroundColor: { xs: 'transparent !important', md: theme.palette.background.paper },
-      borderBottom: `1px solid ${theme.palette.divider}`,
-      // boxShadow: theme.customShadows.z1
+      boxShadow: theme.customShadows.z1,
     },
   };
 

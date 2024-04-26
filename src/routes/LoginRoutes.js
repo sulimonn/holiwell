@@ -2,27 +2,32 @@ import { lazy } from 'react';
 
 // project import
 import Loadable from 'components/Loadable';
-import MinimalLayout from 'layout/MinimalLayout';
+import MainLayout from 'layout/MainLayout';
 
 // render - login
 const AuthLogin = Loadable(lazy(() => import('pages/authentication/Login')));
 const AuthRegister = Loadable(lazy(() => import('pages/authentication/Register')));
+const ForgotPassword = Loadable(lazy(() => import('pages/authentication/ForgotPassword')));
 
 // ==============================|| AUTH ROUTING ||============================== //
 
 const LoginRoutes = {
   path: '/',
-  element: <MinimalLayout />,
+  element: <MainLayout />,
   children: [
     {
       path: 'login',
-      element: <AuthLogin />
+      element: <AuthLogin />,
     },
     {
       path: 'register',
-      element: <AuthRegister />
-    }
-  ]
+      element: <AuthRegister />,
+    },
+    {
+      path: 'password-recovery',
+      element: <ForgotPassword />,
+    },
+  ],
 };
 
 export default LoginRoutes;

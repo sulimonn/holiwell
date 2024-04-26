@@ -1,0 +1,27 @@
+.mobile-menu {
+  width: auto;
+  height: auto;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.mobile-menu svg {
+  fill: #a2a2a2;
+}
+.mobile-menu:focus,
+.mobile-menu:active,
+.mobile-menu:hover {
+  outline: none;
+  border: none;
+}
+
+.mobile-menu:focus svg,
+.mobile-menu:active svg,
+.mobile-menu:hover svg {
+  fill: black;
+}
+.mobile-menu:focus path,
+.mobile-menu:active path,
+.mobile-menu:hover path {
+  fill: black;
+}

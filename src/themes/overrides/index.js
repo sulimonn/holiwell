@@ -18,6 +18,7 @@ import TableCell from './TableCell';
 import Tabs from './Tabs';
 import Typography from './Typography';
 import Container from './Container';
+import FormHelperText from './FormHelperText';
 
 // ==============================|| OVERRIDES - MAIN ||============================== //
 
@@ -39,5 +40,6 @@ export default function ComponentsOverrides(theme) {
     Tabs(),
     Typography(),
     Container(theme),
+    FormHelperText(theme),
   );
 }
