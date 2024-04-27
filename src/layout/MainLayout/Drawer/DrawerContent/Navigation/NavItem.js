@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ListItemButton, ListItemText, Typography } from '@mui/material';
 
 // project import
-import { activeItem } from 'store/reducers/menu';
+import { activeItem, openDrawer } from 'store/reducers/menu';
 
 // ==============================|| NAVIGATION - LIST ITEM ||============================== //
 
@@ -32,6 +32,7 @@ const NavItem = ({ item, level }) => {
   }
 
   const itemHandler = (id) => {
+    dispatch(openDrawer({ drawerOpen: false }));
     dispatch(activeItem({ openItem: [id] }));
   };
 
@@ -54,7 +55,7 @@ const NavItem = ({ item, level }) => {
       selected={isSelected}
       sx={{
         zIndex: 1201,
-        py: 1.5,
+        py: 1,
         '&.Mui-selected': {
           '&:hover': {},
         },

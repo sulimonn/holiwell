@@ -1,7 +1,7 @@
 import React from 'react';
 
 // material-ui
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 // assets
 import Icon from '@ant-design/icons';
@@ -34,12 +34,22 @@ const MobileMenu = () => {
           height: '100%',
         }}
       >
-        <button className="mobile-menu">
-          <Box width="32px" height="32px" component={home} />
-        </button>
-        <button className="mobile-menu">
-          <Box width="32px" height="32px" component={ProfileIcon} />
-        </button>
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <button className="mobile-menu">
+            <Box width="32px" height="32px" component={home} />
+          </button>
+          <Typography variant="body2" fontWeight="400" color="text.secondary">
+            Домой
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" flexDirection="column">
+          <button className="mobile-menu">
+            <Box width="32px" height="32px" component={ProfileIcon} />
+          </button>
+          <Typography variant="body2" fontWeight="400" color="text.secondary">
+            Профиль
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

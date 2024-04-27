@@ -34,6 +34,7 @@ const Palette = (mode) => {
         primary: '#121212',
         secondary: '#A2A2A2',
         disabled: '#A2A2A2',
+        contast: '#F8F8F8',
       },
       action: {
         disabled: '#A2A2A2',

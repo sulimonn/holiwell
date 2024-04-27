@@ -40,7 +40,7 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
         sx={{
-          display: { xs: 'block', lg: 'none' },
+          display: { xs: 'block', md: 'none' },
           zIndex: 1300,
           backgroundColor: 'transparent',
           '& .MuiBackdrop-root': {
@@ -49,7 +49,7 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: '100vw',
-            height: '96vh',
+            height: '92vh',
             backgroundImage: 'none',
             boxShadow: 'inherit',
             backgroundColor: 'primary.main',

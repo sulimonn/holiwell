@@ -45,6 +45,7 @@ const MainLayout = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          pb: { xs: '70px', sm: 0 },
         }}
       >
         <Box width="100%" flex="1" display="flex" minHeight="100%">

@@ -44,7 +44,6 @@ const Header = ({ open, handleDrawerToggle }) => {
       position: { xs: 'absolute', md: 'relative' },
       top: 0,
       backgroundColor: { xs: 'transparent !important', md: theme.palette.background.paper },
-      boxShadow: theme.customShadows.z1,
     },
   };
 

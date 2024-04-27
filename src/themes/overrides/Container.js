@@ -2,7 +2,7 @@ export default function Container(theme) {
   return {
     MuiContainer: {
       styleOverrides: {
-        root: {
+        maxWidthXs: {
           paddingLeft: 0,
           paddingRight: 0,
         },
