@@ -14,7 +14,7 @@ import IntroGirl from 'assets/images/girls/intro.jpeg';
 import Listen from 'assets/images/girls/listening.jpeg';
 
 // material-ui
-import { Box, Typography, Grid, Container, Button } from '@mui/material';
+import { Box, Typography, Grid, Button } from '@mui/material';
 
 // components
 import TeamList from 'components/TeamList';
@@ -35,7 +35,7 @@ const Home = () => {
       decription:
         'Отличный способ научиться сосредоточиться, снизить стресс и улучшить свое общее самочувствие',
       photo: IntroGirl,
-      to: '/listening',
+      to: '/lessons',
     },
     {
       id: 3,
@@ -116,7 +116,7 @@ const Home = () => {
           ))}
         </Swiper>
       </Box>
-      <Container maxWidth="lg">
+      <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 4 }} mx="auto">
         <Grid
           container
           spacing={2}
@@ -167,8 +167,8 @@ const Home = () => {
             </Grid>
           ))}
         </Grid>
-      </Container>
-      <Container>
+      </Box>
+      <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 4 }} mx="auto">
         <Box
           sx={{
             py: 12,
@@ -209,6 +209,8 @@ const Home = () => {
                   <Button
                     variant="contained"
                     color="primary"
+                    component={Link}
+                    to="/login"
                     sx={{ fontSize: { xs: '0.85rem', md: '1.25rem' } }}
                   >
                     Войти
@@ -216,6 +218,8 @@ const Home = () => {
                   <Button
                     variant="outlined"
                     color="primary"
+                    component={Link}
+                    to="/register"
                     sx={{ fontSize: { xs: '0.85rem', md: '1.25rem' } }}
                   >
                     Зарегистрироваться
@@ -225,8 +229,8 @@ const Home = () => {
             </Grid>
           </Grid>
         </Box>
-      </Container>
-      <Container maxWidth="lg">
+      </Box>
+      <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 4 }} mx="auto">
         <Box sx={{ py: 12, mb: { xs: 6, md: 12 } }} display="flex" flexDirection="column" gap={4}>
           <Box display="flex" justifyContent="space-between">
             <Typography variant="h3" textTransform="uppercase" sx={{ py: 0 }}>
@@ -247,7 +251,7 @@ const Home = () => {
 
           <TeamList team={team} />
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 };

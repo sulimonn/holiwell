@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 // material-ui
 import {
@@ -25,10 +26,15 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { useLoginMutation } from 'store/reducers/authApi';
+import { getMe } from 'store/reducers/auth';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
+  const dispatch = useDispatch();
+  const [login] = useLoginMutation();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -55,6 +61,30 @@ const AuthLogin = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
+            const reponse = await login({
+              username: values.email,
+              password: values.password,
+            });
+            if (reponse.error) {
+              if (reponse.error?.data?.detail === 'LOGIN_BAD_CREDENTIALS') {
+                setErrors({
+                  email: true,
+                  password: true,
+                  submit: 'Неправильная почта или пароль',
+                });
+              }
+              setStatus({ success: false });
+              setSubmitting(false);
+            } else {
+              const response = await dispatch(getMe());
+              if (response.error) {
+                setStatus({ success: false });
+                setErrors({ submit: response.error });
+                setSubmitting(false);
+              } else {
+                navigate('/', { replace: true });
+              }
+            }
             setStatus({ success: false });
             setSubmitting(false);
           } catch (err) {
@@ -72,7 +102,7 @@ const AuthLogin = () => {
                   <OutlinedInput
                     id="email-login"
                     type="email"
-                    value={values.email}
+                    value={values.username}
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -126,7 +156,7 @@ const AuthLogin = () => {
                   <Link
                     variant="body2"
                     component={RouterLink}
-                    to="/password-recovery"
+                    to="/forgot-password"
                     color="text.primary"
                     fontWeight="100"
                   >
@@ -135,7 +165,7 @@ const AuthLogin = () => {
                 </Stack>
               </Grid>
               {errors.submit && (
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ pt: '0 !important' }}>
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 </Grid>
               )}

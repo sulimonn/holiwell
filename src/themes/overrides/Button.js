@@ -15,6 +15,7 @@ export default function Button(theme) {
       styleOverrides: {
         root: {
           fontWeight: 400,
+          textDecoration: 'none',
           textTransform: 'uppercase',
           borderRadius: 5,
           paddingLeft: 30,

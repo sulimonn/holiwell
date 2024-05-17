@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { Button, FormHelperText, Grid, OutlinedInput, Stack } from '@mui/material';
@@ -9,10 +10,13 @@ import { Formik } from 'formik';
 
 // project import
 import AnimateButton from 'components/@extended/AnimateButton';
+import { useResetPasswordMutation } from 'store/reducers/authApi';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthPassword = () => {
+  const navigate = useNavigate();
+  const [resetPassword] = useResetPasswordMutation();
   return (
     <>
       <Formik
@@ -28,6 +32,16 @@ const AuthPassword = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
+            const response = await resetPassword(values);
+            console.log(response);
+            if (response.error) {
+              setStatus({ success: false });
+              setSubmitting(false);
+            } else {
+              navigate('/login', { replace: true });
+              setStatus({ success: true });
+              setSubmitting(false);
+            }
             setStatus({ success: false });
             setSubmitting(false);
           } catch (err) {

@@ -7,7 +7,6 @@ const TeamList = ({ team }) => {
     <Box
       sx={{
         overflowX: 'scroll',
-        width: { xs: '92vw', sm: '96vw', lg: '100%' },
       }}
     >
       <Box

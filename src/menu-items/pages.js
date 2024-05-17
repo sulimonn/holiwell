@@ -16,7 +16,7 @@ const pages = {
       id: 'listening1',
       title: 'СЛУШАЙ',
       type: 'item',
-      url: '/listening',
+      url: '/lessons',
       mobile: false,
     },
     {

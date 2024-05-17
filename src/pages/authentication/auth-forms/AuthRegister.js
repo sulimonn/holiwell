@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-//import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import {
@@ -28,10 +28,13 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { useRegisterMutation } from 'store/reducers/authApi';
 
 // ============================|| FIREBASE - REGISTER ||============================ //
 
 const AuthRegister = () => {
+  const [register] = useRegisterMutation();
+  const navigate = useNavigate();
   const [level, setLevel] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -55,11 +58,15 @@ const AuthRegister = () => {
     <>
       <Formik
         initialValues={{
+          first_name: '',
+          last_name: '',
           email: '',
           password: '',
           submit: null,
         }}
         validationSchema={Yup.object().shape({
+          first_name: Yup.string().required('Имя обязательно'),
+          last_name: Yup.string().required('Фамилия обязательна'),
           email: Yup.string()
             .email('Email-адрес введен некорректно')
             .max(255)
@@ -68,8 +75,11 @@ const AuthRegister = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
+            const response = await register(values).unwrap();
             setStatus({ success: false });
             setSubmitting(false);
+            console.log(response);
+            if (false) navigate('/', { replace: true });
           } catch (err) {
             console.error(err);
             setStatus({ success: false });
@@ -81,6 +91,48 @@ const AuthRegister = () => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Stack spacing={1}>
+                  <OutlinedInput
+                    fullWidth
+                    error={Boolean(touched.first_name && errors.first_name)}
+                    id="first_name-login"
+                    type="text"
+                    value={values.first_name}
+                    name="first_name"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="Имя"
+                    inputProps={{}}
+                  />
+                  {touched.first_name && errors.first_name && (
+                    <FormHelperText error id="helper-text-first_name-signup">
+                      {errors.first_name}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+              <Grid item xs={12}>
+                <Stack spacing={1}>
+                  <OutlinedInput
+                    fullWidth
+                    error={Boolean(touched.last_name && errors.last_name)}
+                    id="last_name-login"
+                    type="text"
+                    value={values.last_name}
+                    name="last_name"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="Фамилия"
+                    inputProps={{}}
+                  />
+                  {touched.last_name && errors.last_name && (
+                    <FormHelperText error id="helper-text-last_name-signup">
+                      {errors.last_name}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
                   <OutlinedInput

@@ -24,7 +24,7 @@ const LoginRoutes = {
       element: <AuthRegister />,
     },
     {
-      path: 'password-recovery',
+      path: 'forgot-password',
       element: <ForgotPassword />,
     },
   ],
