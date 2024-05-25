@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 // Import Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -17,7 +16,8 @@ import Listen from 'assets/images/girls/listening.jpeg';
 import { Box, Typography, Grid, Button } from '@mui/material';
 
 // components
-import TeamList from 'components/TeamList';
+import TrainersList from 'components/TrainersList';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
   const swiperData = [
@@ -27,7 +27,7 @@ const Home = () => {
       decription:
         'Отличный способ научиться сосредоточиться, снизить стресс и улучшить свое общее самочувствие',
       photo: IntroGirl,
-      to: '/training',
+      to: '/lessons',
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ const Home = () => {
       decription:
         'Отличный способ научиться сосредоточиться, снизить стресс и улучшить свое общее самочувствие',
       photo: IntroGirl,
-      to: '/lessons',
+      to: '/listen',
     },
     {
       id: 3,
@@ -46,8 +46,8 @@ const Home = () => {
       to: '/meditation',
     },
   ];
+  const { isAuth } = useSelector((state) => state.auth);
 
-  const { team = [] } = useSelector((state) => state.team);
   return (
     <Box>
       <Box height={{ xs: 'calc(100vh - 70px)', md: 'calc(100vh - 77px)' }} width="100vw">
@@ -205,26 +205,29 @@ const Home = () => {
                   Разнообразный и богатый опыт сложившаяся структура организации представляет собой
                   интересный эксперимент проверки форм развития.
                 </Typography>
-                <Box display="flex" gap={2} pt={2}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    component={Link}
-                    to="/login"
-                    sx={{ fontSize: { xs: '0.85rem', md: '1.25rem' } }}
-                  >
-                    Войти
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    component={Link}
-                    to="/register"
-                    sx={{ fontSize: { xs: '0.85rem', md: '1.25rem' } }}
-                  >
-                    Зарегистрироваться
-                  </Button>
-                </Box>
+
+                {!isAuth && (
+                  <Box display="flex" gap={2} pt={2}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component={Link}
+                      to="/login"
+                      sx={{ fontSize: { xs: '0.85rem', md: '1.25rem' } }}
+                    >
+                      Войти
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      component={Link}
+                      to="/register"
+                      sx={{ fontSize: { xs: '0.85rem', md: '1.25rem' } }}
+                    >
+                      Зарегистрироваться
+                    </Button>
+                  </Box>
+                )}
               </Box>
             </Grid>
           </Grid>
@@ -240,7 +243,7 @@ const Home = () => {
               color="text.primary"
               fontWeight="300"
               component={Link}
-              to="/team"
+              to="/trainers"
               variant="subtitle1"
               textTransform="uppercase"
               sx={{ py: 0 }}
@@ -249,7 +252,7 @@ const Home = () => {
             </Typography>
           </Box>
 
-          <TeamList team={team} />
+          <TrainersList />
         </Box>
       </Box>
     </Box>

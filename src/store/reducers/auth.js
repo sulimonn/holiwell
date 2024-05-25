@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getMe = createAsyncThunk('auth/getMe', async (credentials, { rejectWithValue }) => {
   try {
-    const response = await fetch('/api/users/me', {
+    const response = await fetch(process.env.REACT_APP_API_URL + '/users/me', {
       method: 'GET',
       credentials: 'include',
       headers: {

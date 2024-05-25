@@ -35,7 +35,7 @@ const HeaderContent = () => {
               component={Link}
               to={child.url}
               variant="h5"
-              key={child.id}
+              key={child.title}
               color="primary"
               textTransform="uppercase"
               sx={{

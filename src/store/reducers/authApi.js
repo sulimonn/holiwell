@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api/',
+    baseUrl: process.env.REACT_APP_API_URL,
     withCredentials: true,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {

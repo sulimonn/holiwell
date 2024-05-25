@@ -41,6 +41,7 @@ const MainLayout = () => {
         component="main"
         sx={{
           width: '100%',
+          maxWidth: '100vw',
           minHeight: 'calc(100vh - 72px)',
           display: 'flex',
           flexDirection: 'column',

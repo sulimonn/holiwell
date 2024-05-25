@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 // project import
 import HeaderContent from './HeaderContent';
+import Profile from './Profile';
 
 // ==============================|| MAIN LAYOUT - HEADER ||============================== //
 
@@ -48,7 +49,11 @@ const Header = ({ open, handleDrawerToggle }) => {
     },
   };
 
-  return <AppBar {...appBar}>{mainHeader}</AppBar>;
+  return (
+    <AppBar {...appBar}>
+      {mainHeader} <Profile />
+    </AppBar>
+  );
 };
 
 Header.propTypes = {
