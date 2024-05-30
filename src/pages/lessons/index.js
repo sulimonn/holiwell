@@ -1,7 +1,6 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-// material-ui
 import { Box, Typography, Container, Button } from '@mui/material';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
@@ -10,9 +9,11 @@ import PlayPauseButton from 'components/PlayPauseButton';
 import CourseCard from 'components/CourseCard';
 import { useGetCoursesQuery } from 'store/reducers/courses';
 import TrainersList from 'components/TrainersList';
+import { subscribe } from 'store/reducers/subscription';
 
 const Lessons = () => {
-  const hasPerm = false;
+  const isSubscribed = useSelector((state) => state.subscription.isSubscribed);
+  const dispatch = useDispatch();
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
   const [isPlaying, setPlaying] = React.useState(false);
 
@@ -148,6 +149,11 @@ const Lessons = () => {
       },
     ],
   } = useGetCoursesQuery();
+
+  const handleSubscription = () => {
+    dispatch(subscribe());
+  };
+
   return (
     <Box>
       <Box
@@ -166,11 +172,11 @@ const Lessons = () => {
             objectFit: 'cover',
             position: 'absolute',
             top: '-20%',
-            filter: hasPerm ? 'none' : 'brightness(0.6)',
+            filter: isSubscribed ? 'none' : 'brightness(0.6)',
             zIndex: 1,
           }}
         />
-        {!hasPerm && (
+        {!isSubscribed && (
           <Box
             position="relative"
             zIndex={2}
@@ -210,12 +216,14 @@ const Lessons = () => {
           <Typography variant="body1" fontWeight="300">
             Курс тренировок
           </Typography>
-          {hasPerm ? (
+          {isSubscribed ? (
             <Typography variant="h4" fontWeight="400">
               Дисциплина - ключ к успеху
             </Typography>
           ) : (
-            <Button variant="contained">АКТИВИРОВАТЬ ДОСТУП</Button>
+            <Button variant="contained" onClick={handleSubscription}>
+              АКТИВИРОВАТЬ ДОСТУП
+            </Button>
           )}
         </Box>
         <Box display="flex" py={10} gap={3} borderBottom="1px solid" borderColor="divider">
@@ -261,7 +269,12 @@ const Lessons = () => {
           borderColor="divider"
         >
           {courses.map((course, index) => (
-            <CourseCard key={course.id} course={course} index={index + 1} />
+            <CourseCard
+              key={course.id}
+              course={course}
+              index={index + 1}
+              isLocked={!isSubscribed}
+            />
           ))}
         </Box>
       </Container>

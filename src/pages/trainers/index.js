@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Container, Grid } from '@mui/material';
-import TrainerCard from 'components/TrainerCard';
+import TrainerCard from 'components/TrainerCard'; // eslint-disable-next-line
 import { useGetTrainersQuery } from 'store/reducers/trainers';
 
 const Trainers = () => {

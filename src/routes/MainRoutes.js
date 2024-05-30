@@ -8,7 +8,8 @@ import MainLayout from 'layout/MainLayout';
 const Home = Loadable(lazy(() => import('pages/home')));
 const Lessons = Loadable(lazy(() => import('pages/lessons')));
 const ListenPage = Loadable(lazy(() => import('pages/listen/ListenPage')));
-const Meditation = Loadable(lazy(() => import('pages/meditation')));
+const MeditationsList = Loadable(lazy(() => import('pages/meditation')));
+const MeditationPage = Loadable(lazy(() => import('pages/meditation/MeditationPage')));
 const Trainers = Loadable(lazy(() => import('pages/trainers')));
 const Trainer = Loadable(lazy(() => import('pages/trainers/Trainer')));
 
@@ -32,7 +33,11 @@ const MainRoutes = {
     },
     {
       path: '/meditation',
-      element: <Meditation />,
+      element: <MeditationsList />,
+    },
+    {
+      path: '/meditation/:id',
+      element: <MeditationPage />,
     },
     {
       path: '/trainers',

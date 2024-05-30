@@ -37,7 +37,7 @@ const MobileMenu = () => {
       right="0"
       zIndex={999}
       display={{ xs: 'block', md: 'none' }}
-      sx={{ backgroundColor: 'background.paper' }}
+      sx={{ backgroundColor: 'background.default' }}
     >
       <Box
         sx={{

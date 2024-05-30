@@ -18,6 +18,7 @@ import { Box, Typography, Grid, Button } from '@mui/material';
 // components
 import TrainersList from 'components/TrainersList';
 import { useSelector } from 'react-redux';
+import Image from 'components/Image';
 
 const Home = () => {
   const swiperData = [
@@ -60,7 +61,7 @@ const Home = () => {
             <SwiperSlide key={item.id}>
               <Box sx={{ position: 'relative' }}>
                 <Box
-                  component="img"
+                  component={Image}
                   src={item.photo}
                   alt="intro"
                   sx={{
@@ -251,7 +252,6 @@ const Home = () => {
               Смотреть все
             </Typography>
           </Box>
-
           <TrainersList />
         </Box>
       </Box>

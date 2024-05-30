@@ -41,7 +41,7 @@ const Palette = (mode) => {
       },
       divider: '#D9D9D9',
       background: {
-        paper: '#f4f4f4',
+        paper: '#A2A2A20D',
         default: '#f4f4f4',
       },
     },

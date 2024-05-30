@@ -6,12 +6,12 @@ export const getMe = createAsyncThunk('auth/getMe', async (credentials, { reject
       method: 'GET',
       credentials: 'include',
       headers: {
-        getSetCookies: true,
-        cookie: document.cookie['holiwell_jwt_cookie'],
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
       },
     });
     const data = await response.json();
     if (response.ok) {
+      console.log(data);
       return data;
     } else {
       return rejectWithValue(data.error);

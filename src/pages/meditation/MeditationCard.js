@@ -1,16 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import { Box, Typography } from '@mui/material';
 import { formatTime } from 'utils/formatTime';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
 
-const CourseCard = ({ course, index, size = 'large' }) => {
+import { Box, Typography } from '@mui/material';
+
+const MeditationCard = ({ data, isSubscribed }) => {
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
   const [musicDuration, setMusicDuration] = React.useState('00:00');
-  const objectUrl = course.path_to_audio;
-  const hasPerm = false;
+  const objectUrl = data.path_to_audio;
 
   const audio = document.createElement('audio');
   audio.src = objectUrl;
@@ -28,13 +27,13 @@ const CourseCard = ({ course, index, size = 'large' }) => {
     };
   }, [objectUrl]);
   return (
-    <Box flex={1} minWidth={{ xs: '100%', sm: '45%' }}>
+    <Box width={{ xs: '100%', sm: '373px' }}>
       <Link
-        to={`/lessons/${hasPerm ? course.id : null}`}
-        style={{ textDecoration: 'none', pointerEvents: hasPerm ? 'all' : 'none' }}
+        to={`/meditation/${isSubscribed ? data.id : null}`}
+        style={{ textDecoration: 'none', pointerEvents: isSubscribed ? 'all' : 'none' }}
       >
         <Box
-          height={{ xs: '170px', md: size === 'large' ? '326px' : '220px' }}
+          height={{ xs: '170px', md: '220px' }}
           sx={{
             overflow: 'hidden',
             position: 'relative',
@@ -44,47 +43,44 @@ const CourseCard = ({ course, index, size = 'large' }) => {
             color: 'primary.main',
           }}
         >
+          <div></div>
           <Box
             position="absolute"
             top="-85%"
             bottom="0"
             overflow="visible"
             width="100%"
-            sx={{ filter: hasPerm ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
+            sx={{ filter: isSubscribed ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
           >
             <img
-              src={require('assets/images/girls/' + course.path_to_cover)}
-              alt="course"
+              src={require('assets/images/girls/' + data.path_to_cover)}
+              alt="data"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </Box>
-          <Box px={2} py={1} backgroundColor="background.paper" width="min-content">
-            <Typography variant="h5" fontWeight="100">
-              {index}
-            </Typography>
-          </Box>
 
-          {!hasPerm && <LockedIcon fontSize="large" />}
-          <Box px={1} py={0.5} m={2.5} backgroundColor="background.paper" width="min-content">
+          {!isSubscribed && <LockedIcon fontSize="large" />}
+          <Box px={1} py={0.5} m={2} backgroundColor="background.default" width="min-content">
             <Typography variant="h5" fontWeight="100">
               {musicDuration}
             </Typography>
           </Box>
         </Box>
-        <Typography variant="h4" fontWeight="400" textAlign="center" mt={1} color="primary.main">
-          {course.title}
+        <Typography variant="h5" fontWeight="400" textAlign="left" mt={1.5} color="primary.main">
+          {data.title}
         </Typography>
       </Link>
-      <Link to={`/trainers/${course.trainer.id}`} style={{ textDecoration: 'none' }}>
+      <Link
+        to={`/trainers/${data.trainer.id}`}
+        style={{ textDecoration: 'none', textAlign: 'left' }}
+      >
         <Typography
           variant="body2"
-          fontWeight="300"
-          textAlign="center"
-          mt={0.5}
-          color="primary.light"
+          fontWeight="100"
+          mt={1}
+          color="primary.main"
           sx={{
             position: 'relative',
-            mx: 'auto',
             width: 'fit-content',
             '&::after': {
               content: '""',
@@ -99,11 +95,11 @@ const CourseCard = ({ course, index, size = 'large' }) => {
             '&:hover::after, &:focus::after, &:active::after': { right: 0 },
           }}
         >
-          {course.trainer.first_name} {course.trainer.last_name}
+          {data.trainer.first_name} {data.trainer.last_name}
         </Typography>
       </Link>
     </Box>
   );
 };
 
-export default CourseCard;
+export default MeditationCard;

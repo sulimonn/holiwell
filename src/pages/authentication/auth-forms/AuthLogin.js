@@ -26,14 +26,13 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { useLoginMutation } from 'store/reducers/authApi';
+import { login } from 'store/reducers/authApi';
 import { getMe } from 'store/reducers/auth';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
   const dispatch = useDispatch();
-  const [login] = useLoginMutation();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -61,12 +60,13 @@ const AuthLogin = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            const reponse = await login({
+            const response = await login({
               username: values.email,
               password: values.password,
             });
-            if (reponse.error) {
-              if (reponse.error?.data?.detail === 'LOGIN_BAD_CREDENTIALS') {
+            console.log(response.headers.getSetCookie());
+            if (response.error) {
+              if (response.error?.data?.detail === 'LOGIN_BAD_CREDENTIALS' || !response.ok) {
                 setErrors({
                   email: true,
                   password: true,
@@ -164,11 +164,11 @@ const AuthLogin = () => {
                   </Link>
                 </Stack>
               </Grid>
-              {errors.submit && (
+              {/* {errors.submit && (
                 <Grid item xs={12} sx={{ pt: '0 !important' }}>
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 </Grid>
-              )}
+              )} */}
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button

@@ -1,5 +1,7 @@
 export function formatTime(duration) {
-  const minutes = Math.floor(duration / 60);
+  const hours = Math.floor(duration / 3600);
+  const minutes = Math.floor((duration % 3600) / 60);
   const seconds = Math.floor(duration % 60);
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+  return `${hours > 0 ? `${hours}:` : ''}${hours > 0 && minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }

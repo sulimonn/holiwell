@@ -8,8 +8,7 @@ const AuthComponent = ({ children }) => {
 
   useEffect(() => {
     const me = async () => {
-      const reponse = await dispatch(getMe());
-      console.log(reponse);
+      await dispatch(getMe());
     };
     if (!isAuth) me();
   }, [dispatch, isAuth]);

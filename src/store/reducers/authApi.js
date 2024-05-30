@@ -3,16 +3,6 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL,
-    withCredentials: true,
-    credentials: 'include',
-    prepareHeaders: (headers, { getState }) => {
-      const { token } = getState().auth;
-      if (token) {
-        headers.set('Authorization', `Token ${token}`);
-      }
-
-      return headers;
-    },
   }),
   reducerPath: 'authApi',
 
@@ -27,12 +17,12 @@ export const authApi = createApi({
           url: '/auth/jwt/login',
           method: 'POST',
           body: formData,
-          credentials: 'include',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             Accept: '*/*',
             'Accept-Encoding': 'gzip, deflate, br',
             Connection: 'keep-alive',
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
           },
         };
       },
@@ -74,3 +64,26 @@ export const {
   useLogoutMutation,
   useResetPasswordMutation,
 } = authApi;
+
+export const login = async (credentials) => {
+  const formData = new URLSearchParams();
+  formData.append('username', credentials.username);
+  formData.append('password', credentials.password);
+  // const response = await axios.post(process.env.REACT_APP_API_URL + '/auth/jwt/login', formData, {
+  //   withCredentials: true,
+  //   headers: {
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //     Accept: '*/*',
+  //   },
+  // });
+  const response = await fetch(process.env.REACT_APP_API_URL + '/auth/jwt/login', {
+    method: 'POST',
+    credentials: 'include',
+    body: formData,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Accept: '*/*',
+    },
+  });
+  return response;
+};

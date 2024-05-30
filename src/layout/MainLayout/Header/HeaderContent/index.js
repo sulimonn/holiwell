@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 // material-ui
 import { Box, Typography, IconButton } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
@@ -6,13 +8,17 @@ import { Link } from 'react-router-dom';
 // project import
 import menuItems from 'menu-items/index';
 import Logo from 'components/Logo/Logo';
-
-import { useSelector } from 'react-redux';
+import { openProfile } from 'store/reducers/menu';
+import Profile from '../Profile/index';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 
 const HeaderContent = () => {
   const { isAuth } = useSelector((state) => state.auth);
+  const { profileOpen } = useSelector((state) => state.menu);
+  const anchorRef = useRef(null);
+  const dispatch = useDispatch();
+
   return (
     <Box
       sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'space-between', py: 3 }}
@@ -29,13 +35,13 @@ const HeaderContent = () => {
           ),
         )
         .filter((child) => !child.mobile)
-        .map((child) => {
+        .map((child, i) => {
           return (
             <Typography
               component={Link}
               to={child.url}
               variant="h5"
-              key={child.title}
+              key={i}
               color="primary"
               textTransform="uppercase"
               sx={{
@@ -49,9 +55,12 @@ const HeaderContent = () => {
           );
         })}
       {isAuth && (
-        <IconButton color="inherit">
-          <PersonIcon />
-        </IconButton>
+        <div ref={anchorRef}>
+          <IconButton color="inherit" onClick={() => dispatch(openProfile(!profileOpen))}>
+            <PersonIcon />
+          </IconButton>
+          <Profile anchorRef={anchorRef} />
+        </div>
       )}
     </Box>
   );

@@ -42,7 +42,7 @@ const MainLayout = () => {
         sx={{
           width: '100%',
           maxWidth: '100vw',
-          minHeight: 'calc(100vh - 72px)',
+          minHeight: 'calc(100vh - 84px)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
