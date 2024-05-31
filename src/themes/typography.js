@@ -67,7 +67,7 @@ const Typography = (theme) => ({
     },
   },
   body2: {
-    fontSize: '0.875rem',
+    fontSize: '0.95rem',
     lineHeight: 1.2,
     fontWeight: 300,
     [theme.breakpoints.down('sm')]: {

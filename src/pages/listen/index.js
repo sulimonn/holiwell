@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useRef } from 'react';
+
 import { Box } from '@mui/material';
 import LessonsBase from 'components/LessonsBase';
-import MeditationCard from './MeditationCard';
+import ListenItem from './ListenItem';
 
-const videos = [
+const audios = [
   {
     id: 0,
-    title: 'Медитация 1',
+    title: 'Урок 1 : Название аудио',
     description: 'string',
     trainer: {
       id: 0,
@@ -38,7 +39,7 @@ const videos = [
   },
   {
     id: 2,
-    title: 'Медитация 2',
+    title: 'Урок 2 : Название аудио',
     description: 'string',
     trainer: {
       id: 0,
@@ -70,7 +71,7 @@ const videos = [
   },
   {
     id: 3,
-    title: 'Медитация 3',
+    title: 'Урок 3 : Название аудио',
     description: 'string',
     trainer: {
       id: 0,
@@ -102,7 +103,7 @@ const videos = [
   },
   {
     id: 4,
-    title: 'Медитация 4',
+    title: 'Урок 4 : Название аудио',
     description: 'string',
     trainer: {
       id: 0,
@@ -134,26 +135,58 @@ const videos = [
   },
 ];
 
-const Meditation = () => {
+const ListenList = () => {
   const [sortOption, setSortOption] = React.useState('new');
+  const [duration, setDuration] = React.useState(0);
+  const [playing, setPlaying] = React.useState(null);
+  const audioRef = useRef(null);
+
+  const handlePlayPause = (id, audioPath) => {
+    if (playing === id) {
+      audioRef.current.pause();
+      setPlaying(null);
+    } else {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      audioRef.current = new Audio(audioPath);
+      audioRef.current.play();
+      setPlaying(id);
+    }
+  };
+  React.useEffect(() => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
   return (
-    <LessonsBase title="МЕДИТАЦИИ" sortOption={sortOption} setSortOption={setSortOption}>
+    <LessonsBase title="Слушай" sortOption={sortOption} setSortOption={setSortOption}>
       <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          rowGap: 5,
-          columnGap: 1,
-          justifyContent: 'space-between',
-          py: 4,
-        }}
+        display="flex"
+        flexDirection="column"
+        mx="auto"
+        width={{ xs: '100%', md: '660px' }}
+        py={4}
       >
-        {videos.map((video) => (
-          <MeditationCard key={video.id} data={video} isSubscribed={true} />
+        {audios.map((lesson) => (
+          <ListenItem
+            key={lesson.id}
+            lesson={lesson}
+            handlePlayPause={handlePlayPause}
+            audioRef={audioRef}
+            playing={playing}
+            setPlaying={setPlaying}
+            duration={duration}
+          />
         ))}
       </Box>
     </LessonsBase>
   );
 };
 
-export default Meditation;
+export default ListenList;

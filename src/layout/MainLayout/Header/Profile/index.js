@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
@@ -7,7 +8,6 @@ import {
   ClickAwayListener,
   Grid,
   Paper,
-  Stack,
   Typography,
   Box,
   Popper,
@@ -22,16 +22,21 @@ import Transitions from 'components/@extended/Transitions';
 // assets
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import { openProfile } from 'store/reducers/menu';
+import { useLogoutMutation } from 'store/reducers/authApi';
+import { logOut } from 'store/reducers/auth';
 
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
 export default function Profile({ anchorRef }) {
+  const [logout] = useLogoutMutation();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState();
   useEffect(() => {
     setTimeout(() => setAnchorEl(anchorRef?.current), 1);
   }, [anchorRef]);
   const dispatch = useDispatch();
   const { profileOpen: open } = useSelector((state) => state.menu);
+  const { user } = useSelector((state) => state.auth);
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -67,6 +72,7 @@ export default function Profile({ anchorRef }) {
             '& .MuiPaper-root': {
               borderRadius: 0,
               boxShadow: 'none',
+              backgroundColor: 'background.default',
             },
           }}
         >
@@ -82,21 +88,27 @@ export default function Profile({ anchorRef }) {
               >
                 <ClickAwayListener onClickAway={handleClose}>
                   <MainCard elevation={0} border={false} content={false}>
-                    <CardContent sx={{ px: 2.5, pt: 3 }}>
+                    <CardContent sx={{ px: 2.5, py: 1 }}>
                       <Grid container justifyContent="space-between" alignItems="center">
                         <Grid item>
-                          <Stack direction="row" spacing={1.25} alignItems="center">
-                            <Stack>
-                              <Typography variant="h6">John Doe</Typography>
-                              <Typography variant="body2" color="text.secondary">
-                                UI/UX Designer
-                              </Typography>
-                            </Stack>
-                          </Stack>
+                          <Typography variant="h6">
+                            {user?.first_name} {user?.last_name}
+                          </Typography>
                         </Grid>
                         <Grid item>
-                          <Tooltip title="Logout">
-                            <IconButton size="large" sx={{ color: 'text.primary' }}>
+                          <Tooltip title="Выйти">
+                            <IconButton
+                              size="large"
+                              sx={{ color: 'text.primary' }}
+                              onClick={async () => {
+                                const response = await logout();
+                                if (response) {
+                                  navigate('/login');
+                                  dispatch(openProfile(false));
+                                  dispatch(logOut());
+                                }
+                              }}
+                            >
                               <LogoutOutlined />
                             </IconButton>
                           </Tooltip>

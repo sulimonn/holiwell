@@ -7,6 +7,7 @@ import MainLayout from 'layout/MainLayout';
 // render - dashboard
 const Home = Loadable(lazy(() => import('pages/home')));
 const Lessons = Loadable(lazy(() => import('pages/lessons')));
+const ListenList = Loadable(lazy(() => import('pages/listen')));
 const ListenPage = Loadable(lazy(() => import('pages/listen/ListenPage')));
 const MeditationsList = Loadable(lazy(() => import('pages/meditation')));
 const MeditationPage = Loadable(lazy(() => import('pages/meditation/MeditationPage')));
@@ -29,6 +30,10 @@ const MainRoutes = {
     },
     {
       path: '/listen',
+      element: <ListenList />,
+    },
+    {
+      path: '/listen/:id',
       element: <ListenPage />,
     },
     {

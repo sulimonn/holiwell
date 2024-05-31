@@ -26,13 +26,14 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { login } from 'store/reducers/authApi';
 import { getMe } from 'store/reducers/auth';
+import { useLoginMutation } from 'store/reducers/authApi';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
   const dispatch = useDispatch();
+  const [login] = useLoginMutation();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -64,9 +65,8 @@ const AuthLogin = () => {
               username: values.email,
               password: values.password,
             });
-            console.log(response.headers.getSetCookie());
             if (response.error) {
-              if (response.error?.data?.detail === 'LOGIN_BAD_CREDENTIALS' || !response.ok) {
+              if (response.error && response.error.status === 400) {
                 setErrors({
                   email: true,
                   password: true,
@@ -164,11 +164,11 @@ const AuthLogin = () => {
                   </Link>
                 </Stack>
               </Grid>
-              {/* {errors.submit && (
+              {errors.submit && (
                 <Grid item xs={12} sx={{ pt: '0 !important' }}>
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 </Grid>
-              )} */}
+              )}
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button

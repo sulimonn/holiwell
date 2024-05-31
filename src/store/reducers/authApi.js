@@ -6,6 +6,8 @@ export const authApi = createApi({
   }),
   reducerPath: 'authApi',
 
+  tagTypes: ['User'],
+
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => {
@@ -33,6 +35,7 @@ export const authApi = createApi({
         method: 'POST',
         body: { ...credentials },
       }),
+      invalidatesTags: ['User'],
     }),
     getMe: builder.query({
       query: () => '/users/me',
@@ -44,6 +47,7 @@ export const authApi = createApi({
         method: 'POST',
         credentials: 'include',
       }),
+      invalidatesTags: ['User'],
     }),
     resetPassword: builder.mutation({
       query: (credentials) => ({
@@ -51,6 +55,7 @@ export const authApi = createApi({
         method: 'POST',
         body: { ...credentials },
       }),
+      invalidatesTags: ['User'],
     }),
   }),
 });
@@ -64,26 +69,3 @@ export const {
   useLogoutMutation,
   useResetPasswordMutation,
 } = authApi;
-
-export const login = async (credentials) => {
-  const formData = new URLSearchParams();
-  formData.append('username', credentials.username);
-  formData.append('password', credentials.password);
-  // const response = await axios.post(process.env.REACT_APP_API_URL + '/auth/jwt/login', formData, {
-  //   withCredentials: true,
-  //   headers: {
-  //     'Content-Type': 'application/x-www-form-urlencoded',
-  //     Accept: '*/*',
-  //   },
-  // });
-  const response = await fetch(process.env.REACT_APP_API_URL + '/auth/jwt/login', {
-    method: 'POST',
-    credentials: 'include',
-    body: formData,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Accept: '*/*',
-    },
-  });
-  return response;
-};

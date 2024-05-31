@@ -16,6 +16,7 @@ import fullScreen from 'assets/images/icons/fullScreen';
 
 const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
   const videoRef = useRef();
+  const containerRef = useRef();
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down('sm'));
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
@@ -26,6 +27,7 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
   const [playedProgress, setPlayedProgress] = useState(0);
   const [played, setPlayed] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const [overlay, setOverlay] = useState(null);
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -53,12 +55,12 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
   };
   const handleRewind = () => {
     const currentTime = videoRef.current.getCurrentTime();
-    videoRef.current.seekTo(currentTime - 15);
+    videoRef.current.seekTo(currentTime - 10);
   };
 
   const handleFastForward = () => {
     const currentTime = videoRef.current.getCurrentTime();
-    videoRef.current.seekTo(currentTime + 15);
+    videoRef.current.seekTo(currentTime + 10);
   };
 
   const handleProgress = (state) => {
@@ -67,15 +69,33 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
 
       if (!duration) {
         setDuration(videoRef.current.getDuration());
-        console.log(1);
       }
     }
   };
 
   const handleFullscreen = () => {
-    if (videoRef.current.wrapper.requestFullscreen) {
-      videoRef.current.wrapper.requestFullscreen();
+    if (!isFullscreen) {
+      if (containerRef.current.requestFullscreen) {
+        containerRef.current.requestFullscreen();
+      } else if (containerRef.current.webkitRequestFullscreen) {
+        /* Safari */
+        containerRef.current.webkitRequestFullscreen();
+      } else if (containerRef.current.msRequestFullscreen) {
+        /* IE11 */
+        containerRef.current.msRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        /* Safari */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        /* IE11 */
+        document.msExitFullscreen();
+      }
     }
+    setIsFullscreen(!isFullscreen);
   };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -86,7 +106,7 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
   };
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && videoRef.current.getInternalPlayer()) {
       videoRef.current.getInternalPlayer().volume = volume;
     }
   }, [volume]);
@@ -156,20 +176,54 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+    }; // eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(document.fullscreenElement !== null);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('msfullscreenchange', handleFullscreenChange);
     };
   }, []);
 
   return (
-    <Box height={{ xs: '360px', sm: '550px', md: '675px' }} width="100%" position="relative" mb={4}>
-      <Box onClick={handlePlayPause}>
+    <Box
+      height={{ xs: '360px', sm: '550px', md: '675px' }}
+      width="100%"
+      position="relative"
+      mb={4}
+      ref={containerRef}
+    >
+      <Box
+        onClick={handlePlayPause}
+        position="relative"
+        zIndex={1}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100%"
+        width="100%"
+      >
         <ReactPlayer
           ref={videoRef}
           width="100%"
-          height={height}
+          height={isFullscreen ? '100%' : height}
           url={path_to_video}
           playing={playing}
           onProgress={handleProgress}
-          volume={volume}
+          volume={volume || 0.5}
+          playsinline
+          controls={false}
         />
       </Box>
 
@@ -228,10 +282,24 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
         display="flex"
         alignItems="center"
         gap={0}
-        zIndex={4}
+        zIndex={5}
       >
+        <IconButton
+          onClick={handleRewind}
+          sx={{ color: 'primary.main', opacity: 0.8 }}
+          disabled={played <= 0}
+        >
+          <Replay10RoundedIcon />
+        </IconButton>
         <IconButton onClick={handlePlayPause} color="inherit">
           {playing ? <PauseIcon /> : <PlayArrowIcon />}
+        </IconButton>
+        <IconButton
+          onClick={handleFastForward}
+          sx={{ color: 'primary.main', opacity: 0.8 }}
+          disabled={played >= duration}
+        >
+          <Forward10RoundedIcon />
         </IconButton>
         <Typography
           variant="subtitle1"
@@ -240,7 +308,8 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
             whiteSpace: 'nowrap',
             width: { xs: '36px', md: '40px' },
             textAlign: 'center',
-            mx: 2,
+            mr: 2,
+            ml: 0.5,
           }}
         >
           {formatTime(played)}
@@ -258,7 +327,8 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
             whiteSpace: 'nowrap',
             width: { xs: '36px', md: '40px' },
             textAlign: 'center',
-            mx: 2,
+            ml: 2,
+            mr: 0.5,
           }}
         >
           {formatTime(duration - played)}

@@ -6,7 +6,7 @@ const Image = (props) => {
     srcList: [props.src],
   });
 
-  return <img src={src} alt="foo" {...props} />;
+  return <img src={src} alt={props.alt} {...props} />;
 };
 
 export default Image;

@@ -6,11 +6,10 @@ import { formatTime } from 'utils/formatTime';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
 
-const CourseCard = ({ course, index, size = 'large' }) => {
+const CourseCard = ({ course, index, size = 'large', isSubscribed = true }) => {
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
   const [musicDuration, setMusicDuration] = React.useState('00:00');
   const objectUrl = course.path_to_audio;
-  const hasPerm = false;
 
   const audio = document.createElement('audio');
   audio.src = objectUrl;
@@ -30,8 +29,8 @@ const CourseCard = ({ course, index, size = 'large' }) => {
   return (
     <Box flex={1} minWidth={{ xs: '100%', sm: '45%' }}>
       <Link
-        to={`/lessons/${hasPerm ? course.id : null}`}
-        style={{ textDecoration: 'none', pointerEvents: hasPerm ? 'all' : 'none' }}
+        to={`/lessons/${isSubscribed ? course.id : null}`}
+        style={{ textDecoration: 'none', pointerEvents: isSubscribed ? 'all' : 'none' }}
       >
         <Box
           height={{ xs: '170px', md: size === 'large' ? '326px' : '220px' }}
@@ -50,7 +49,7 @@ const CourseCard = ({ course, index, size = 'large' }) => {
             bottom="0"
             overflow="visible"
             width="100%"
-            sx={{ filter: hasPerm ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
+            sx={{ filter: isSubscribed ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
           >
             <img
               src={require('assets/images/girls/' + course.path_to_cover)}
@@ -58,14 +57,14 @@ const CourseCard = ({ course, index, size = 'large' }) => {
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </Box>
-          <Box px={2} py={1} backgroundColor="background.paper" width="min-content">
+          <Box px={2} py={1} backgroundColor="background.default" width="min-content">
             <Typography variant="h5" fontWeight="100">
               {index}
             </Typography>
           </Box>
 
-          {!hasPerm && <LockedIcon fontSize="large" />}
-          <Box px={1} py={0.5} m={2.5} backgroundColor="background.paper" width="min-content">
+          {!isSubscribed && <LockedIcon fontSize="large" />}
+          <Box px={1} py={0.5} m={2.5} backgroundColor="background.default" width="min-content">
             <Typography variant="h5" fontWeight="100">
               {musicDuration}
             </Typography>

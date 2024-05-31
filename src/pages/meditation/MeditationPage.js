@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
-import { Box, Container } from '@mui/material';
+import { Button } from '@mui/material';
+
+import LessonPageBase from 'components/LessonPageBase';
 import VideoPlayer from './VideoPlayer';
 
 const lesson = {
   id: 0,
   title: 'МЕДИТАЦИЯ 1 : НАЗВАНИЕ',
   description:
-    'Не ограничивай себя в движении. В здоровом теле здоровый дух. Регулярная практика и позитивный настрой дадут тебе энергию для реализации твоих целей.',
+    'Не ограничивай себя в движении.\n\n В здоровом теле здоровый дух. Регулярная практика и позитивный настрой дадут тебе энергию для реализации твоих целей.',
   trainer: {
     id: 0,
     first_name: 'Имя',
@@ -30,14 +32,19 @@ const MeditionPage = () => {
   const [duration, setDuration] = useState(null);
 
   return (
-    <Container maxWidth="lg">
-      <VideoPlayer
-        path_to_video={lesson.path_to_video}
-        duration={duration}
-        setDuration={setDuration}
-      />
-      <Box py={5}></Box>
-    </Container>
+    <LessonPageBase
+      cover={
+        <VideoPlayer
+          path_to_video={lesson.path_to_video}
+          duration={duration}
+          setDuration={setDuration}
+        />
+      }
+      duration={duration}
+      lesson={lesson}
+      btnContained={<Button variant="contained">Смотреть</Button>}
+      btnOutlined={<Button variant="outlined">В избранное</Button>}
+    />
   );
 };
 

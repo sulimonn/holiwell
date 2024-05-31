@@ -17,6 +17,7 @@ const AuthCard = ({ children, ...other }) => (
         flexGrow: 1,
         flexBasis: '50%',
       },
+      backgroundColor: 'background.default',
     }}
     content={false}
     {...other}

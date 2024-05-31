@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
 import SortLessons from 'components/SortLessons';
 
-const Lesson = ({ title, children, sortOption, setSortOption }) => {
+const Lessons = ({ title, children, sortOption, setSortOption }) => {
   return (
     <Box width="100%">
       <Box
@@ -15,7 +15,9 @@ const Lesson = ({ title, children, sortOption, setSortOption }) => {
           backgroundColor: 'background.paper',
         }}
       >
-        <Typography variant="h3">{title}</Typography>
+        <Typography variant="h2" fontWeight="500" textTransform="uppercase">
+          {title}
+        </Typography>
       </Box>
       <Container maxWidth="lg">
         <Box
@@ -68,4 +70,4 @@ const Lesson = ({ title, children, sortOption, setSortOption }) => {
   );
 };
 
-export default Lesson;
+export default Lessons;

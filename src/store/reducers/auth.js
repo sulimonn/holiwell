@@ -35,6 +35,7 @@ const auth = createSlice({
     },
     logOut: (state, action) => {
       state.user = null;
+      state.isAuth = false;
     },
     setAuth: (state, action) => {
       state.isAuth = true;
@@ -47,6 +48,7 @@ const auth = createSlice({
     });
     builder.addCase(getMe.rejected, (state, action) => {
       state.user = null;
+      state.isAuth = false;
     });
   },
 });

@@ -10,6 +10,7 @@ import CourseCard from 'components/CourseCard';
 import { useGetCoursesQuery } from 'store/reducers/courses';
 import TrainersList from 'components/TrainersList';
 import { subscribe } from 'store/reducers/subscription';
+import Image from 'components/Image';
 
 const Lessons = () => {
   const isSubscribed = useSelector((state) => state.subscription.isSubscribed);
@@ -163,7 +164,7 @@ const Lessons = () => {
         overflow="hidden"
         mb={{ xs: '40', sm: '70px', md: '100px' }}
       >
-        <img
+        <Image
           src={LessonGirl}
           alt="girl"
           style={{

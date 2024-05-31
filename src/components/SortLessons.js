@@ -96,9 +96,13 @@ const SortLessons = ({ sortOption = 'new', setSortOption }) => {
             name="sort"
             value={sortOptionChange}
             onChange={handleSortChange}
-            sx={{ gap: 1 }}
+            sx={{ gap: 0.7 }}
           >
-            <FormLabel component="legend" fontWeight="600">
+            <FormLabel
+              component="legend"
+              fontWeight="600"
+              sx={{ fontSize: { xs: '14px', sm: '16px' } }}
+            >
               СОРТИРОВКА
             </FormLabel>
             <Divider />
@@ -106,7 +110,7 @@ const SortLessons = ({ sortOption = 'new', setSortOption }) => {
               value="popular"
               control={<Radio />}
               label={
-                <Typography variant="body1" fontWeight="250">
+                <Typography variant="h5" component="p" fontWeight="250">
                   По популярности
                 </Typography>
               }
@@ -116,7 +120,7 @@ const SortLessons = ({ sortOption = 'new', setSortOption }) => {
               value="new"
               control={<Radio fontSize="15px" />}
               label={
-                <Typography variant="body1" fontWeight="250">
+                <Typography variant="h5" component="p" fontWeight="250">
                   Новое
                 </Typography>
               }
@@ -126,7 +130,7 @@ const SortLessons = ({ sortOption = 'new', setSortOption }) => {
               value="default"
               control={<Radio />}
               label={
-                <Typography variant="body1" fontWeight="250">
+                <Typography variant="h5" component="p" fontWeight="250">
                   По умолчанию
                 </Typography>
               }
