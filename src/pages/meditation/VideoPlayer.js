@@ -306,7 +306,7 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
           fontWeight="100"
           sx={{
             whiteSpace: 'nowrap',
-            width: { xs: '36px', md: '40px' },
+            minWidth: { xs: '36px', md: '40px' },
             textAlign: 'center',
             mr: 2,
             ml: 0.5,
@@ -325,7 +325,7 @@ const VideoPlayer = ({ path_to_video, duration, setDuration }) => {
           fontWeight="100"
           sx={{
             whiteSpace: 'nowrap',
-            width: { xs: '36px', md: '40px' },
+            minWidth: { xs: '36px', md: '40px' },
             textAlign: 'center',
             ml: 2,
             mr: 0.5,
