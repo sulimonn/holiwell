@@ -1,11 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 
 const Page404 = () => {
-  console.log('404');
   return (
-    <div>
-      <h1>Page Not Found</h1>
-    </div>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      height="100vh"
+      flexDirection="column"
+    >
+      <Typography variant="h1">404</Typography>
+      <Typography variant="h2">Страница не найдена</Typography>
+      <Typography variant="body1" component={Link} to="/" color="text.secondary">
+        Вернуться на главную
+      </Typography>
+    </Box>
   );
 };
 

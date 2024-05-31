@@ -24,7 +24,7 @@ const Header = ({ open, handleDrawerToggle }) => {
             onClick={handleDrawerToggle}
             color="secondary"
             sx={{
-              color: 'primary.main',
+              color: 'common.white',
             }}
           >
             <MenuIcon fontSize="large" />

@@ -46,8 +46,8 @@ const SortLessons = ({ sortOption = 'new', setSortOption }) => {
           borderRadius: '50px',
           backgroundColor: Boolean(anchorEl) ? 'background.default' : 'primary.lighter',
           boxShadow: Boolean(anchorEl) ? '0px 0px 10px 0px #00000040' : 'none',
-          py: 1,
-          px: 3,
+          py: { xs: 0.6, md: 1 },
+          px: { xs: 2, md: 3 },
           gap: 0.5,
           transition: 'all 0.3s ease',
         }}

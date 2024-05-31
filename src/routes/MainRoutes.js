@@ -13,6 +13,7 @@ const MeditationsList = Loadable(lazy(() => import('pages/meditation')));
 const MeditationPage = Loadable(lazy(() => import('pages/meditation/MeditationPage')));
 const Trainers = Loadable(lazy(() => import('pages/trainers')));
 const Trainer = Loadable(lazy(() => import('pages/trainers/Trainer')));
+const ProfilePage = Loadable(lazy(() => import('pages/profile')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -51,6 +52,10 @@ const MainRoutes = {
     {
       path: '/trainers/:id',
       element: <Trainer />,
+    },
+    {
+      path: '/profile',
+      element: <ProfilePage />,
     },
   ],
 };

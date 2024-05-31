@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import LessonPageBase from 'components/LessonPageBase';
 import Controls from 'components/Controls';
 import Image from 'components/Image';
@@ -42,6 +42,8 @@ const ListenPage = () => {
   const [duration, setDuration] = React.useState(0);
   const [playing, setPlaying] = React.useState(false);
   const [playedProgress, setPlayedProgress] = React.useState(0);
+  const [overlay, setOverlay] = React.useState(null);
+  const [overlayVisible, setOverlayVisible] = React.useState(false);
 
   const audioRef = React.useRef(null);
   const containerRef = React.useRef(null);
@@ -76,6 +78,16 @@ const ListenPage = () => {
     };
   }, [handleProgress]);
 
+  React.useEffect(() => {
+    if (audioRef.current) {
+      if (playing) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [playing]);
+
   return (
     <LessonPageBase
       cover={
@@ -89,17 +101,73 @@ const ListenPage = () => {
           }}
           ref={containerRef}
         >
-          <Box component="audio" ref={audioRef} sx={{ display: 'none' }} />
-          <Image
-            src={require(`assets/images/girls/${lesson.path_to_cover}`)}
-            alt="cover"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center top',
+          <Box
+            onClick={handlePlayPause}
+            position="relative"
+            zIndex={1}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            width="100%"
+          >
+            <Box component="audio" ref={audioRef} sx={{ display: 'none' }} />
+            <Image
+              src={require(`assets/images/girls/${lesson.path_to_cover}`)}
+              alt="cover"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center top',
+              }}
+            />
+          </Box>
+
+          <Box
+            position="absolute"
+            top="0%"
+            left="0%"
+            width="100%"
+            height="100%"
+            color="white"
+            p={2}
+            borderRadius={4}
+            zIndex={2}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              pointerEvents: 'none',
+              opacity: overlayVisible ? 1 : 0,
+              transition: 'opacity 0.25s ease-in-out',
             }}
-          />
+          >
+            <Box
+              width={{ xs: '100px', sm: '120px', md: '260px' }}
+              height={{ xs: '100px', sm: '120px', md: '260px' }}
+              bgcolor={overlayVisible ? 'rgba(0, 0, 0, 0.2)' : 'transparent'}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              borderRadius="50%"
+              sx={{
+                transition: 'all 0.25s ease-in-out',
+                filter: 'blur(60px)',
+                position: 'absolute',
+                zIndex: -1,
+              }}
+            ></Box>
+            <Typography
+              variant="h4"
+              color="primary.contrastText"
+              sx={{
+                transform: 'scale(2.5)',
+              }}
+            >
+              {overlay}
+            </Typography>
+          </Box>
           <Controls
             duration={duration}
             playing={playing}
@@ -109,6 +177,9 @@ const ListenPage = () => {
             playedProgress={playedProgress}
             setPlayedProgress={setPlayedProgress}
             containerRef={containerRef}
+            setOverlay={setOverlay}
+            setOverlayVisible={setOverlayVisible}
+            media="audio"
           />
         </Box>
       }

@@ -142,6 +142,7 @@ const Meditation = () => {
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
+
           rowGap: 5,
           columnGap: 1,
           justifyContent: 'space-between',

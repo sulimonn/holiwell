@@ -85,7 +85,7 @@ const audios = [
     path_to_cover: 'lesson.jpeg',
     path_to_video: 'string',
     path_to_audio:
-      'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
+      'https://mp3uk.net/mp3/files/nicholas-bonnin-angelicca-shut-up-and-listen-mp3.mp3',
     links_before: [
       {
         id: 0,
@@ -137,33 +137,31 @@ const audios = [
 
 const ListenList = () => {
   const [sortOption, setSortOption] = React.useState('new');
-  const [duration, setDuration] = React.useState(0);
   const [playing, setPlaying] = React.useState(null);
-  const audioRef = useRef(null);
+  const audioRef = useRef(new Audio());
 
   const handlePlayPause = (id, audioPath) => {
     if (playing === id) {
       audioRef.current.pause();
       setPlaying(null);
     } else {
-      if (audioRef.current) {
-        audioRef.current.pause();
+      if (audioRef.current.src !== audioPath) {
+        audioRef.current.src = audioPath;
       }
-      audioRef.current = new Audio(audioPath);
-      audioRef.current.play();
-      setPlaying(id);
+      audioRef.current
+        .play()
+        .then(() => setPlaying(id))
+        .catch((error) => console.error('Error playing audio:', error));
     }
   };
+
   React.useEffect(() => {
-    if (audioRef.current) {
-      setDuration(audioRef.current.duration);
-    }
+    const audio = audioRef.current;
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      if (audio) audio.pause();
     };
   }, []);
+
   return (
     <LessonsBase title="Слушай" sortOption={sortOption} setSortOption={setSortOption}>
       <Box
@@ -178,10 +176,7 @@ const ListenList = () => {
             key={lesson.id}
             lesson={lesson}
             handlePlayPause={handlePlayPause}
-            audioRef={audioRef}
             playing={playing}
-            setPlaying={setPlaying}
-            duration={duration}
           />
         ))}
       </Box>

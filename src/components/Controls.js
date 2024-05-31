@@ -13,7 +13,7 @@ import fullScreen from 'assets/images/icons/fullScreen';
 
 const Controls = ({
   mediaRef,
-  duration,
+  duration = 0,
   media = 'audio',
   handlePlayPause,
   setPlaying,
@@ -21,6 +21,8 @@ const Controls = ({
   playedProgress,
   setPlayedProgress,
   containerRef,
+  setOverlay,
+  setOverlayVisible,
 }) => {
   const [volume, setVolume] = useState(0.8);
   const [played, setPlayed] = useState(0);
@@ -33,16 +35,28 @@ const Controls = ({
 
   const handleSeekChange = (event, newValue) => {
     setPlayedProgress(newValue / 100);
-    mediaRef.current.currentTime = newValue / 100;
+    if (media === 'audio') {
+      mediaRef.current.currentTime = parseInt(newValue) * (duration / 100);
+    } else {
+      mediaRef.current.seekTo(newValue / 100);
+    }
   };
   const handleRewind = () => {
     const currentTime = mediaRef.current.getCurrentTime();
-    mediaRef.current.currentTime = currentTime - 10;
+    if (media === 'audio') {
+      mediaRef.current.currentTime = currentTime - 10;
+    } else {
+    }
+    mediaRef.current.seekTo(currentTime - 10);
   };
 
   const handleFastForward = () => {
     const currentTime = mediaRef.current.getCurrentTime();
-    mediaRef.current.currentTime = currentTime + 10;
+    if (media === 'audio') {
+      mediaRef.current.currentTime = currentTime + 10;
+    } else {
+      mediaRef.current.seekTo(currentTime + 10);
+    }
   };
 
   const handleFullscreen = () => {
@@ -89,52 +103,71 @@ const Controls = ({
 
   useEffect(() => {
     if (mediaRef.current) {
-      if (media === 'video') setPlayed(mediaRef.current.getCurrentTime());
-      else setPlayed(mediaRef.current.currentTime);
+      if (media === 'video') {
+        const currentTime = mediaRef.current.getCurrentTime();
+        if (currentTime) setPlayed(currentTime);
+      } else {
+        setPlayed(mediaRef.current.currentTime);
+      }
     }
   }, [playedProgress, mediaRef, media]);
 
   useEffect(() => {
     if (mediaRef.current) {
-      setPlayed(mediaRef.current.currentTime);
+      if (media === 'audio') {
+        setPlayed(mediaRef.current.currentTime);
+      }
     }
-  }, [mediaRef]);
+  }, [mediaRef, media]);
 
   const VolumeUpIcon = (props) => <Icon component={VolumeIcon} {...props} />;
   const FullscreenIcon = (props) => <Icon component={fullScreen} {...props} />;
 
   useEffect(() => {
+    const showOverlay = (icon) => {
+      setOverlay(icon);
+      setOverlayVisible(true);
+      setTimeout(() => setOverlayVisible(false), 1000);
+    };
     const handleKeyDown = (event) => {
       if (event.code === 'Space') {
         event.preventDefault();
         setPlaying((prev) => {
-          if (!prev) mediaRef.current.play();
-          else mediaRef.current.pause();
+          showOverlay(prev ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />);
           return !prev;
         });
       }
       if (event.code === 'ArrowUp') {
         event.preventDefault();
-        setVolume((prev) => Math.min(prev + 0.1, 1));
+        setVolume((prev) => {
+          const newValue = Math.min(prev + 0.1, 1);
+          showOverlay(Math.round(newValue * 100) + '%');
+          return newValue;
+        });
       }
       if (event.code === 'ArrowDown') {
         event.preventDefault();
-        setVolume((prev) => Math.round(prev * 100));
+        setVolume((prev) => {
+          const newValue = Math.max(prev - 0.1, 0);
+          showOverlay(Math.round(newValue * 100) + '%');
+          return newValue;
+        });
       }
       if (event.code === 'ArrowLeft') {
         event.preventDefault();
         handleRewind();
+        showOverlay(<Replay10RoundedIcon fontSize="large" />);
       }
       if (event.code === 'ArrowRight') {
         event.preventDefault();
         handleFastForward();
+        showOverlay(<Forward10RoundedIcon fontSize="large" />);
       }
       if (event.code === 'KeyF') {
         event.preventDefault();
         handleFullscreen();
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
@@ -158,15 +191,14 @@ const Controls = ({
       document.removeEventListener('msfullscreenchange', handleFullscreenChange);
     };
   }, []);
-
   return (
     <Box
       position="absolute"
       bottom="0"
       left="0"
       width="100%"
-      py={0.3}
-      px={13}
+      py={{ xs: 0, md: 0.3 }}
+      px={{ xs: 0, md: 13 }}
       bgcolor="common.white"
       display="flex"
       alignItems="center"

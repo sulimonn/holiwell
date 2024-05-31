@@ -14,21 +14,25 @@ import PauseIcon from '@mui/icons-material/PauseRounded';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { formatTime } from 'utils/formatTime';
 
-const ListenItem = ({ lesson, audioRef, handlePlayPause, setPlaying, playing, duration }) => {
-  const [isPlaying, setIsPlaying] = React.useState(lesson.id === playing);
+const ListenItem = ({ lesson, handlePlayPause, playing }) => {
+  const [duration, setDuration] = React.useState(0);
 
   React.useEffect(() => {
-    if (playing === lesson.id) {
-      setIsPlaying(true);
-    } else {
-      setIsPlaying(false);
-    }
-  }, [playing, lesson]);
+    const audio = new Audio(lesson.path_to_audio);
+    audio.addEventListener('loadedmetadata', () => {
+      setDuration(audio.duration);
+    });
+    return () => {
+      audio.removeEventListener('loadedmetadata', () => {});
+    };
+  }, [lesson, playing]);
+
   return (
     <ListItem
       divider
       sx={{
-        py: 2.7,
+        py: { xs: 2.4, md: 2.7 },
+        px: { xs: 0, md: 'inherit' },
         '&.MuiListItem-divider:first-of-type': {
           borderTop: '1px solid',
           borderTopColor: 'divider',
@@ -49,7 +53,7 @@ const ListenItem = ({ lesson, audioRef, handlePlayPause, setPlaying, playing, du
         <ListItemAvatar>
           <IconButton onClick={() => handlePlayPause(lesson.id, lesson.path_to_audio)}>
             <Avatar sx={{ bgcolor: 'primary.main' }}>
-              {playing === lesson.id && isPlaying ? (
+              {playing === lesson.id ? (
                 <PauseIcon sx={{ fontSize: '1.75rem' }} />
               ) : (
                 <PlayArrowIcon sx={{ fontSize: '1.75rem' }} />

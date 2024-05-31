@@ -13,9 +13,17 @@ const Lessons = ({ title, children, sortOption, setSortOption }) => {
         alignItems="center"
         sx={{
           backgroundColor: 'background.paper',
+          pt: { xs: 2.3, md: 0 },
         }}
       >
-        <Typography variant="h2" fontWeight="500" textTransform="uppercase">
+        <Typography
+          variant="h2"
+          fontWeight={{ xs: '400', md: '500' }}
+          textTransform="uppercase"
+          sx={{
+            fontSize: { xs: '1.25rem', sm: 'inherit' },
+          }}
+        >
           {title}
         </Typography>
       </Box>
@@ -25,10 +33,10 @@ const Lessons = ({ title, children, sortOption, setSortOption }) => {
           alignItems="center"
           justifyContent="center"
           position="relative"
-          py={3.5}
-          mt={4}
+          py={{ xs: 0, md: 3.5 }}
+          mt={{ xs: 2, md: 4 }}
           sx={{
-            borderBottom: '1px solid',
+            borderBottom: { xs: 'none', md: '1px solid' },
             borderColor: 'divider',
           }}
           zIndex={1}
@@ -62,7 +70,7 @@ const Lessons = ({ title, children, sortOption, setSortOption }) => {
             </Typography>
           </Box>
         </Box>
-        <Box pt={2} pb={6}>
+        <Box pt={{ xs: 0, md: 2 }} pb={6}>
           {children}
         </Box>
       </Container>

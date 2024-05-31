@@ -29,7 +29,8 @@ const lesson = {
 };
 
 const MeditionPage = () => {
-  const [duration, setDuration] = useState(null);
+  const [playing, setPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
 
   return (
     <LessonPageBase
@@ -38,11 +39,17 @@ const MeditionPage = () => {
           path_to_video={lesson.path_to_video}
           duration={duration}
           setDuration={setDuration}
+          playing={playing}
+          setPlaying={setPlaying}
         />
       }
       duration={duration}
       lesson={lesson}
-      btnContained={<Button variant="contained">Смотреть</Button>}
+      btnContained={
+        <Button variant="contained" onClick={() => setPlaying(!playing)}>
+          {playing ? 'Пауза' : 'Смотреть'}
+        </Button>
+      }
       btnOutlined={<Button variant="outlined">В избранное</Button>}
     />
   );

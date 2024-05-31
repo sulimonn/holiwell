@@ -12,16 +12,24 @@ const Typography = (theme) => ({
     fontWeight: 500,
     fontSize: '2.5rem',
     lineHeight: 1.21,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: '2rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.75rem',
+      fontWeight: 300,
     },
   },
   h2: {
     fontWeight: 400,
     lineHeight: 1.2,
     fontSize: '2.25rem',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '1.85rem',
+    },
     [theme.breakpoints.down('sm')]: {
-      fontSize: '2rem',
+      fontSize: '1.5rem',
+      fontWeight: 300,
     },
   },
   h3: {
@@ -95,12 +103,18 @@ const Typography = (theme) => ({
     fontSize: '1.25rem',
     fontWeight: 400,
     textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1rem',
+    },
   },
   button2: {
     textTransform: 'uppercase',
     fontSize: '0.875rem',
     fontWeight: 400,
     textAlign: 'right',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '0.75rem',
+    },
   },
 });
 

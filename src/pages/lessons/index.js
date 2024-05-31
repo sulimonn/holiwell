@@ -13,7 +13,7 @@ import { subscribe } from 'store/reducers/subscription';
 import Image from 'components/Image';
 
 const Lessons = () => {
-  const isSubscribed = useSelector((state) => state.subscription.isSubscribed);
+  const { isSubscribed } = useSelector((state) => state.subscription);
   const dispatch = useDispatch();
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
   const [isPlaying, setPlaying] = React.useState(false);

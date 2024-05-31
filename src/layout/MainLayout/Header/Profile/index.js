@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
@@ -11,32 +11,29 @@ import {
   Typography,
   Box,
   Popper,
-  Tooltip,
-  IconButton,
+  Divider,
 } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
-
-// assets
-import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import { openProfile } from 'store/reducers/menu';
 import { useLogoutMutation } from 'store/reducers/authApi';
 import { logOut } from 'store/reducers/auth';
 
+// assets
+
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
 export default function Profile({ anchorRef }) {
-  const [logout] = useLogoutMutation();
   const navigate = useNavigate();
+  const [logout] = useLogoutMutation();
   const [anchorEl, setAnchorEl] = useState();
   useEffect(() => {
     setTimeout(() => setAnchorEl(anchorRef?.current), 1);
   }, [anchorRef]);
   const dispatch = useDispatch();
   const { profileOpen: open } = useSelector((state) => state.menu);
-  const { user } = useSelector((state) => state.auth);
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -45,6 +42,49 @@ export default function Profile({ anchorRef }) {
 
     dispatch(openProfile(false));
   };
+
+  const menu = [
+    [
+      {
+        name: 'Профиль',
+        link: '/profile',
+        type: 'item',
+      },
+    ],
+    [
+      {
+        name: 'Поддержка',
+        link: '/support',
+        type: 'title',
+      },
+      {
+        name: 'Телеграм-чат',
+        link: '/',
+        type: 'item',
+      },
+      {
+        name: 'Holiwel@mail.com',
+        link: 'mailto:Holiwel@mail.com',
+        type: 'item',
+      },
+    ],
+    [
+      {
+        name: 'Телеграм',
+        link: '/',
+        type: 'item',
+        disabled: true,
+      },
+    ],
+    [
+      {
+        name: 'Подписка',
+        link: '/subscription',
+        type: 'item',
+        disabled: true,
+      },
+    ],
+  ];
 
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
@@ -88,30 +128,67 @@ export default function Profile({ anchorRef }) {
               >
                 <ClickAwayListener onClickAway={handleClose}>
                   <MainCard elevation={0} border={false} content={false}>
-                    <CardContent sx={{ px: 2.5, py: 1 }}>
-                      <Grid container justifyContent="space-between" alignItems="center">
-                        <Grid item>
-                          <Typography variant="h6">
-                            {user?.first_name} {user?.last_name}
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <Tooltip title="Выйти">
-                            <IconButton
-                              size="large"
-                              sx={{ color: 'text.primary' }}
+                    <CardContent sx={{ px: 4, py: 1 }}>
+                      <Grid container justifyContent="center" spacing={2.5}>
+                        {menu.map((item, index) => (
+                          <>
+                            {index !== 0 && (
+                              <Divider
+                                variant="middle"
+                                color="divider"
+                                sx={{ width: '90%', mt: 2.5 }}
+                              />
+                            )}
+                            <Grid item xs={12}>
+                              <Box display="flex" flexDirection="column" gap={1.6}>
+                                {item.map((el) => (
+                                  <div key={el.name}>
+                                    {el.type === 'title' ? (
+                                      <Typography
+                                        variant="subtitle1"
+                                        color="text.secondary"
+                                        sx={{ textDecoration: 'none' }}
+                                      >
+                                        {el.name}
+                                      </Typography>
+                                    ) : (
+                                      <Typography
+                                        component={Link}
+                                        to={el.link}
+                                        variant="h5"
+                                        color={el.disabled ? 'text.secondary' : 'primary'}
+                                        textTransform="uppercase"
+                                        sx={{ textDecoration: 'none' }}
+                                        onClick={() => dispatch(openProfile(false))}
+                                      >
+                                        {el.name}
+                                      </Typography>
+                                    )}
+                                  </div>
+                                ))}
+                              </Box>
+                            </Grid>
+                          </>
+                        ))}
+                        <Grid item xs={12}>
+                          <Box display="flex" flexDirection="column" gap={1.6}>
+                            <Typography
+                              variant="h5"
+                              color={'text.secondary'}
+                              textTransform="uppercase"
+                              sx={{ textDecoration: 'none', cursor: 'pointer' }}
                               onClick={async () => {
-                                const response = await logout();
-                                if (response) {
-                                  navigate('/login');
+                                const data = await logout();
+                                if (data) {
                                   dispatch(openProfile(false));
+                                  navigate('/login');
                                   dispatch(logOut());
                                 }
                               }}
                             >
-                              <LogoutOutlined />
-                            </IconButton>
-                          </Tooltip>
+                              Выход
+                            </Typography>
+                          </Box>
                         </Grid>
                       </Grid>
                     </CardContent>

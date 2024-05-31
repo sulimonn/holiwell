@@ -5,6 +5,7 @@ import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
 
 import { Box, Typography } from '@mui/material';
+import Image from 'components/Image';
 
 const MeditationCard = ({ data, isSubscribed }) => {
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
@@ -27,76 +28,106 @@ const MeditationCard = ({ data, isSubscribed }) => {
     };
   }, [objectUrl]);
   return (
-    <Box width={{ xs: '100%', sm: '373px' }}>
+    <Box width={{ xs: '100%', md: 'auto' }} position={{ xs: 'relative', md: 'static' }}>
       <Link
         to={`/meditation/${isSubscribed ? data.id : null}`}
         style={{ textDecoration: 'none', pointerEvents: isSubscribed ? 'all' : 'none' }}
       >
         <Box
-          height={{ xs: '170px', md: '220px' }}
+          display="flex"
+          width={{
+            xs: '100%',
+            md: '373px',
+          }}
           sx={{
-            overflow: 'hidden',
-            position: 'relative',
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            color: 'primary.main',
+            position: { xs: 'relative', md: 'static' },
+            flexDirection: { xs: 'row', md: 'column' },
+            gap: { xs: 2, md: 1.5 },
           }}
         >
-          <div></div>
           <Box
-            position="absolute"
-            top="-85%"
-            bottom="0"
-            overflow="visible"
-            width="100%"
-            sx={{ filter: isSubscribed ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
+            height={{ xs: '100px', md: '220px' }}
+            width={{ xs: '100px', md: '100%' }}
+            sx={{
+              overflow: 'hidden',
+              position: { xs: 'static', md: 'relative' },
+              display: 'flex',
+              justifyContent: 'flex-end',
+              flexDirection: { xs: 'row', md: 'column' },
+              color: 'primary.main',
+            }}
           >
-            <img
-              src={require('assets/images/girls/' + data.path_to_cover)}
-              alt="data"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          </Box>
+            <Box
+              position={{ xs: 'static', md: 'absolute' }}
+              top="-85%"
+              bottom="0"
+              overflow="visible"
+              width="100%"
+              sx={{ filter: isSubscribed ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
+            >
+              <Image
+                src={require('assets/images/girls/' + data.path_to_cover)}
+                alt="data"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                loading="lazy"
+              />
+            </Box>
 
-          {!isSubscribed && <LockedIcon fontSize="large" />}
-          <Box px={1} py={0.5} m={2} backgroundColor="background.default" width="min-content">
-            <Typography variant="h5" fontWeight="100">
-              {musicDuration}
+            {!isSubscribed && <LockedIcon fontSize="large" />}
+            <Box
+              px={{ xs: 0, md: 1 }}
+              py={{ xs: 0, md: 0.5 }}
+              m={{ xs: 0, md: 2 }}
+              backgroundColor="background.default"
+              width="min-content"
+              sx={{ position: { xs: 'absolute', md: 'static' }, right: 0, top: 0 }}
+            >
+              <Typography variant="h5" fontWeight="100">
+                {musicDuration}
+              </Typography>
+            </Box>
+          </Box>
+          <Box display="flex" flexDirection="column" gap={1} justifyContent="center">
+            <Typography
+              variant="h5"
+              fontWeight="400"
+              textAlign="left"
+              color="primary.main"
+              sx={{
+                fontSize: { xs: '1.15rem !important', md: 'inherit' },
+              }}
+            >
+              {data.title}
             </Typography>
+            <Link
+              to={`/trainers/${data.trainer.id}`}
+              style={{ textDecoration: 'none', textAlign: 'left' }}
+            >
+              <Typography
+                variant="body2"
+                fontWeight="100"
+                color="primary.main"
+                sx={{
+                  position: 'relative',
+                  width: 'fit-content',
+                  '&::after': {
+                    content: '""',
+                    borderBottom: '1px solid',
+                    borderColor: 'primary.light',
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: '100%',
+                    transition: 'all 0.3s ease',
+                  },
+                  '&:hover::after, &:focus::after, &:active::after': { right: 0 },
+                }}
+              >
+                {data.trainer.first_name} {data.trainer.last_name}
+              </Typography>
+            </Link>
           </Box>
         </Box>
-        <Typography variant="h5" fontWeight="400" textAlign="left" mt={1.5} color="primary.main">
-          {data.title}
-        </Typography>
-      </Link>
-      <Link
-        to={`/trainers/${data.trainer.id}`}
-        style={{ textDecoration: 'none', textAlign: 'left' }}
-      >
-        <Typography
-          variant="body2"
-          fontWeight="100"
-          mt={1}
-          color="primary.main"
-          sx={{
-            position: 'relative',
-            width: 'fit-content',
-            '&::after': {
-              content: '""',
-              borderBottom: '1px solid',
-              borderColor: 'primary.light',
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: '100%',
-              transition: 'all 0.3s ease',
-            },
-            '&:hover::after, &:focus::after, &:active::after': { right: 0 },
-          }}
-        >
-          {data.trainer.first_name} {data.trainer.last_name}
-        </Typography>
       </Link>
     </Box>
   );
