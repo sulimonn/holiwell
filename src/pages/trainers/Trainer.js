@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import { useGetTrainerQuery } from 'store/reducers/trainers';
 import Avatar from 'components/Avatar';
+import Image from 'components/Image';
 
 const Trainer = () => {
   const { id } = useParams();
@@ -32,7 +33,7 @@ const Trainer = () => {
           zIndex: 0,
         }}
       >
-        <img
+        <Image
           src={require('assets/images/girls/' + trainer.path_to_background + '')}
           alt="background"
           style={{
@@ -49,14 +50,37 @@ const Trainer = () => {
       </Box>
 
       <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 4 }} pb={6} mx="auto">
-        <Box display="flex" gap={6}>
-          <Box position="relative" top={{ xs: '-90px', sm: '-110px', md: '-135px' }}>
+        <Box
+          display="flex"
+          gap={{ xs: 0, md: 6 }}
+          sx={{
+            flexDirection: { xs: 'column', md: 'row' },
+          }}
+        >
+          <Box
+            position="relative"
+            top={{ xs: '-90px', sm: '-110px', md: '-135px' }}
+            display="flex"
+            justifyContent="center"
+          >
             <Avatar avatar={trainer.path_to_avatar} />
           </Box>
 
-          <Box pt={7} display="flex" flexDirection="column" gap={2}>
+          <Box
+            pt={{ xs: 0, md: 7 }}
+            mt={{ xs: -5, md: 0 }}
+            display="flex"
+            flexDirection="column"
+            gap={2}
+          >
             {trainer.description.split('\n').map((item, index) => (
-              <Typography key={index} variant="body2" color="text.primary" lineHeight={1.5}>
+              <Typography
+                key={index}
+                variant="body2"
+                color="text.primary"
+                lineHeight={1.5}
+                textAlign={{ xs: 'center', md: 'left' }}
+              >
                 {item}
               </Typography>
             ))}

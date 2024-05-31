@@ -6,7 +6,7 @@ import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
 import LessonGirl from 'assets/images/girls/lesson.jpeg';
 import PlayPauseButton from 'components/PlayPauseButton';
-import CourseCard from 'components/CourseCard';
+import CourseCard from './CourseCard';
 import { useGetCoursesQuery } from 'store/reducers/courses';
 import TrainersList from 'components/TrainersList';
 import { subscribe } from 'store/reducers/subscription';
@@ -274,7 +274,7 @@ const Lessons = () => {
               key={course.id}
               course={course}
               index={index + 1}
-              isLocked={!isSubscribed}
+              isSubscribed={isSubscribed}
             />
           ))}
         </Box>

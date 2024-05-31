@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
@@ -18,16 +18,14 @@ import {
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import { openProfile } from 'store/reducers/menu';
-import { useLogoutMutation } from 'store/reducers/authApi';
-import { logOut } from 'store/reducers/auth';
+import { useAuth } from 'contexts/AuthContext';
 
 // assets
 
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
 export default function Profile({ anchorRef }) {
-  const navigate = useNavigate();
-  const [logout] = useLogoutMutation();
+  const { logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState();
   useEffect(() => {
     setTimeout(() => setAnchorEl(anchorRef?.current), 1);
@@ -178,12 +176,8 @@ export default function Profile({ anchorRef }) {
                               textTransform="uppercase"
                               sx={{ textDecoration: 'none', cursor: 'pointer' }}
                               onClick={async () => {
-                                const data = await logout();
-                                if (data) {
-                                  dispatch(openProfile(false));
-                                  navigate('/login');
-                                  dispatch(logOut());
-                                }
+                                await logout();
+                                dispatch(openProfile(false));
                               }}
                             >
                               Выход

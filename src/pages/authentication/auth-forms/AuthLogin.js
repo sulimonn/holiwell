@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
 import {
@@ -23,18 +22,15 @@ import { Formik } from 'formik';
 // project import
 import FirebaseSocial from './FirebaseSocial';
 import AnimateButton from 'components/@extended/AnimateButton';
+import { useAuth } from 'contexts/AuthContext';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { getMe } from 'store/reducers/auth';
-import { useLoginMutation } from 'store/reducers/authApi';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
-  const dispatch = useDispatch();
-  const [login] = useLoginMutation();
-  const navigate = useNavigate();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -75,15 +71,6 @@ const AuthLogin = () => {
               }
               setStatus({ success: false });
               setSubmitting(false);
-            } else {
-              const response = await dispatch(getMe());
-              if (response.error) {
-                setStatus({ success: false });
-                setErrors({ submit: response.error });
-                setSubmitting(false);
-              } else {
-                navigate('/', { replace: true });
-              }
             }
             setStatus({ success: false });
             setSubmitting(false);

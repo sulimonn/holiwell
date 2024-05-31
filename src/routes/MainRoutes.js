@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project import
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
+import PrivateRoute from 'components/PrivateRoute';
 
 // render - dashboard
 const Home = Loadable(lazy(() => import('pages/home')));
@@ -14,6 +15,7 @@ const MeditationPage = Loadable(lazy(() => import('pages/meditation/MeditationPa
 const Trainers = Loadable(lazy(() => import('pages/trainers')));
 const Trainer = Loadable(lazy(() => import('pages/trainers/Trainer')));
 const ProfilePage = Loadable(lazy(() => import('pages/profile')));
+const EditProfile = Loadable(lazy(() => import('pages/profile/EditProfile')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -21,6 +23,7 @@ const MainRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
+    // everyone can access
     {
       path: '/',
       element: <Home />,
@@ -28,22 +31,6 @@ const MainRoutes = {
     {
       path: '/lessons',
       element: <Lessons />,
-    },
-    {
-      path: '/listen',
-      element: <ListenList />,
-    },
-    {
-      path: '/listen/:id',
-      element: <ListenPage />,
-    },
-    {
-      path: '/meditation',
-      element: <MeditationsList />,
-    },
-    {
-      path: '/meditation/:id',
-      element: <MeditationPage />,
     },
     {
       path: '/trainers',
@@ -54,10 +41,30 @@ const MainRoutes = {
       element: <Trainer />,
     },
     {
+      path: '/listen',
+      element: <ListenList />,
+    },
+    {
+      path: '/meditation',
+      element: <MeditationsList />,
+    },
+    // only authenticated users can access
+    {
+      path: '/meditation/:id',
+      element: <PrivateRoute element={<MeditationPage />} />,
+    },
+    {
+      path: '/listen/:id',
+      element: <PrivateRoute element={<ListenPage />} />,
+    },
+    {
       path: '/profile',
-      element: <ProfilePage />,
+      element: <PrivateRoute element={<ProfilePage />} />,
+    },
+    {
+      path: '/profile/edit',
+      element: <PrivateRoute element={<EditProfile />} />,
     },
   ],
 };
-
 export default MainRoutes;

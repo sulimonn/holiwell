@@ -17,8 +17,8 @@ import { Box, Typography, Grid, Button } from '@mui/material';
 
 // components
 import TrainersList from 'components/TrainersList';
-import { useSelector } from 'react-redux';
 import Image from 'components/Image';
+import { useAuth } from 'contexts/AuthContext';
 
 const Home = () => {
   const swiperData = [
@@ -47,7 +47,7 @@ const Home = () => {
       to: '/meditation',
     },
   ];
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useAuth();
 
   return (
     <Box>
@@ -207,7 +207,7 @@ const Home = () => {
                   интересный эксперимент проверки форм развития.
                 </Typography>
 
-                {!isAuth && (
+                {!isAuthenticated && (
                   <Box display="flex" gap={2} pt={2}>
                     <Button
                       variant="contained"
@@ -234,25 +234,35 @@ const Home = () => {
           </Grid>
         </Box>
       </Box>
-      <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 4 }} mx="auto">
-        <Box sx={{ py: 12, mb: { xs: 6, md: 12 } }} display="flex" flexDirection="column" gap={4}>
-          <Box display="flex" justifyContent="space-between">
-            <Typography variant="h3" textTransform="uppercase" sx={{ py: 0 }}>
-              Команда
-            </Typography>
-            <Typography
-              color="text.primary"
-              fontWeight="300"
-              component={Link}
-              to="/trainers"
-              variant="subtitle1"
-              textTransform="uppercase"
-              sx={{ py: 0 }}
-            >
-              Смотреть все
-            </Typography>
+      <Box display="flex" px={{ xs: 0, sm: 3, md: 4 }}>
+        <Box
+          maxWidth={{
+            xs: '100vw',
+            sm: 768,
+            md: 1024,
+            lg: 1266,
+            xl: 1536,
+          }}
+        >
+          <Box sx={{ py: 12, mb: { xs: 6, md: 12 } }} display="flex" flexDirection="column" gap={4}>
+            <Box display="flex" justifyContent="space-between" px={{ xs: 2, sm: 0 }}>
+              <Typography variant="h3" textTransform="uppercase" sx={{ py: 0 }}>
+                Команда
+              </Typography>
+              <Typography
+                color="text.primary"
+                fontWeight="300"
+                component={Link}
+                to="/trainers"
+                variant="subtitle1"
+                textTransform="uppercase"
+                sx={{ py: 0 }}
+              >
+                Смотреть все
+              </Typography>
+            </Box>
+            <TrainersList />
           </Box>
-          <TrainersList />
         </Box>
       </Box>
     </Box>

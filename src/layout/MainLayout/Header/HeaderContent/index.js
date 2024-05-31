@@ -10,11 +10,12 @@ import menuItems from 'menu-items/index';
 import Logo from 'components/Logo/Logo';
 import { openProfile } from 'store/reducers/menu';
 import Profile from '../Profile/index';
+import { useAuth } from 'contexts/AuthContext';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 
 const HeaderContent = () => {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useAuth();
   const { profileOpen } = useSelector((state) => state.menu);
   const anchorRef = useRef(null);
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const HeaderContent = () => {
       {[]
         .concat(
           ...menuItems.items.map((item) =>
-            isAuth ? item.id === 'pages' && item.children : item.children,
+            isAuthenticated ? item.id === 'pages' && item.children : item.children,
           ),
         )
         .filter((child) => !child.mobile)
@@ -54,7 +55,7 @@ const HeaderContent = () => {
             </Typography>
           );
         })}
-      {isAuth && (
+      {isAuthenticated && (
         <div ref={anchorRef}>
           <IconButton color="inherit" onClick={() => dispatch(openProfile(!profileOpen))}>
             <PersonIcon />

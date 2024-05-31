@@ -1,11 +1,11 @@
+import { useLocation } from 'react-router-dom';
+import React from 'react';
+
 // project import
+import AuthProvider from 'contexts/AuthContext';
 import Routes from 'routes';
 import ThemeCustomization from 'themes';
 import ScrollTop from 'components/ScrollTop';
-import AuthComponent from 'components/AuthComponent';
-
-import { useLocation } from 'react-router-dom';
-import React from 'react';
 
 // ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
 
@@ -18,9 +18,9 @@ const App = () => {
   return (
     <ThemeCustomization>
       <ScrollTop>
-        <AuthComponent>
+        <AuthProvider>
           <Routes />
-        </AuthComponent>
+        </AuthProvider>
       </ScrollTop>
     </ThemeCustomization>
   );

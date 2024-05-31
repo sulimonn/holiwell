@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { formatTime } from 'utils/formatTime';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
@@ -8,37 +8,35 @@ import { Box, Typography } from '@mui/material';
 import Image from 'components/Image';
 
 const MeditationCard = ({ data, isSubscribed }) => {
+  const navigate = useNavigate();
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
-  const [musicDuration, setMusicDuration] = React.useState('00:00');
-  const objectUrl = data.path_to_audio;
+  const [musicDuration, setMusicDuration] = useState('00:00');
 
-  const audio = document.createElement('audio');
-  audio.src = objectUrl;
+  useEffect(() => {
+    const audio = document.createElement('audio');
+    audio.src = data.path_to_audio;
 
-  audio.addEventListener('loadedmetadata', () => {
-    const formattedDuration = formatTime(audio.duration);
-    setMusicDuration(formattedDuration);
-  });
-
-  React.useEffect(() => {
-    return () => {
-      if (objectUrl instanceof File) {
-        URL.revokeObjectURL(objectUrl);
-      }
+    const updateDuration = () => {
+      const formattedDuration = formatTime(audio.duration);
+      setMusicDuration(formattedDuration);
     };
-  }, [objectUrl]);
+
+    audio.addEventListener('loadedmetadata', updateDuration);
+
+    return () => {
+      audio.removeEventListener('loadedmetadata', updateDuration);
+    };
+  }, [data.path_to_audio]);
+
   return (
     <Box width={{ xs: '100%', md: 'auto' }} position={{ xs: 'relative', md: 'static' }}>
       <Link
-        to={`/meditation/${isSubscribed ? data.id : null}`}
+        to={isSubscribed ? `/meditation/${data.id}` : '#'}
         style={{ textDecoration: 'none', pointerEvents: isSubscribed ? 'all' : 'none' }}
       >
         <Box
           display="flex"
-          width={{
-            xs: '100%',
-            md: '373px',
-          }}
+          width={{ xs: '100%', md: '373px' }}
           sx={{
             position: { xs: 'relative', md: 'static' },
             flexDirection: { xs: 'row', md: 'column' },
@@ -93,39 +91,33 @@ const MeditationCard = ({ data, isSubscribed }) => {
               fontWeight="400"
               textAlign="left"
               color="primary.main"
-              sx={{
-                fontSize: { xs: '1.15rem !important', md: 'inherit' },
-              }}
+              sx={{ fontSize: { xs: '1.15rem !important', md: 'inherit' } }}
             >
               {data.title}
             </Typography>
-            <Link
-              to={`/trainers/${data.trainer.id}`}
-              style={{ textDecoration: 'none', textAlign: 'left' }}
+            <Typography
+              onClick={() => navigate(`/trainers/${data.trainer.id}`)}
+              variant="body2"
+              fontWeight="100"
+              color="primary.main"
+              sx={{
+                position: 'relative',
+                width: 'fit-content',
+                '&::after': {
+                  content: '""',
+                  borderBottom: '1px solid',
+                  borderColor: 'primary.light',
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: '100%',
+                  transition: 'all 0.3s ease',
+                },
+                '&:hover::after, &:focus::after, &:active::after': { right: 0 },
+              }}
             >
-              <Typography
-                variant="body2"
-                fontWeight="100"
-                color="primary.main"
-                sx={{
-                  position: 'relative',
-                  width: 'fit-content',
-                  '&::after': {
-                    content: '""',
-                    borderBottom: '1px solid',
-                    borderColor: 'primary.light',
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: '100%',
-                    transition: 'all 0.3s ease',
-                  },
-                  '&:hover::after, &:focus::after, &:active::after': { right: 0 },
-                }}
-              >
-                {data.trainer.first_name} {data.trainer.last_name}
-              </Typography>
-            </Link>
+              {data.trainer.first_name} {data.trainer.last_name}
+            </Typography>
           </Box>
         </Box>
       </Link>

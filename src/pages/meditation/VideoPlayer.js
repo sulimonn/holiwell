@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Skeleton } from '@mui/material';
 import Controls from 'components/Controls';
 
 const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying }) => {
@@ -40,7 +40,7 @@ const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying
         onClick={handlePlayPause}
         position="relative"
         zIndex={1}
-        display="flex"
+        display={loading ? 'none' : 'flex'}
         justifyContent="center"
         alignItems="center"
         height="100%"
@@ -62,6 +62,7 @@ const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying
           }}
         />
       </Box>
+      {loading && <Skeleton variant="rectangular" width="100%" height="100%" />}
 
       <Box
         position="absolute"

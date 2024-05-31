@@ -13,7 +13,7 @@ const LoaderWrapper = styled('div')(({ theme }) => ({
     marginTop: theme.spacing(2),
   },
   height: '100vh',
-  backgroundColor: 'common.white',
+  backgroundColor: 'background.default',
 }));
 
 // ==============================|| Loader ||============================== //

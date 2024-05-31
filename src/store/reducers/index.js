@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 
 // project import
 import menu from './menu';
-import auth from './auth';
 import { authApi } from './authApi';
 import { apiSlice } from './apiSlice';
 import courses from './courses';
@@ -14,7 +13,6 @@ import subscription from './subscription';
 
 const reducers = combineReducers({
   menu,
-  auth,
   [authApi.reducerPath]: authApi.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
   [courses.reducerPath]: courses.reducer,

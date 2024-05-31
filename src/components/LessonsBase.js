@@ -21,7 +21,7 @@ const Lessons = ({ title, children, sortOption, setSortOption }) => {
           fontWeight={{ xs: '400', md: '500' }}
           textTransform="uppercase"
           sx={{
-            fontSize: { xs: '1.25rem', sm: 'inherit' },
+            fontSize: { xs: '1.25rem', md: '2.25rem' },
           }}
         >
           {title}
@@ -37,7 +37,7 @@ const Lessons = ({ title, children, sortOption, setSortOption }) => {
           mt={{ xs: 2, md: 4 }}
           sx={{
             borderBottom: { xs: 'none', md: '1px solid' },
-            borderColor: 'divider',
+            borderColor: { xs: 'transparent', md: 'divider' },
           }}
           zIndex={1}
         >
