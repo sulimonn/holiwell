@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { AppBar, IconButton, Toolbar, useMediaQuery, Container } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Toolbar, useMediaQuery, Container } from '@mui/material';
 
 // project import
 import HeaderContent from './HeaderContent';
+import MobileHeaderContent from './MobileHeaderContent/index';
 
 // ==============================|| MAIN LAYOUT - HEADER ||============================== //
 
@@ -19,16 +19,7 @@ const Header = ({ open, handleDrawerToggle }) => {
     <Toolbar sx={{ backgroundColor: 'transparent', p: 0 }}>
       <Container maxWidth="lg">
         {matchDownMD ? (
-          <IconButton
-            aria-label="open drawer"
-            onClick={handleDrawerToggle}
-            color="secondary"
-            sx={{
-              color: 'common.white',
-            }}
-          >
-            <MenuIcon fontSize="large" />
-          </IconButton>
+          <MobileHeaderContent open={open} handleDrawerToggle={handleDrawerToggle} />
         ) : (
           <HeaderContent />
         )}

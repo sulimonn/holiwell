@@ -8,6 +8,9 @@ import PrivateRoute from 'components/PrivateRoute';
 // render - dashboard
 const Home = Loadable(lazy(() => import('pages/home')));
 const Lessons = Loadable(lazy(() => import('pages/lessons')));
+const Courses = Loadable(lazy(() => import('pages/courses')));
+const Subscription = Loadable(lazy(() => import('pages/subscription')));
+const PrivacyPolicy = Loadable(lazy(() => import('pages/other/PrivacyPolicy')));
 const ListenList = Loadable(lazy(() => import('pages/listen')));
 const ListenPage = Loadable(lazy(() => import('pages/listen/ListenPage')));
 const MeditationsList = Loadable(lazy(() => import('pages/meditation')));
@@ -47,6 +50,18 @@ const MainRoutes = {
     {
       path: '/meditation',
       element: <MeditationsList />,
+    },
+    {
+      path: '/courses',
+      element: <Courses />,
+    },
+    {
+      path: '/subscription/:id',
+      element: <Subscription />,
+    },
+    {
+      path: '/privacy-policy',
+      element: <PrivacyPolicy />,
     },
     // only authenticated users can access
     {

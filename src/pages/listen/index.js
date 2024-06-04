@@ -52,8 +52,7 @@ const audios = [
     course_id: 0,
     path_to_cover: 'courses2.jpeg',
     path_to_video: 'string',
-    path_to_audio:
-      'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
+    path_to_audio: 'https://mp3uk.net/mp3/files/rihanna-diamonds-mp3.mp3',
     links_before: [
       {
         id: 0,
@@ -116,8 +115,7 @@ const audios = [
     course_id: 0,
     path_to_cover: 'courses2.jpeg',
     path_to_video: 'string',
-    path_to_audio:
-      'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
+    path_to_audio: 'https://mp3uk.net/mp3/files/lana-del-rey-young-and-beautiful-mp3.mp3',
     links_before: [
       {
         id: 0,

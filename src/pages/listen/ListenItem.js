@@ -51,8 +51,16 @@ const ListenItem = ({ lesson, handlePlayPause, playing }) => {
       </Typography>
       <Box display="grid" gridTemplateColumns="auto 1fr auto" width="100%" alignItems="center">
         <ListItemAvatar>
-          <IconButton onClick={() => handlePlayPause(lesson.id, lesson.path_to_audio)}>
-            <Avatar sx={{ bgcolor: 'primary.main' }}>
+          <IconButton
+            onClick={() => handlePlayPause(lesson.id, lesson.path_to_audio)}
+            disabled={duration === 0}
+          >
+            <Avatar
+              sx={{
+                bgcolor: duration === 0 ? 'primary.light' : 'primary.main',
+                transition: 'all 0.3s',
+              }}
+            >
               {playing === lesson.id ? (
                 <PauseIcon sx={{ fontSize: '1.75rem' }} />
               ) : (

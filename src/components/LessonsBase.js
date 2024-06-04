@@ -30,45 +30,16 @@ const Lessons = ({ title, children, sortOption, setSortOption }) => {
       <Container maxWidth="lg">
         <Box
           display="flex"
-          alignItems="center"
-          justifyContent="center"
-          position="relative"
+          alignItems="flex-end"
+          justifyContent="flex-start"
           py={{ xs: 0, md: 3.5 }}
           mt={{ xs: 2, md: 4 }}
           sx={{
             borderBottom: { xs: 'none', md: '1px solid' },
             borderColor: { xs: 'transparent', md: 'divider' },
           }}
-          zIndex={1}
         >
-          <Box
-            width="min-content"
-            position="absolute"
-            height="100%"
-            left={0}
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            zIndex={7}
-          >
-            <SortLessons sortOption={sortOption} setSortOption={setSortOption} />
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            sx={{
-              // border: '3px solid',
-              // borderColor: 'divider',
-              borderRadius: 1,
-              py: 0.5,
-              px: 10,
-            }}
-          >
-            <Typography variant="h5" fontWeight="300">
-              Курсы
-            </Typography>
-          </Box>
+          <SortLessons sortOption={sortOption} setSortOption={setSortOption} />
         </Box>
         <Box pt={{ xs: 0, md: 2 }} pb={6}>
           {children}

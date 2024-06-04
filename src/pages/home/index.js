@@ -28,7 +28,7 @@ const Home = () => {
       decription:
         'Отличный способ научиться сосредоточиться, снизить стресс и улучшить свое общее самочувствие',
       photo: IntroGirl,
-      to: '/lessons',
+      to: '/courses',
     },
     {
       id: 2,
@@ -181,7 +181,7 @@ const Home = () => {
           <Grid container spacing={6}>
             <Grid item xs={12} md={5}>
               <Box>
-                <img
+                <Image
                   src={IntroGirl}
                   alt="intro"
                   style={{ width: '100%', height: '380px', objectFit: 'cover' }}
@@ -243,6 +243,7 @@ const Home = () => {
             lg: 1266,
             xl: 1536,
           }}
+          mx="auto"
         >
           <Box sx={{ py: 12, mb: { xs: 6, md: 12 } }} display="flex" flexDirection="column" gap={4}>
             <Box display="flex" justifyContent="space-between" px={{ xs: 2, sm: 0 }}>

@@ -6,7 +6,7 @@ import { formatTime } from 'utils/formatTime';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
 
-const CourseCard = ({ course, index, size = 'large', isSubscribed = true }) => {
+const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
   const [musicDuration, setMusicDuration] = React.useState('00:00');
   const objectUrl = course.path_to_audio;
@@ -105,4 +105,4 @@ const CourseCard = ({ course, index, size = 'large', isSubscribed = true }) => {
   );
 };
 
-export default CourseCard;
+export default LessonCard;

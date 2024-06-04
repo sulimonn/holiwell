@@ -9,7 +9,7 @@ const pages = {
       id: 'training1',
       title: 'Тренируйся',
       type: 'item',
-      url: '/lessons',
+      url: '/courses',
       mobile: false,
     },
     {

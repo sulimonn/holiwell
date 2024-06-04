@@ -1,34 +1,40 @@
 import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // material-ui
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 
 // assets
 import Icon from '@ant-design/icons';
 import Profile from 'assets/images/icons/profile';
+import ProfileFilled from 'assets/images/icons/profileFilled';
 import home from 'assets/images/icons/home';
+import homeFilled from 'assets/images/icons/homeFilled';
 import './style.css';
+import { useAuth } from 'contexts/AuthContext';
 
 const MobileMenu = () => {
-  const [isHovered, setIsHovered] = React.useState(false);
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+  const { isAuthenticated } = useAuth();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [isActive, setisActive] = React.useState({
+    profile: false,
+    home: false,
+  });
   const ProfileIcon = ({ ...others }) => (
-    <Icon
-      component={(e) => <Profile isHovered={isHovered} setIsHovered={setIsHovered} />}
-      {...others}
-    />
+    <Icon component={isActive.profile ? ProfileFilled : Profile} {...others} />
   );
-  // eslint-disable-next-line
-  const HomeIcon = ({ ...others }) => <Icon component={home} {...others} />;
+  const HomeIcon = ({ ...others }) => (
+    <Icon component={isActive.home ? homeFilled : home} {...others} />
+  );
+  React.useEffect(() => {
+    setisActive({
+      profile: pathname.includes('/profile'),
+      home: pathname === '/',
+    });
+  }, [pathname]);
   return (
     <Box
-      height="70px"
       borderTop="1px solid"
       borderColor="divider"
       position="fixed"
@@ -48,27 +54,63 @@ const MobileMenu = () => {
         }}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
-          <button className="mobile-menu">
-            <Box width="32px" height="32px" component={home} />
-          </button>
-          <Typography variant="body2" fontWeight="400" color="text.secondary">
-            Домой
-          </Typography>
+          <Button
+            onClick={() => {
+              navigate('/');
+            }}
+            name="home"
+            startIcon={<HomeIcon width="32px" height="32px" style={{ margin: '0 auto' }} />}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              gap: 0.5,
+              '& .MuiButton-startIcon': {
+                width: 'min-content',
+                m: 0,
+              },
+            }}
+          >
+            <Typography
+              variant="body2"
+              fontWeight="400"
+              color={isActive.home ? 'primary.main' : 'text.secondary'}
+              textTransform="none"
+            >
+              Домой
+            </Typography>
+          </Button>
         </Box>
         <Box display="flex" alignItems="center" flexDirection="column">
-          <button
+          <Button
             className="mobile-menu"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onFocus={handleMouseEnter}
-            onBlur={handleMouseLeave}
-            onClick={() => setIsHovered(!isHovered)}
+            onClick={() => {
+              navigate(isAuthenticated ? '/profile' : '/login');
+            }}
+            name="profile"
+            startIcon={<ProfileIcon width="32px" height="32px" style={{ margin: '0 auto' }} />}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              gap: 0.5,
+              '& .MuiButton-startIcon': {
+                width: 'min-content',
+                m: 0,
+              },
+            }}
           >
-            <ProfileIcon width="32px" height="32px" />
-          </button>
-          <Typography variant="body2" fontWeight="400" color="text.secondary">
-            Профиль
-          </Typography>
+            <Typography
+              variant="body2"
+              fontWeight="400"
+              color={isActive.profile ? 'primary.main' : 'text.secondary'}
+              textTransform="none"
+            >
+              Профиль
+            </Typography>
+          </Button>
         </Box>
       </Box>
     </Box>
