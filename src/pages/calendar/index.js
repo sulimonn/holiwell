@@ -94,6 +94,7 @@ const Calendar = () => {
           view === 'month' ? date.toLocaleDateString(locale, { month: 'long' }) : label
         }
         onClickDay={(value) => navigate(`/calendar/${value.toISOString().slice(0, 10)}`)}
+        locale="ru-RU"
       />
     </Box>
   );
