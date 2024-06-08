@@ -147,7 +147,7 @@ const Home = () => {
                       zIndex: 0,
                     }}
                   >
-                    <img
+                    <Image
                       src={Listen}
                       alt="intro"
                       loading="lazy"

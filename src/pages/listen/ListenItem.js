@@ -14,18 +14,23 @@ import PauseIcon from '@mui/icons-material/PauseRounded';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { formatTime } from 'utils/formatTime';
 
-const ListenItem = ({ lesson, handlePlayPause, playing }) => {
+const ListenItem = ({ lesson, handlePlayPause, playing, setTotalDuration }) => {
   const [duration, setDuration] = React.useState(0);
 
   React.useEffect(() => {
     const audio = new Audio(lesson.path_to_audio);
     audio.addEventListener('loadedmetadata', () => {
       setDuration(audio.duration);
+      setTotalDuration((prev) => {
+        const previous = { ...prev }; // eslint-disable-next-line
+        const total = prev[lesson.id] ? prev[lesson.id] + audio.duration : audio.duration;
+        return previous;
+      });
     });
     return () => {
       audio.removeEventListener('loadedmetadata', () => {});
     };
-  }, [lesson, playing]);
+  }, [lesson, playing, setTotalDuration]);
 
   return (
     <ListItem
