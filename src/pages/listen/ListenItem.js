@@ -38,9 +38,8 @@ const ListenItem = ({ lesson, handlePlayPause, playing, setTotalDuration }) => {
       sx={{
         py: { xs: 2.4, md: 2.7 },
         px: { xs: 0, md: 'inherit' },
-        '&.MuiListItem-divider:first-of-type': {
-          borderTop: '1px solid',
-          borderTopColor: 'divider',
+        '&.MuiListItem-divider:last-of-type': {
+          borderBottom: 'none',
         },
         flexWrap: 'wrap',
       }}

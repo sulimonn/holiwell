@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Box } from '@mui/material';
 import Lessons from 'components/LessonsBase';
-import CourseCard from './CourseCard';
+import CourseCard from './TrainCard';
 
-const Courses = () => {
+const Train = () => {
   const [sortOption, setSortOption] = React.useState('default');
   const courses = [
     {
@@ -49,4 +49,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default Train;

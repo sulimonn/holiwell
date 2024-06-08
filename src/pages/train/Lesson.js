@@ -1,155 +1,151 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Box, Typography, Container, Button } from '@mui/material';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
 import LessonGirl from 'assets/images/girls/lesson.jpeg';
 import PlayPauseButton from 'components/PlayPauseButton';
 import LessonCard from './LessonCard';
-import { useGetCoursesQuery } from 'store/reducers/courses';
 import TrainersList from 'components/TrainersList';
 import { subscribe } from 'store/reducers/subscription';
 import Image from 'components/Image';
 
-const Lessons = () => {
+const Lesson = () => {
   const { isSubscribed } = useSelector((state) => state.subscription);
   const dispatch = useDispatch();
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
   const [isPlaying, setPlaying] = React.useState(false);
 
-  const {
-    data: courses = [
-      {
+  const courses = [
+    {
+      id: 0,
+      title: 'Урок 1 : Название урока',
+      description: 'string',
+      trainer: {
         id: 0,
-        title: 'Урок 1 : Название урока',
+        first_name: 'Имя',
+        last_name: 'Фамилия',
         description: 'string',
-        trainer: {
-          id: 0,
-          first_name: 'Имя',
-          last_name: 'Фамилия',
-          description: 'string',
-          path_to_avatar: 'string',
-          path_to_background: 'string',
-        },
-        course_id: 0,
-        path_to_cover: 'courses2.jpeg',
-        path_to_video: 'string',
-        path_to_audio:
-          'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-        links_before: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
-        links_after: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
+        path_to_avatar: 'string',
+        path_to_background: 'string',
       },
-      {
-        id: 2,
-        title: 'Урок 1 : Название урока',
+      course_id: 0,
+      path_to_cover: 'courses2.jpeg',
+      path_to_video: 'string',
+      path_to_audio:
+        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
+      links_before: [
+        {
+          id: 0,
+          lesson_id: 0,
+          linked_lesson_id: 0,
+        },
+      ],
+      links_after: [
+        {
+          id: 0,
+          lesson_id: 0,
+          linked_lesson_id: 0,
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Урок 1 : Название урока',
+      description: 'string',
+      trainer: {
+        id: 0,
+        first_name: 'Имя',
+        last_name: 'Фамилия',
         description: 'string',
-        trainer: {
-          id: 0,
-          first_name: 'Имя',
-          last_name: 'Фамилия',
-          description: 'string',
-          path_to_avatar: 'string',
-          path_to_background: 'string',
-        },
-        course_id: 0,
-        path_to_cover: 'lesson.jpeg',
-        path_to_video: 'string',
-        path_to_audio:
-          'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-        links_before: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
-        links_after: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
+        path_to_avatar: 'string',
+        path_to_background: 'string',
       },
-      {
-        id: 3,
-        title: 'Урок 1 : Название урока',
+      course_id: 0,
+      path_to_cover: 'lesson.jpeg',
+      path_to_video: 'string',
+      path_to_audio:
+        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
+      links_before: [
+        {
+          id: 0,
+          lesson_id: 0,
+          linked_lesson_id: 0,
+        },
+      ],
+      links_after: [
+        {
+          id: 0,
+          lesson_id: 0,
+          linked_lesson_id: 0,
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Урок 1 : Название урока',
+      description: 'string',
+      trainer: {
+        id: 0,
+        first_name: 'Имя',
+        last_name: 'Фамилия',
         description: 'string',
-        trainer: {
-          id: 0,
-          first_name: 'Имя',
-          last_name: 'Фамилия',
-          description: 'string',
-          path_to_avatar: 'string',
-          path_to_background: 'string',
-        },
-        course_id: 0,
-        path_to_cover: 'lesson.jpeg',
-        path_to_video: 'string',
-        path_to_audio:
-          'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-        links_before: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
-        links_after: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
+        path_to_avatar: 'string',
+        path_to_background: 'string',
       },
-      {
-        id: 4,
-        title: 'Урок 1 : Название урока',
+      course_id: 0,
+      path_to_cover: 'lesson.jpeg',
+      path_to_video: 'string',
+      path_to_audio:
+        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
+      links_before: [
+        {
+          id: 0,
+          lesson_id: 0,
+          linked_lesson_id: 0,
+        },
+      ],
+      links_after: [
+        {
+          id: 0,
+          lesson_id: 0,
+          linked_lesson_id: 0,
+        },
+      ],
+    },
+    {
+      id: 4,
+      title: 'Урок 1 : Название урока',
+      description: 'string',
+      trainer: {
+        id: 0,
+        first_name: 'Имя',
+        last_name: 'Фамилия',
         description: 'string',
-        trainer: {
-          id: 0,
-          first_name: 'Имя',
-          last_name: 'Фамилия',
-          description: 'string',
-          path_to_avatar: 'string',
-          path_to_background: 'string',
-        },
-        course_id: 0,
-        path_to_cover: 'courses2.jpeg',
-        path_to_video: 'string',
-        path_to_audio:
-          'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-        links_before: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
-        links_after: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
+        path_to_avatar: 'string',
+        path_to_background: 'string',
       },
-    ],
-  } = useGetCoursesQuery();
+      course_id: 0,
+      path_to_cover: 'courses2.jpeg',
+      path_to_video: 'string',
+      path_to_audio:
+        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
+      links_before: [
+        {
+          id: 0,
+          lesson_id: 0,
+          linked_lesson_id: 0,
+        },
+      ],
+      links_after: [
+        {
+          id: 0,
+          lesson_id: 0,
+          linked_lesson_id: 0,
+        },
+      ],
+    },
+  ];
 
   const handleSubscription = () => {
     dispatch(subscribe());
@@ -280,29 +276,9 @@ const Lessons = () => {
         </Box>
       </Container>
 
-      <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 4 }} mx="auto">
-        <Box sx={{ py: 12, mb: { xs: 6, md: 12 } }} display="flex" flexDirection="column" gap={4}>
-          <Box display="flex" justifyContent="space-between">
-            <Typography variant="h3" textTransform="uppercase" sx={{ py: 0 }}>
-              Команда
-            </Typography>
-            <Typography
-              color="text.primary"
-              fontWeight="300"
-              component={Link}
-              to="/trainers"
-              variant="subtitle1"
-              textTransform="uppercase"
-              sx={{ py: 0 }}
-            >
-              Смотреть все
-            </Typography>
-          </Box>
-          <TrainersList />
-        </Box>
-      </Box>
+      <TrainersList />
     </Box>
   );
 };
 
-export default Lessons;
+export default Lesson;

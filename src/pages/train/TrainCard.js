@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 import { Box, Typography, Button } from '@mui/material';
 import Image from 'components/Image';
+import { useSelector } from 'react-redux';
 
-const CourseCard = ({
+const TrainCard = ({
   course = {
     id: 0,
     title: 'string',
@@ -45,8 +46,16 @@ const CourseCard = ({
     ],
   },
 }) => {
+  const { isSubscribed } = useSelector((state) => state.subscription);
+  const props = isSubscribed
+    ? {
+        component: Link,
+        to: `/training/${course.id}`,
+        sx: { textDecoration: 'none', color: 'inherit' },
+      }
+    : {};
   return (
-    <Box width="100%">
+    <Box width="100%" {...props}>
       <Typography variant="h4">{course.title}</Typography>
       <Box
         width="100%"
@@ -63,18 +72,20 @@ const CourseCard = ({
           style={{ width: '100%', height: '100%', objectFit: 'cover', flex: 1 }}
         />
       </Box>
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link}
-        to={`/subscription/${course.id}`}
-        sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
-      >
-        <Typography variant="h4">КУПИТЬ КУРС</Typography>
-        <Typography variant="h4">1990 ₽</Typography>
-      </Button>
+      {!isSubscribed && (
+        <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          to={`/subscription/${course.id}`}
+          sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
+        >
+          <Typography variant="h4">КУПИТЬ КУРС</Typography>
+          <Typography variant="h4">1990 ₽</Typography>
+        </Button>
+      )}
     </Box>
   );
 };
 
-export default CourseCard;
+export default TrainCard;

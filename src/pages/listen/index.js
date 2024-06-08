@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Typography, Divider } from '@mui/material';
 import ListenItem from './ListenItem';
 import Image from 'components/Image';
 import { formatDuration } from 'utils/formatTime';
+import TrainersList from 'components/TrainersList';
 
 const audioCourse = {
   id: 0,
@@ -207,6 +208,7 @@ const ListenList = () => {
           {formatDuration(totalDuration.total)}
         </Typography>
       </Box>
+      <Divider />
       <Box
         display="flex"
         flexDirection="column"
@@ -224,6 +226,8 @@ const ListenList = () => {
           />
         ))}
       </Box>
+      <Divider />
+      <TrainersList />
     </Container>
   );
 };

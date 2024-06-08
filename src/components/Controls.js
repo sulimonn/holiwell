@@ -42,19 +42,19 @@ const Controls = ({
     }
   };
   const handleRewind = () => {
-    const currentTime = mediaRef.current.getCurrentTime();
     if (media === 'audio') {
-      mediaRef.current.currentTime = currentTime - 10;
+      mediaRef.current.currentTime -= 10;
     } else {
+      const currentTime = mediaRef.current.getCurrentTime();
+      mediaRef.current.seekTo(currentTime - 10);
     }
-    mediaRef.current.seekTo(currentTime - 10);
   };
 
   const handleFastForward = () => {
-    const currentTime = mediaRef.current.getCurrentTime();
     if (media === 'audio') {
-      mediaRef.current.currentTime = currentTime + 10;
+      mediaRef.current.currentTime += 10;
     } else {
+      const currentTime = mediaRef.current.getCurrentTime();
       mediaRef.current.seekTo(currentTime + 10);
     }
   };

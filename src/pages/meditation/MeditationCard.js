@@ -7,14 +7,14 @@ import lock from 'assets/images/icons/lock';
 import { Box, Typography } from '@mui/material';
 import Image from 'components/Image';
 
-const MeditationCard = ({ data, isSubscribed }) => {
+const MeditationCard = ({ lesson, isSubscribed, index }) => {
   const navigate = useNavigate();
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
   const [musicDuration, setMusicDuration] = useState('00:00');
 
   useEffect(() => {
     const audio = document.createElement('audio');
-    audio.src = data.path_to_audio;
+    audio.src = lesson.path_to_audio;
 
     const updateDuration = () => {
       const formattedDuration = formatTime(audio.duration);
@@ -26,12 +26,12 @@ const MeditationCard = ({ data, isSubscribed }) => {
     return () => {
       audio.removeEventListener('loadedmetadata', updateDuration);
     };
-  }, [data.path_to_audio]);
+  }, [lesson.path_to_audio]);
 
   return (
     <Box width={{ xs: '100%', md: 'auto' }} position={{ xs: 'relative', md: 'static' }}>
       <Link
-        to={isSubscribed ? `/meditation/${data.id}` : '#'}
+        to={isSubscribed ? `/meditation/${lesson.id}` : '#'}
         style={{ textDecoration: 'none', pointerEvents: isSubscribed ? 'all' : 'none' }}
       >
         <Box
@@ -56,6 +56,17 @@ const MeditationCard = ({ data, isSubscribed }) => {
             }}
           >
             <Box
+              px={{ xs: 0.7, md: 2 }}
+              py={{ xs: 0.3, md: 1 }}
+              backgroundColor="background.default"
+              width="min-content"
+              sx={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}
+            >
+              <Typography variant="h5" fontWeight="100">
+                {index}
+              </Typography>
+            </Box>
+            <Box
               position={{ xs: 'static', md: 'absolute' }}
               top="-85%"
               bottom="0"
@@ -64,7 +75,7 @@ const MeditationCard = ({ data, isSubscribed }) => {
               sx={{ filter: isSubscribed ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
             >
               <Image
-                src={require('assets/images/girls/' + data.path_to_cover)}
+                src={require('assets/images/girls/' + lesson.path_to_cover)}
                 alt="data"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 loading="lazy"
@@ -89,34 +100,25 @@ const MeditationCard = ({ data, isSubscribed }) => {
             <Typography
               variant="h5"
               fontWeight="400"
-              textAlign="left"
+              textAlign="center"
               color="primary.main"
               sx={{ fontSize: { xs: '1.15rem !important', md: 'inherit' } }}
             >
-              {data.title}
+              {lesson.title}
             </Typography>
             <Typography
-              onClick={() => navigate(`/trainers/${data.trainer.id}`)}
-              variant="body2"
+              onClick={() => navigate(`/trainers/${lesson.trainer.id}`)}
+              variant="subtitle1"
               fontWeight="100"
               color="primary.main"
+              textAlign="center"
               sx={{
                 position: 'relative',
                 width: 'fit-content',
-                '&::after': {
-                  content: '""',
-                  borderBottom: '1px solid',
-                  borderColor: 'primary.light',
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: '100%',
-                  transition: 'all 0.3s ease',
-                },
-                '&:hover::after, &:focus::after, &:active::after': { right: 0 },
+                mx: 'auto',
               }}
             >
-              {data.trainer.first_name} {data.trainer.last_name}
+              {lesson.trainer.first_name} {lesson.trainer.last_name}
             </Typography>
           </Box>
         </Box>

@@ -5,6 +5,7 @@ import { Box, Typography } from '@mui/material';
 import { formatTime } from 'utils/formatTime';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
+import Image from 'components/Image';
 
 const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
@@ -51,7 +52,7 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
             width="100%"
             sx={{ filter: isSubscribed ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
           >
-            <img
+            <Image
               src={require('assets/images/girls/' + course.path_to_cover)}
               alt="course"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}

@@ -7,8 +7,8 @@ import PrivateRoute from 'components/PrivateRoute';
 
 // render - dashboard
 const Home = Loadable(lazy(() => import('pages/home')));
-const Lessons = Loadable(lazy(() => import('pages/lessons')));
-const Courses = Loadable(lazy(() => import('pages/courses')));
+const Train = Loadable(lazy(() => import('pages/train')));
+const TrainPage = Loadable(lazy(() => import('pages/train/Lesson')));
 const Subscription = Loadable(lazy(() => import('pages/subscription')));
 const PrivacyPolicy = Loadable(lazy(() => import('pages/other/PrivacyPolicy')));
 const ListenList = Loadable(lazy(() => import('pages/listen')));
@@ -19,6 +19,7 @@ const Trainers = Loadable(lazy(() => import('pages/trainers')));
 const Trainer = Loadable(lazy(() => import('pages/trainers/Trainer')));
 const ProfilePage = Loadable(lazy(() => import('pages/profile')));
 const EditProfile = Loadable(lazy(() => import('pages/profile/EditProfile')));
+const Day = Loadable(lazy(() => import('pages/calendar/Day')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -30,10 +31,6 @@ const MainRoutes = {
     {
       path: '/',
       element: <Home />,
-    },
-    {
-      path: '/lessons',
-      element: <Lessons />,
     },
     {
       path: '/trainers',
@@ -52,8 +49,12 @@ const MainRoutes = {
       element: <MeditationsList />,
     },
     {
-      path: '/courses',
-      element: <Courses />,
+      path: '/training',
+      element: <Train />,
+    },
+    {
+      path: '/training/:id',
+      element: <TrainPage />,
     },
     {
       path: '/subscription/:id',
@@ -79,6 +80,10 @@ const MainRoutes = {
     {
       path: '/profile/edit',
       element: <PrivateRoute element={<EditProfile />} />,
+    },
+    {
+      path: '/calendar/:date',
+      element: <PrivateRoute element={<Day />} />,
     },
   ],
 };
