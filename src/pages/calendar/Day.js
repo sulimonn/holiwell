@@ -1,13 +1,47 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { Box, Typography, Container, Stack, Button, Modal, Divider } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Container,
+  Stack,
+  Button,
+  Modal,
+  Divider,
+  Card,
+  CardContent,
+  CardMedia,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+} from '@mui/material';
+import { styled } from '@mui/system';
+
 import Icon from '@ant-design/icons';
 
 import Back from 'components/Back';
 import Plus from 'assets/images/icons/plus';
 import down from 'assets/images/icons/down';
+import RadioChecked from 'assets/images/icons/RadioChecked';
 
+const StyledCard = styled(Card)(({ theme }) => ({
+  display: 'flex',
+  marginBottom: theme.spacing(2),
+  backgroundColor: theme.palette.background.default,
+  width: 580,
+  boxShadow: 'none',
+}));
+
+const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
+  width: 100,
+  height: 100,
+}));
+
+const StyledCardContent = styled(CardContent)(({ theme }) => ({
+  flex: '1 0 auto',
+}));
 function formatDateInRussian(date) {
   const day = date.getDate();
   const monthNames = [
@@ -50,7 +84,38 @@ const Day = () => {
   const navigate = useNavigate();
   const { date } = useParams();
   const day = new Date(date);
+  const [selectedValue, setSelectedValue] = React.useState(0);
 
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
+  const lessons = [
+    {
+      id: 0,
+      title: 'Заголовок',
+      trainer: {
+        first_name: 'Имя',
+        last_name: 'Фамилия',
+        path_to_avatar: 'avatar-1.png',
+        slogan: '',
+      },
+      path_to_cover: 'courses2.jpeg',
+      type: 'training',
+    },
+    {
+      id: 1,
+      title: 'Заголовок',
+      trainer: {
+        first_name: 'Имя',
+        last_name: 'Фамилия',
+        path_to_avatar: 'avatar-1.png',
+        slogan: '',
+      },
+      path_to_cover: 'intro.jpeg',
+      type: 'training',
+    },
+  ];
   const [open, setOpen] = React.useState(false);
   const menu = [
     {
@@ -66,6 +131,9 @@ const Day = () => {
       to: `/listen`,
     },
   ];
+  const handleCardClick = (value) => {
+    setSelectedValue(value);
+  };
   return (
     <>
       <Box width="100%">
@@ -82,8 +150,38 @@ const Day = () => {
         </Box>
         <Container maxWidth="lg" sx={{ position: { xs: 'static', md: 'relative' } }}>
           <Back to={`/calendar`} text={formatDateInRussian(day)} />
-          <Stack direction="column" spacing={2} sx={{ mt: 2 }}></Stack>
-          <Box display="flex" alignItems="center" justifyContent="center">
+          <Box display="flex" alignItems="center" justifyContent="center" my={7}>
+            <FormControl component="fieldset">
+              <RadioGroup value={selectedValue} onChange={handleChange}>
+                {lessons.map((course, index) => (
+                  <>
+                    {index > 0 && <Divider sx={{ mb: 2 }} />}
+                    <StyledCard key={index} onClick={() => handleCardClick(course.id)}>
+                      <StyledCardMedia
+                        image={require('assets/images/girls/' + course.path_to_cover)}
+                        title={course.title}
+                      />
+                      <StyledCardContent>
+                        <Typography component="h5" variant="h5">
+                          {course.title}
+                        </Typography>
+                        <Typography variant="subtitle1" color="textSecondary">
+                          {course.type}
+                        </Typography>
+                      </StyledCardContent>
+                      <FormControlLabel
+                        value={course.id}
+                        control={<Radio checkedIcon={<RadioChecked />} />}
+                        label=""
+                        labelPlacement="end"
+                      />
+                    </StyledCard>
+                  </>
+                ))}
+              </RadioGroup>
+            </FormControl>
+          </Box>
+          <Box display="flex" alignItems="center" justifyContent="center" mb={7}>
             <Button
               endIcon={<Icon component={Plus} />}
               sx={{ flexDirection: 'column', gap: 1 }}

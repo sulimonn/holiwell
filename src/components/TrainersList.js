@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import TrainerCard from './TrainerCard';
+import Arrow2 from 'assets/images/icons/arrow2';
 
 const TrainersList = ({ wrap = true }) => {
   const trainers = [
@@ -69,7 +70,7 @@ const TrainersList = ({ wrap = true }) => {
               textTransform="uppercase"
               sx={{ py: 0, display: { xs: wrap ? 'none' : 'block', md: 'block' } }}
             >
-              Смотреть все
+              Смотреть все <Arrow2 />
             </Typography>
           </Box>
           <Box

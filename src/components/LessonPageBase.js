@@ -1,16 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Box, Container, Typography, Divider, Button } from '@mui/material';
+import { Box, Container, Typography, Divider, Button, IconButton } from '@mui/material';
 import { formatTime } from 'utils/formatTime';
 import Avatar from './Avatar';
 import Icon from '@ant-design/icons';
 import CalendarIcon from 'assets/images/icons/Calendar';
 import ModalCalendar from 'pages/calendar/ModalCalendar';
+import Heart from 'assets/images/icons/heart';
 
 const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) => {
   const [open, setOpen] = React.useState(false);
   const Calendar = (props) => <Icon component={CalendarIcon} {...props} />;
+  const HeartIcon = (props) => <Icon component={Heart} {...props} />;
+
+  const [isFavourite, setFavourite] = React.useState(false);
 
   return (
     <>
@@ -29,9 +33,29 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
                 </Typography>
                 <Typography variant="body2">{formatTime(duration)}</Typography>
               </Box>
-              <Box display="flex" alignItems="center" gap={2}>
+              <Box display="flex" alignItems="center" gap={2} width={{ xs: '100%', sm: 'auto' }}>
                 {btnContained}
-                {btnOutlined}
+                {isFavourite ? (
+                  <IconButton
+                    size="large"
+                    onClick={() => setFavourite(false)}
+                    sx={{
+                      '& svg': { width: { xs: 30, md: 40 }, height: { xs: 30, md: 40 } },
+                      height: '100%',
+                      p: 0,
+                    }}
+                  >
+                    <HeartIcon />
+                  </IconButton>
+                ) : (
+                  <Button
+                    variant="outlined"
+                    onClick={() => setFavourite(true)}
+                    sx={{ width: { xs: '100%', md: 'auto' }, whiteSpace: 'nowrap', flex: 1 }}
+                  >
+                    В избранное
+                  </Button>
+                )}
               </Box>
               <Button
                 size="small"

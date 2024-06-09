@@ -46,7 +46,11 @@ const MeditionPage = () => {
       duration={duration}
       lesson={lesson}
       btnContained={
-        <Button variant="contained" onClick={() => setPlaying(!playing)}>
+        <Button
+          variant="contained"
+          onClick={() => setPlaying(!playing)}
+          sx={{ width: { xs: '100%', md: 'auto' } }}
+        >
           {playing ? 'Пауза' : 'Смотреть'}
         </Button>
       }

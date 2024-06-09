@@ -185,7 +185,11 @@ const ListenPage = () => {
       }
       lesson={lesson}
       btnContained={
-        <Button onClick={handlePlayPause} variant="contained">
+        <Button
+          onClick={handlePlayPause}
+          variant="contained"
+          sx={{ width: { xs: '100%', md: 'auto' } }}
+        >
           {playing ? 'Пауза' : 'Слушать'}
         </Button>
       }
