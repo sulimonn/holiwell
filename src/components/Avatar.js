@@ -3,15 +3,19 @@ import React from 'react';
 import { Box } from '@mui/material';
 import Image from './Image';
 
-const Avatar = ({ avatar }) => {
+const Avatar = ({ avatar, border }) => {
   if (!avatar) return null;
   return (
     <div>
       <Box
-        width={{ xs: '170px', sm: '220px', md: '270px' }}
-        height={{ xs: '170px', sm: '220px', md: '270px' }}
+        width={{ xs: '165px', sm: '220px', md: '270px' }}
+        height={{ xs: '165px', sm: '220px', md: '270px' }}
         borderRadius="50%"
-        sx={{ overflow: 'hidden', border: '8px solid', borderColor: 'background.default' }}
+        sx={{
+          overflow: 'hidden',
+          border: border ? '8px solid' : 'none',
+          borderColor: 'background.default',
+        }}
       >
         <Image
           src={require(`assets/images/users/${avatar}`)}

@@ -12,7 +12,9 @@ const Page404 = () => {
       width="100%"
       flexDirection="column"
     >
-      <Typography variant="h1">404</Typography>
+      <Typography variant="h1" fontSize="4rem">
+        404
+      </Typography>
       <Typography variant="h2">Страница не найдена</Typography>
       <Typography variant="body1" component={Link} to="/" color="text.secondary">
         Вернуться на главную

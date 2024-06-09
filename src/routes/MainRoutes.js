@@ -20,6 +20,7 @@ const Trainer = Loadable(lazy(() => import('pages/trainers/Trainer')));
 const ProfilePage = Loadable(lazy(() => import('pages/profile')));
 const EditProfile = Loadable(lazy(() => import('pages/profile/EditProfile')));
 const Day = Loadable(lazy(() => import('pages/calendar/Day')));
+const Calendar = Loadable(lazy(() => import('pages/calendar/Calendar')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -80,6 +81,10 @@ const MainRoutes = {
     {
       path: '/profile/edit',
       element: <PrivateRoute element={<EditProfile />} />,
+    },
+    {
+      path: '/calendar',
+      element: <PrivateRoute element={<Calendar />} />,
     },
     {
       path: '/calendar/:date',

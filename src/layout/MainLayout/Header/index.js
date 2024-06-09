@@ -6,7 +6,6 @@ import { AppBar, Toolbar, useMediaQuery, Container } from '@mui/material';
 
 // project import
 import HeaderContent from './HeaderContent';
-import MobileHeaderContent from './MobileHeaderContent/index';
 
 // ==============================|| MAIN LAYOUT - HEADER ||============================== //
 
@@ -17,13 +16,7 @@ const Header = ({ open, handleDrawerToggle }) => {
   // common header
   const mainHeader = (
     <Toolbar sx={{ backgroundColor: 'transparent', p: 0 }}>
-      <Container maxWidth="lg">
-        {matchDownMD ? (
-          <MobileHeaderContent open={open} handleDrawerToggle={handleDrawerToggle} />
-        ) : (
-          <HeaderContent />
-        )}
-      </Container>
+      <Container maxWidth="lg">{!matchDownMD && <HeaderContent />}</Container>
     </Toolbar>
   );
 
@@ -36,6 +29,10 @@ const Header = ({ open, handleDrawerToggle }) => {
       top: 0,
       backgroundColor: { xs: 'transparent !important', md: theme.palette.background.paper },
       boxShadow: { xs: 'none', md: '0 -1px 10px 6px rgba(0, 0, 0, 0.12)' },
+      display: {
+        xs: 'none',
+        md: 'flex',
+      },
     },
   };
 

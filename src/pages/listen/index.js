@@ -5,6 +5,7 @@ import ListenItem from './ListenItem';
 import Image from 'components/Image';
 import { formatDuration } from 'utils/formatTime';
 import TrainersList from 'components/TrainersList';
+import Back from 'components/Back';
 
 const audioCourse = {
   id: 0,
@@ -170,8 +171,15 @@ const ListenList = () => {
   }, []);
 
   return (
-    <Container>
-      <Box height="500px" overflow="hidden">
+    <Container maxWidth="lg">
+      <Back to="/" sx={{ mt: 2, display: { xs: 'inherit', sm: 'none' } }} />
+      <Box
+        height={{ xs: '220px', sm: '500px' }}
+        width={{ xs: '220px', sm: '100%' }}
+        overflow="hidden"
+        mx="auto"
+        mt={{ xs: 7, sm: 0 }}
+      >
         <Image
           src={require(`assets/images/girls/${audioCourse.path_to_cover}`)}
           alt="listen"
@@ -214,7 +222,7 @@ const ListenList = () => {
         flexDirection="column"
         mx="auto"
         width={{ xs: '100%', md: '660px' }}
-        py={4}
+        py={{ xs: 0, sm: 4 }}
       >
         {audioCourse.lessons.map((lesson) => (
           <ListenItem

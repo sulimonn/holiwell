@@ -63,7 +63,7 @@ const Trainer = () => {
             display="flex"
             justifyContent="center"
           >
-            <Avatar avatar={trainer.path_to_avatar} />
+            <Avatar avatar={trainer.path_to_avatar} border />
           </Box>
 
           <Box

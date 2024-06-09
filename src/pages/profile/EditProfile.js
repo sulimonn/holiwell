@@ -1,19 +1,18 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
 import {
   Box,
   Button,
   FormHelperText,
-  Grid,
-  Link,
   IconButton,
+  InputLabel,
   InputAdornment,
   Input,
   Stack,
   Typography,
   Container,
+  Divider,
 } from '@mui/material';
 
 // third party
@@ -22,15 +21,18 @@ import { Formik } from 'formik';
 
 // project import
 import AnimateButton from 'components/@extended/AnimateButton';
+import Back from 'components/Back';
+import Image from 'components/Image';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-
-// ============================|| FIREBASE - LOGIN ||============================ //
+import { useAuth } from 'contexts/AuthContext';
+import Default from 'assets/images/users/default.png';
 
 const EditProfile = () => {
-  const login = () => {};
+  const { user, login } = useAuth();
   const [showPassword, setShowPassword] = React.useState(false);
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -38,27 +40,27 @@ const EditProfile = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
   return (
     <Box width="100%">
       <Box
-        height={{ xs: 'auto', md: 200 }}
-        bgcolor="background.paper"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        gap={2}
+        py={{ xs: 2, md: 8 }}
+        bgcolor={{ xs: 'background.default', md: 'background.paper' }}
+        width="100%"
+        sx={{ display: { xs: 'none', md: 'block' } }}
       >
-        <Typography variant="h2" color="text.primary" textTransform="uppercase" fontWeight="500">
+        <Typography variant="h1" textAlign="center" textTransform="uppercase">
           Редактировать профиль
         </Typography>
       </Box>
-
-      <Container maxWidth="lg">
-        <Box maxWidth={580} mx="auto">
+      <Container maxWidth="lg" sx={{ position: { xs: 'static', md: 'relative' } }}>
+        <Back to={'/profile'} title="Редактировать профиль" />
+        <Box maxWidth={580} mx="auto" pt={{ xs: 10, md: 6 }} pb={10}>
           <Formik
             initialValues={{
-              email: '',
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
               password: '',
               submit: null,
             }}
@@ -105,100 +107,230 @@ const EditProfile = () => {
               values,
             }) => (
               <form noValidate onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Stack spacing={0}>
-                      <Input
-                        id="email-login"
-                        type="email"
-                        value={values.username}
-                        name="email"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        placeholder="Email"
-                        fullWidth
-                        error={Boolean(touched.email && errors.email)}
-                      />
-                      {touched.email && errors.email && (
-                        <FormHelperText error id="standard-weight-helper-text-email-login">
-                          {errors.email}
-                        </FormHelperText>
-                      )}
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Stack spacing={1}>
-                      <Input
-                        fullWidth
-                        error={Boolean(touched.password && errors.password)}
-                        id="-password-login"
-                        type={showPassword ? 'text' : 'password'}
-                        value={values.password}
-                        name="password"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        endAdornment={
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                              edge="end"
-                              size="large"
-                            >
-                              {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-                            </IconButton>
-                          </InputAdornment>
-                        }
-                        placeholder="Пароль"
-                      />
-                      {touched.password && errors.password && (
-                        <FormHelperText error id="standard-weight-helper-text-password-login">
-                          {errors.password}
-                        </FormHelperText>
-                      )}
-                    </Stack>
-                  </Grid>
-
-                  <Grid item xs={12} sx={{ mt: -1 }}>
-                    <Stack
-                      direction="row"
-                      justifyContent="flex-end"
-                      alignItems="center"
-                      spacing={2}
+                <Stack spacing={{ xs: 0.4, md: 1 }} direction="column">
+                  <Stack direction="column" alignItems="center" spacing={2} sx={{ pb: 3 }}>
+                    <Box
+                      sx={{
+                        width: 120,
+                        height: 120,
+                        backgroundColor: '#f0f0f0',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        mb: 1,
+                      }}
                     >
-                      <Link
-                        variant="body2"
-                        component={RouterLink}
-                        to="/forgot-password"
-                        color="text.primary"
-                        fontWeight="100"
-                      >
-                        Забыли пароль?
-                      </Link>
-                    </Stack>
-                  </Grid>
+                      <Typography variant="h6" component="div">
+                        <Image
+                          src={values.path_to_avatar || Default}
+                          alt="Profile"
+                          style={{ width: '100%', height: '100%' }}
+                        />
+                      </Typography>
+                    </Box>
+                    <Button sx={{ position: 'relative' }}>
+                      <input
+                        accept="image/*"
+                        type="file"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          inset: 0,
+                          zIndex: 1,
+                          opacity: 0,
+                          position: 'absolute',
+                        }}
+                        multiple={false}
+                        name="path_to_avatar"
+                        id="path_to_avatar"
+                        onChange={(e) => {
+                          const event = {
+                            ...e,
+                            target: {
+                              ...e.target,
+                              value: URL.createObjectURL(e.target.files[0]),
+                              name: 'path_to_avatar',
+                              id: 'path_to_avatar',
+                            },
+                          };
+                          console.log(event);
+                          handleChange(event);
+                        }}
+                      />
+                      <Typography variant="body2" color="text.primary">
+                        СМЕНИТЬ ФОТО
+                      </Typography>
+                    </Button>
+                  </Stack>
+                  <Divider sx={{ width: '100%' }} />
+                  <Stack
+                    spacing={5}
+                    direction="row"
+                    sx={{
+                      fontSize: '1rem',
+                      py: '10px',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <InputLabel
+                      sx={{ width: { xs: '110px', md: '300px' }, color: 'text.secondary' }}
+                      htmlFor="first_name"
+                    >
+                      Имя
+                    </InputLabel>
+                    <Input
+                      id="first_name"
+                      type="text"
+                      value={values.first_name}
+                      name="first_name"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Ваше имя"
+                      fullWidth
+                      error={Boolean(touched.first_name && errors.first_name)}
+                      disableUnderline
+                    />
+                    {touched.first_name && errors.first_name && (
+                      <FormHelperText error id="standard-weight-helper-text-firstname-edit">
+                        {errors.first_name}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                  <Divider sx={{ width: '100%' }} />
+                  <Stack
+                    spacing={5}
+                    direction="row"
+                    sx={{
+                      fontSize: '1rem',
+                      py: '10px',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <InputLabel
+                      sx={{ width: { xs: '110px', md: '300px' }, color: 'text.secondary' }}
+                      htmlFor="last_name"
+                    >
+                      Фамилия
+                    </InputLabel>
+                    <Input
+                      id="last_name"
+                      type="text"
+                      value={values.last_name}
+                      name="last_name"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Ваша фамилия"
+                      fullWidth
+                      error={Boolean(touched.last_name && errors.last_name)}
+                      disableUnderline
+                    />
+                    {touched.last_name && errors.last_name && (
+                      <FormHelperText error id="standard-weight-helper-text-lastname-edit">
+                        {errors.last_name}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                  <Divider sx={{ width: '100%' }} />
+                  <Stack
+                    spacing={5}
+                    direction="row"
+                    sx={{
+                      fontSize: '1rem',
+                      py: '10px',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <InputLabel
+                      sx={{ width: { xs: '110px', md: '300px' }, color: 'text.secondary' }}
+                      htmlFor="email"
+                    >
+                      Email
+                    </InputLabel>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={values.email}
+                      name="email"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="YourEmail@mail.com"
+                      fullWidth
+                      error={Boolean(touched.email && errors.email)}
+                      disableUnderline
+                    />
+                    {touched.email && errors.email && (
+                      <FormHelperText error id="standard-weight-helper-text-email-edit">
+                        {errors.email}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                  <Divider sx={{ width: '100%' }} />
+                  <Stack
+                    spacing={5}
+                    direction="row"
+                    sx={{
+                      fontSize: '1rem',
+                      py: '10px',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <InputLabel
+                      sx={{ width: { xs: '110px', md: '300px' }, color: 'text.secondary' }}
+                      htmlFor="password"
+                    >
+                      Пароль
+                    </InputLabel>
+                    <Input
+                      fullWidth
+                      error={Boolean(touched.password && errors.password)}
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={values.password}
+                      name="password"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                            size="large"
+                          >
+                            {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      placeholder="Пароль"
+                      disableUnderline
+                    />
+                    {touched.password && errors.password && (
+                      <FormHelperText error id="standard-weight-helper-text-password-edit">
+                        {errors.password}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                  <Divider sx={{ width: '100%' }} />
                   {errors.submit && (
-                    <Grid item xs={12} sx={{ pt: '0 !important' }}>
+                    <Stack>
                       <FormHelperText error>{errors.submit}</FormHelperText>
-                    </Grid>
+                    </Stack>
                   )}
-                  <Grid item xs={12}>
-                    <AnimateButton>
-                      <Button
-                        disableElevation
-                        disabled={isSubmitting}
-                        fullWidth
-                        size="large"
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                      >
-                        Войти
-                      </Button>
-                    </AnimateButton>
-                  </Grid>
-                </Grid>
+                  <AnimateButton>
+                    <Button
+                      disableElevation
+                      disabled={isSubmitting}
+                      fullWidth
+                      size="large"
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Сохранить
+                    </Button>
+                  </AnimateButton>
+                </Stack>
               </form>
             )}
           </Formik>

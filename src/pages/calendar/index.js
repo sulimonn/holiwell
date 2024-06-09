@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import Icon from '@ant-design/icons';
 import down from 'assets/images/icons/down';
 import './Calendar.css';
+import { formatDateToLocalISO } from 'utils/formatTime';
 
 const Calendar = () => {
   const theme = useTheme();
@@ -61,7 +62,7 @@ const Calendar = () => {
         onChange={onChange}
         showDoubleView={false}
         maxDetail="month"
-        minDetail="year"
+        minDetail="month"
         nextLabel={<ArrowIcon style={{ transform: 'rotate(-90deg)', opacity: 0.5 }} />}
         prevLabel={<ArrowIcon style={{ transform: 'rotate(90deg)', opacity: 0.5 }} />}
         tileContent={({ date, view }) =>
@@ -93,7 +94,7 @@ const Calendar = () => {
         navigationLabel={({ date, label, locale, view }) =>
           view === 'month' ? date.toLocaleDateString(locale, { month: 'long' }) : label
         }
-        onClickDay={(value) => navigate(`/calendar/${value.toISOString().slice(0, 10)}`)}
+        onClickDay={(value) => navigate(`/calendar/${formatDateToLocalISO(value)}`)}
         locale="ru-RU"
       />
     </Box>

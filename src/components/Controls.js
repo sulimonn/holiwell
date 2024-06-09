@@ -10,6 +10,7 @@ import Icon from '@ant-design/icons';
 import { formatTime } from 'utils/formatTime';
 import VolumeIcon from 'assets/images/icons/volume';
 import fullScreen from 'assets/images/icons/fullScreen';
+import exitFullSc from 'assets/images/icons/exitFullSc';
 
 const Controls = ({
   mediaRef,
@@ -121,7 +122,9 @@ const Controls = ({
   }, [mediaRef, media]);
 
   const VolumeUpIcon = (props) => <Icon component={VolumeIcon} {...props} />;
-  const FullscreenIcon = (props) => <Icon component={fullScreen} {...props} />;
+  const FullscreenIcon = (props) => (
+    <Icon component={isFullscreen ? exitFullSc : fullScreen} {...props} />
+  );
 
   useEffect(() => {
     const showOverlay = (icon) => {
@@ -236,6 +239,7 @@ const Controls = ({
         {formatTime(played)}
       </Typography>
       <Slider
+        size="small"
         value={playedProgress * 100}
         onChange={handleSeekChange}
         aria-labelledby="continuous-slider"
@@ -288,8 +292,9 @@ const Controls = ({
           },
         }}
       >
-        <Box sx={{ px: 1, py: 2, backgroundColor: 'background.default' }}>
+        <Box sx={{ px: 0.7, py: 2, backgroundColor: 'background.default' }}>
           <Slider
+            size="small"
             value={volume * 100}
             onChange={handleVolumeChange}
             aria-labelledby="continuous-slider"

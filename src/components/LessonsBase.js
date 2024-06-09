@@ -1,19 +1,19 @@
 import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
 import SortLessons from 'components/SortLessons';
+import Back from './Back';
 
 const Lessons = ({ title, children, sortOption, setSortOption }) => {
   return (
     <Box width="100%">
       <Box
-        height={{ xs: 'auto', sm: 200 }}
         width="100%"
-        display="flex"
         justifyContent="center"
         alignItems="center"
         sx={{
           backgroundColor: 'background.paper',
-          pt: { xs: 2.3, md: 0 },
+          py: 7,
+          display: { xs: 'none', md: 'flex' },
         }}
       >
         <Typography
@@ -27,7 +27,11 @@ const Lessons = ({ title, children, sortOption, setSortOption }) => {
           {title}
         </Typography>
       </Box>
-      <Container maxWidth="lg">
+      <Container
+        maxWidth="lg"
+        sx={{ position: { xs: 'static', md: 'relative' }, mt: { xs: 7, md: 0 } }}
+      >
+        <Back title={title} to="/" sx={{ display: { xs: 'block', md: 'none' } }} />
         <Box
           display="flex"
           alignItems="flex-end"

@@ -1,42 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
-import TrainerCard from './TrainerCard'; // eslint-disable-next-line
-import { useGetTrainersQuery } from 'store/reducers/trainers';
+import TrainerCard from './TrainerCard';
 
-const TrainersList = () => {
-  // const {
-  //   data: trainers = [
-  //     {
-  //       id: 1,
-  //       first_name: 'Имя',
-  //       last_name: 'Фамилия',
-  //       path_to_avatar: 'avatar-1.png',
-  //       slogan: '',
-  //     },
-  //     {
-  //       id: 2,
-  //       first_name: 'Имя',
-  //       last_name: 'Фамилия',
-  //       path_to_avatar: 'avatar-2.png',
-  //       slogan: '',
-  //     },
-  //     {
-  //       id: 3,
-  //       first_name: 'Имя',
-  //       last_name: 'Фамилия',
-  //       path_to_avatar: 'avatar-1.png',
-  //       slogan: '',
-  //     },
-  //     {
-  //       id: 4,
-  //       first_name: 'Имя',
-  //       last_name: 'Фамилия',
-  //       path_to_avatar: 'avatar-2.png',
-  //       slogan: '',
-  //     },
-  //   ],
-  // } = useGetTrainersQuery();
+const TrainersList = ({ wrap = true }) => {
   const trainers = [
     {
       id: 1,
@@ -80,8 +47,17 @@ const TrainersList = () => {
         mx="auto"
       >
         <Box sx={{ py: 12, mb: { xs: 6, md: 12 } }} display="flex" flexDirection="column" gap={4}>
-          <Box display="flex" justifyContent="space-between" px={{ xs: 2, sm: 0 }}>
-            <Typography variant="h3" textTransform="uppercase" sx={{ py: 0 }}>
+          <Box
+            display="flex"
+            justifyContent={{ xs: wrap ? 'center' : 'space-between', md: 'space-between' }}
+            px={{ xs: 2, sm: 0 }}
+          >
+            <Typography
+              variant="h3"
+              fontWeight={{ xs: '400' }}
+              textTransform="uppercase"
+              sx={{ py: 0, fontSize: { xs: '1.5rem', md: '1.75rem' } }}
+            >
               Команда
             </Typography>
             <Typography
@@ -91,7 +67,7 @@ const TrainersList = () => {
               to="/trainers"
               variant="subtitle1"
               textTransform="uppercase"
-              sx={{ py: 0 }}
+              sx={{ py: 0, display: { xs: wrap ? 'none' : 'block', md: 'block' } }}
             >
               Смотреть все
             </Typography>
@@ -103,11 +79,13 @@ const TrainersList = () => {
           >
             <Box
               display="flex"
-              flexWrap="nowrap"
-              justifyContent="space-between"
-              gap={4}
+              flexWrap={{ xs: wrap ? 'wrap' : 'nowrap', md: 'nowrap' }}
+              justifyContent={{ xs: 'space-evenly', md: 'space-between' }}
+              columnGap={{ xs: wrap ? 0.5 : 2, md: 4 }}
+              rowGap={{ xs: 3, md: 4 }}
               overflow="visible"
               position="relative"
+              px={{ xs: wrap ? 0 : 2, sm: 0 }}
             >
               {trainers.map((trainer) => (
                 <TrainerCard key={trainer.id} trainer={trainer} />
