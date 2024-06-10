@@ -51,7 +51,7 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
                   <Button
                     variant="outlined"
                     onClick={() => setFavourite(true)}
-                    sx={{ width: { xs: '100%', md: 'auto' }, whiteSpace: 'nowrap', flex: 1 }}
+                    sx={{ width: { xs: '100%', md: 'auto' }, whiteSpace: 'nowrap' }}
                   >
                     В избранное
                   </Button>

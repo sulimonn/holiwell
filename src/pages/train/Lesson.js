@@ -223,7 +223,14 @@ const Lesson = () => {
             </Button>
           )}
         </Box>
-        <Box display="flex" py={10} gap={3} borderBottom="1px solid" borderColor="divider">
+        <Box
+          display="flex"
+          py={10}
+          gap={3}
+          borderBottom="1px solid"
+          borderColor="divider"
+          flexDirection={{ xs: 'column', md: 'row' }}
+        >
           <Box flex={1}>
             <Typography variant="h3" textTransform="uppercase">
               О приложении

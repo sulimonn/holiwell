@@ -30,7 +30,7 @@ const ProfilePage = () => {
           <Button
             variant="contained"
             onClick={() => navigate('/profile/edit')}
-            sx={{ width: { xs: '90%', md: 'auto' } }}
+            sx={{ width: { xs: '90%', sm: 'auto' } }}
           >
             <Typography variant="body2" sx={{ px: 2 }}>
               Редактировать профиль

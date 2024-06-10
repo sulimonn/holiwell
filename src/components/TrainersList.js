@@ -68,7 +68,11 @@ const TrainersList = ({ wrap = true }) => {
               to="/trainers"
               variant="subtitle1"
               textTransform="uppercase"
-              sx={{ py: 0, display: { xs: wrap ? 'none' : 'block', md: 'block' } }}
+              sx={{
+                py: 0,
+                display: { xs: wrap ? 'none' : 'block', md: 'block' },
+                whiteSpace: 'nowrap',
+              }}
             >
               Смотреть все <Arrow2 />
             </Typography>
@@ -81,12 +85,12 @@ const TrainersList = ({ wrap = true }) => {
             <Box
               display="flex"
               flexWrap={{ xs: wrap ? 'wrap' : 'nowrap', md: 'nowrap' }}
-              justifyContent={{ xs: 'space-evenly', md: 'space-between' }}
+              justifyContent={{ xs: wrap ? 'space-evenly' : 'flex-start', md: 'space-between' }}
               columnGap={{ xs: wrap ? 0.5 : 2, md: 4 }}
               rowGap={{ xs: 3, md: 4 }}
               overflow="visible"
               position="relative"
-              px={{ xs: wrap ? 0 : 2, sm: 0 }}
+              px={{ xs: wrap ? 2 : 2, sm: 0 }}
             >
               {trainers.map((trainer) => (
                 <TrainerCard key={trainer.id} trainer={trainer} />

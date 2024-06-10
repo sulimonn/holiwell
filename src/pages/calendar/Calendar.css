@@ -122,6 +122,9 @@
   font-size: 0.3em;
   font-weight: bold;
 }
+.react-calendar__month-view__days__day {
+  color: inherit;
+}
 
 .react-calendar__month-view__days__day--weekend {
   color: inherit;

@@ -12,8 +12,7 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Radio,
-  RadioGroup,
+  Checkbox,
   FormControlLabel,
   FormControl,
 } from '@mui/material';
@@ -24,14 +23,17 @@ import Icon from '@ant-design/icons';
 import Back from 'components/Back';
 import Plus from 'assets/images/icons/plus';
 import down from 'assets/images/icons/down';
-import RadioChecked from 'assets/images/icons/RadioChecked';
+import CheckBoxChecked from 'assets/images/icons/RadioChecked';
+import Radio from 'assets/images/icons/radio';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   marginBottom: theme.spacing(2),
   backgroundColor: theme.palette.background.default,
-  width: 580,
+  width: '100%',
   boxShadow: 'none',
+  borderRadius: 0,
+  cursor: 'pointer',
 }));
 
 const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
@@ -42,6 +44,7 @@ const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
 const StyledCardContent = styled(CardContent)(({ theme }) => ({
   flex: '1 0 auto',
 }));
+
 function formatDateInRussian(date) {
   const day = date.getDate();
   const monthNames = [
@@ -84,13 +87,7 @@ const Day = () => {
   const navigate = useNavigate();
   const { date } = useParams();
   const day = new Date(date);
-  const [selectedValue, setSelectedValue] = React.useState(0);
-
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-
-  const lessons = [
+  const [lessons, setLessons] = React.useState([
     {
       id: 0,
       title: 'Заголовок',
@@ -102,6 +99,7 @@ const Day = () => {
       },
       path_to_cover: 'courses2.jpeg',
       type: 'training',
+      checked: false,
     },
     {
       id: 1,
@@ -114,8 +112,24 @@ const Day = () => {
       },
       path_to_cover: 'intro.jpeg',
       type: 'training',
+      checked: false,
     },
-  ];
+  ]);
+
+  const handleChange = (event, id) => {
+    setLessons(
+      lessons.map((lesson) => {
+        if (lesson.id === id) {
+          return {
+            ...lesson,
+            checked: event.target.checked,
+          };
+        }
+        return lesson;
+      }),
+    );
+  };
+
   const [open, setOpen] = React.useState(false);
   const menu = [
     {
@@ -131,19 +145,35 @@ const Day = () => {
       to: `/listen`,
     },
   ];
-  const handleCardClick = (value) => {
-    setSelectedValue(value);
+
+  const handleCardClick = (id) => {
+    setLessons(
+      lessons.map((lesson) => {
+        if (lesson.id === id) {
+          return {
+            ...lesson,
+            checked: !lesson.checked,
+          };
+        }
+        return lesson;
+      }),
+    );
   };
+
   return (
     <>
       <Box width="100%">
-        <Box py={{ xs: 2, md: 6 }} bgcolor="background.paper" width="100%">
+        <Box
+          py={{ xs: 2, md: 6 }}
+          bgcolor="background.paper"
+          width="100%"
+          sx={{ display: { xs: 'none', md: 'block' } }}
+        >
           <Typography
             variant="h1"
             textAlign="center"
             fontWeight="500"
             textTransform={{ xs: 'capitalize', md: 'uppercase' }}
-            sx={{ display: { xs: 'none', md: 'block' } }}
           >
             {formatDateInRussian(day)}
           </Typography>
@@ -151,34 +181,41 @@ const Day = () => {
         <Container maxWidth="lg" sx={{ position: { xs: 'static', md: 'relative' } }}>
           <Back to={`/calendar`} text={formatDateInRussian(day)} />
           <Box display="flex" alignItems="center" justifyContent="center" my={7}>
-            <FormControl component="fieldset">
-              <RadioGroup value={selectedValue} onChange={handleChange}>
-                {lessons.map((course, index) => (
-                  <>
-                    {index > 0 && <Divider sx={{ mb: 2 }} />}
-                    <StyledCard key={index} onClick={() => handleCardClick(course.id)}>
-                      <StyledCardMedia
-                        image={require('assets/images/girls/' + course.path_to_cover)}
-                        title={course.title}
-                      />
-                      <StyledCardContent>
-                        <Typography component="h5" variant="h5">
-                          {course.title}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                          {course.type}
-                        </Typography>
-                      </StyledCardContent>
-                      <FormControlLabel
-                        value={course.id}
-                        control={<Radio checkedIcon={<RadioChecked />} />}
-                        label=""
-                        labelPlacement="end"
-                      />
-                    </StyledCard>
-                  </>
-                ))}
-              </RadioGroup>
+            <FormControl
+              component="fieldset"
+              sx={{ width: '100%', maxWidth: { xs: '100%', sm: 580 } }}
+            >
+              {lessons.map((course, index) => (
+                <React.Fragment key={index}>
+                  {index > 0 && <Divider sx={{ mb: 2 }} />}
+                  <StyledCard onClick={() => handleCardClick(course.id)}>
+                    <StyledCardMedia
+                      image={require('assets/images/girls/' + course.path_to_cover)}
+                      title={course.title}
+                    />
+                    <StyledCardContent>
+                      <Typography component="h5" variant="h5">
+                        {course.title}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {course.type}
+                      </Typography>
+                    </StyledCardContent>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checkedIcon={<CheckBoxChecked />}
+                          icon={<Radio />}
+                          checked={course.checked}
+                          onChange={(event) => handleChange(event, course.id)}
+                        />
+                      }
+                      label=""
+                      labelPlacement="start"
+                    />
+                  </StyledCard>
+                </React.Fragment>
+              ))}
             </FormControl>
           </Box>
           <Box display="flex" alignItems="center" justifyContent="center" mb={7}>
@@ -212,10 +249,8 @@ const Day = () => {
             </Typography>
             <Divider />
             {menu.map((item) => (
-              <>
-                {' '}
+              <React.Fragment key={item.title}>
                 <Button
-                  key={item.title}
                   onClick={() => {
                     setOpen(false);
                     navigate(item.to);
@@ -238,7 +273,7 @@ const Day = () => {
                   <Typography variant="body2">{item.title}</Typography>
                 </Button>
                 <Divider />
-              </>
+              </React.Fragment>
             ))}
           </Stack>
         </Box>

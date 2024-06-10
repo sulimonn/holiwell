@@ -4,12 +4,14 @@ import { useDispatch } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
+import Icon from '@ant-design/icons';
 
 // project import
 import DrawerHeaderStyled from './DrawerHeaderStyled';
 import Logo from 'components/Logo/Logo';
 import { openDrawer } from 'store/reducers/menu';
+import Delete from 'assets/images/icons/Delete';
 
 // ==============================|| DRAWER HEADER ||============================== //
 
@@ -20,6 +22,7 @@ const DrawerHeader = ({ open }) => {
   const handleDrawerClose = () => {
     dispatch(openDrawer({ drawerOpen: false }));
   };
+  const CloseIcon = (props) => <Icon component={Delete} />;
 
   return (
     <DrawerHeaderStyled theme={theme} open={open}>
@@ -32,6 +35,9 @@ const DrawerHeader = ({ open }) => {
       >
         <Logo mode="light" />
       </Box>
+      <IconButton onClick={handleDrawerClose} sx={{ position: 'absolute', right: 5 }}>
+        <CloseIcon />
+      </IconButton>
     </DrawerHeaderStyled>
   );
 };
