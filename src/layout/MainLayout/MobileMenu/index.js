@@ -100,6 +100,18 @@ const MobileMenu = () => {
                 width: 'min-content',
                 m: 0,
               },
+              '&:hover .profile-outlined .profile-outlined-path-1, &:active .profile-outlined .profile-outlined-path-1, &:focus .profile-outlined .profile-outlined-path-1, &:focus-within .profile-outlined .profile-outlined-path-1':
+                {
+                  stroke: 'black !important',
+                },
+              '&:hover .profile-outlined .profile-outlined-path-2, &:active .profile-outlined .profile-outlined-path-2, &:focus .profile-outlined .profile-outlined-path-2, &:focus-within .profile-outlined .profile-outlined-path-2':
+                {
+                  stroke: 'white !important',
+                },
+              '&:hover .MuiTypography-root, &:active .MuiTypography-root, &:focus .MuiTypography-root, &:focus-within .MuiTypography-root':
+                {
+                  color: 'black !important',
+                },
             }}
           >
             <Typography

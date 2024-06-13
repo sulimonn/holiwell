@@ -4,7 +4,7 @@ import { useImage } from 'react-image';
 
 const Image = (props) => {
   const imageRef = useRef(null);
-  const [isLoaded, setIsLoaded] = useState(imageRef?.current?.complete);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   const { src } = useImage({
@@ -12,17 +12,23 @@ const Image = (props) => {
   });
 
   const onLoad = () => {
+    console.log('Image loaded:', props.src);
     setIsLoaded(true);
   };
 
   const onError = () => {
+    console.log('Image failed to load:', props.src);
     setHasError(true);
   };
 
   useEffect(() => {
     setIsLoaded(false);
     setHasError(false);
-  }, []);
+    const img = imageRef.current;
+    if (img && img.complete) {
+      setIsLoaded(true);
+    }
+  }, [props.src]);
 
   useEffect(() => {
     const img = imageRef.current;
@@ -39,6 +45,7 @@ const Image = (props) => {
 
       <img
         ref={imageRef}
+        key={props.src} // Ensure React re-renders the image when the src changes
         src={src}
         alt={props.alt}
         {...props}
