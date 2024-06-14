@@ -26,9 +26,11 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
           {cover}
         </Container>
         <Container maxWidth="lg">
-          <Box pt={{ xs: 0, md: 7 }} pb={{ xs: 4, md: 7 }}>
+          <Box pt={{ xs: 0, md: 5 }} pb={{ xs: 4, md: 7 }}>
             <Box display="flex" flexDirection="column" alignItems="center">
-              <Typography variant="h1">{lesson.title}</Typography>
+              <Typography variant="h1" textTransform="uppercase">
+                {lesson.title}
+              </Typography>
               <Box display="flex" alignItems="center" my={3} gap={6}>
                 <Typography variant="body2" fontWeight="300" sx={{ textAlign: 'center' }}>
                   {lesson.trainer.first_name} {lesson.trainer.last_name}
