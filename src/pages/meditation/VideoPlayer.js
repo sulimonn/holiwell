@@ -53,7 +53,6 @@ const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying
       setTimeout(() => {
         if (!mouseOverControls) {
           setControlsVisible(false);
-          console.log('hide');
         }
       }, 3000),
     );

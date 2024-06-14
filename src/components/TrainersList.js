@@ -95,7 +95,7 @@ const TrainersList = ({ wrap = true }) => {
           </Box>
           <Box
             sx={{
-              overflowX: 'scroll',
+              overflowX: wrap ? 'none' : 'scroll',
             }}
           >
             <Box

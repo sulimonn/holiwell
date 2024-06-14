@@ -152,23 +152,27 @@ const Lesson = () => {
   };
 
   return (
-    <Box>
+    <Box width="100%">
       <Box
-        width="100vw"
+        width="100%"
         position="relative"
         height={{ xs: '360px', sm: '450px', md: '500px' }}
         overflow="hidden"
-        mb={{ xs: '40', sm: '70px', md: '100px' }}
+        sx={{
+          '& img': {
+            objectPosition: { xs: 'center', md: 'top center' },
+            mb: { xs: 3, md: 4 },
+          },
+        }}
       >
         <Image
           src={LessonGirl}
           alt="girl"
           style={{
             width: '100%',
-            height: 'auto',
+            height: '100%',
             objectFit: 'cover',
             position: 'absolute',
-            top: '-20%',
             filter: isSubscribed ? 'none' : 'brightness(0.6)',
             zIndex: 1,
           }}
@@ -203,8 +207,7 @@ const Lesson = () => {
           gap={{ xs: 2, md: 4 }}
           textAlign="center"
           alignItems="center"
-          pt={{ xs: 3, md: 0 }}
-          pb={{ xs: 3, md: 6 }}
+          py={{ xs: 3, md: 6 }}
           borderBottom="1px solid"
           borderColor="divider"
         >
@@ -212,7 +215,7 @@ const Lesson = () => {
             variant="h1"
             textTransform="uppercase"
             fontWeight={{ xs: 400, md: '500' }}
-            fontSize={{ xs: 25, sm: 'inherit' }}
+            fontSize={{ xs: 25, md: '2.5rem' }}
           >
             Стройность и энергия
           </Typography>
