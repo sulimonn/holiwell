@@ -1,8 +1,8 @@
 import React from 'react';
 
 // material-ui
-import { Box } from '@mui/material';
-import Hamburger from 'hamburger-react';
+import { Box, IconButton } from '@mui/material';
+import MenuOutlined from '@ant-design/icons/MenuOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { openDrawer } from 'store/reducers/menu';
 
@@ -33,7 +33,15 @@ const MobileHeaderContent = ({ color }) => {
       left="0"
       display={{ xs: 'flex', md: 'none' }}
     >
-      <Hamburger toggled={open} toggle={handleDrawerToggle} color={color || 'white'} />
+      <IconButton
+        aria-label="open drawer"
+        onClick={handleDrawerToggle}
+        edge="end"
+        color={color || 'white'}
+        sx={{ m: 1.5 }}
+      >
+        <MenuOutlined style={{ color: color || 'white', fontSize: '2rem' }} />
+      </IconButton>
     </Box>
   );
 };

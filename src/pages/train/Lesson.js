@@ -200,17 +200,23 @@ const Lesson = () => {
         <Box
           display="flex"
           flexDirection="column"
-          gap={4}
+          gap={{ xs: 2, md: 4 }}
           textAlign="center"
           alignItems="center"
+          pt={{ xs: 3, md: 0 }}
           pb={{ xs: 3, md: 6 }}
           borderBottom="1px solid"
           borderColor="divider"
         >
-          <Typography variant="h1" textTransform="uppercase">
+          <Typography
+            variant="h1"
+            textTransform="uppercase"
+            fontWeight={{ xs: 400, md: '500' }}
+            fontSize={{ xs: 25, sm: 'inherit' }}
+          >
             Стройность и энергия
           </Typography>
-          <Typography variant="body1" fontWeight="300">
+          <Typography variant="body1" fontWeight={{ xs: 100, sm: '300' }}>
             Курс тренировок
           </Typography>
           {isSubscribed ? (
@@ -233,7 +239,7 @@ const Lesson = () => {
         >
           <Box flex={1}>
             <Typography variant="h3" textTransform="uppercase">
-              О приложении
+              О курсе
             </Typography>
             <Typography variant="h5" component="p" sx={{ mt: 1.5 }}>
               Не ограничивай себя в движении,

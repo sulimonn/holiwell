@@ -1,52 +1,42 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
+
 import LessonPageBase from 'components/LessonPageBase';
 import Controls from 'components/Controls';
 import Image from 'components/Image';
 
-const lesson = {
-  id: 0,
-  title: 'Урок 1 : Название аудио',
-  description:
-    'Не ограничивай себя в движении.\n\n В здоровом теле здоровый дух. Регулярная практика и позитивный настрой дадут тебе энергию для реализации твоих целей.',
-  trainer: {
-    id: 0,
-    first_name: 'Имя',
-    last_name: 'Фамилия',
-    description:
-      'Откройте для себя преимущества регулярной медитации на нашем уроке, направленной на улучшение физического и эмоционального благополучия.',
-    path_to_avatar: 'avatar-1.png',
-    path_to_background: 'background-1.jpeg',
-  },
-  course_id: 0,
-  path_to_cover: 'courses2.jpeg',
-  path_to_audio:
-    'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-  links_before: [
-    {
-      id: 0,
-      lesson_id: 0,
-      linked_lesson_id: 0,
-    },
-  ],
-  links_after: [
-    {
-      id: 0,
-      lesson_id: 0,
-      linked_lesson_id: 0,
-    },
-  ],
+const throttle = (func, limit) => {
+  let inThrottle;
+  return function () {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
 };
 
 const ListenPage = () => {
-  const [duration, setDuration] = React.useState(0);
-  const [playing, setPlaying] = React.useState(false);
-  const [playedProgress, setPlayedProgress] = React.useState(0);
-  const [overlay, setOverlay] = React.useState(null);
-  const [overlayVisible, setOverlayVisible] = React.useState(false);
+  const { id } = useParams();
+  const lesson = useSelector((state) => state.test.listen).lessons.find(
+    (lesson) => lesson.id === parseInt(id),
+  );
 
-  const audioRef = React.useRef(null);
-  const containerRef = React.useRef(null);
+  const [duration, setDuration] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [playedProgress, setPlayedProgress] = useState(0);
+  const [overlay, setOverlay] = useState(null);
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
+  const [hideControlsTimeout, setHideControlsTimeout] = useState(null);
+  const [mouseOverControls, setMouseOverControls] = useState(false);
+
+  const audioRef = useRef(null);
+  const containerRef = useRef(null);
 
   const handlePlayPause = () => {
     if (playing) {
@@ -62,7 +52,7 @@ const ListenPage = () => {
     setPlayedProgress(audioRef.current.currentTime / audioRef.current.duration);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     audioRef.current = new Audio(lesson.path_to_audio);
     const audio = audioRef.current;
 
@@ -76,9 +66,9 @@ const ListenPage = () => {
       audio.pause();
       audio.removeEventListener('timeupdate', handleProgress);
     };
-  }, [handleProgress]);
+  }, [handleProgress, lesson.path_to_audio]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (audioRef.current) {
       if (playing) {
         audioRef.current.play();
@@ -87,6 +77,39 @@ const ListenPage = () => {
       }
     }
   }, [playing]);
+
+  const showControls = useCallback(() => {
+    if (hideControlsTimeout) {
+      clearTimeout(hideControlsTimeout);
+    }
+    setControlsVisible(true);
+    setHideControlsTimeout(
+      setTimeout(() => {
+        if (!mouseOverControls) {
+          setControlsVisible(false);
+        }
+      }, 3000),
+    );
+  }, [hideControlsTimeout, mouseOverControls]);
+
+  useEffect(() => {
+    const handleMouseMove = throttle((e) => {
+      showControls();
+    }, 300);
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('mousemove', handleMouseMove);
+      container.addEventListener('touchstart', handleMouseMove);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('mousemove', handleMouseMove);
+        container.removeEventListener('touchstart', handleMouseMove);
+      }
+    };
+  }, [showControls]);
 
   return (
     <LessonPageBase
@@ -168,19 +191,24 @@ const ListenPage = () => {
               {overlay}
             </Typography>
           </Box>
-          <Controls
-            duration={duration}
-            playing={playing}
-            setPlaying={setPlaying}
-            mediaRef={audioRef}
-            handlePlayPause={handlePlayPause}
-            playedProgress={playedProgress}
-            setPlayedProgress={setPlayedProgress}
-            containerRef={containerRef}
-            setOverlay={setOverlay}
-            setOverlayVisible={setOverlayVisible}
-            media="audio"
-          />
+          {
+            <Controls
+              duration={duration}
+              playing={playing}
+              setPlaying={setPlaying}
+              mediaRef={audioRef}
+              handlePlayPause={handlePlayPause}
+              playedProgress={playedProgress}
+              setPlayedProgress={setPlayedProgress}
+              containerRef={containerRef}
+              setOverlay={setOverlay}
+              setOverlayVisible={setOverlayVisible}
+              media="audio"
+              visible={controlsVisible}
+              onMouseEnter={() => setMouseOverControls(true)}
+              onMouseLeave={() => setMouseOverControls(false)}
+            />
+          }
         </Box>
       }
       lesson={lesson}

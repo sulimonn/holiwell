@@ -24,6 +24,9 @@ const Controls = ({
   containerRef,
   setOverlay,
   setOverlayVisible,
+  visible,
+  onMouseEnter,
+  onMouseLeave,
 }) => {
   const [volume, setVolume] = useState(0.8);
   const [played, setPlayed] = useState(0);
@@ -200,13 +203,20 @@ const Controls = ({
       bottom="0"
       left="0"
       width="100%"
-      py={{ xs: 0, md: 0.3 }}
+      py={{ xs: 0, md: visible ? 0.3 : 0 }}
       px={{ xs: 0, md: 13 }}
       bgcolor="common.white"
       display="flex"
       alignItems="center"
       gap={0}
       zIndex={5}
+      height={visible ? 'auto' : 0}
+      sx={{
+        transition: 'all 0.3s',
+        overflow: 'hidden',
+      }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <IconButton
         onClick={handleRewind}
@@ -266,6 +276,7 @@ const Controls = ({
         aria-haspopup="true"
         onClick={handleClick}
         color="inherit"
+        sx={{ display: isFullscreen ? 'none' : 'block' }}
       >
         <VolumeUpIcon />
       </IconButton>

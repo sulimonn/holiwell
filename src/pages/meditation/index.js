@@ -5,149 +5,12 @@ import TrainersList from 'components/TrainersList';
 import Image from 'components/Image';
 import ModalCalendar from 'pages/calendar/ModalCalendar';
 import Back from 'components/Back';
-
-const videoCourse = {
-  id: 0,
-  title: 'название курса',
-  description:
-    'Откройте для себя преимущества регулярной медитации на нашем курсе, направленном на улучшение физического и эмоционального благополучия. Вы разовьете навыки внимательности и научитесь управлять своим внутренним состоянием для достижения гармонии и равновесия.',
-  path_to_cover: 'intro.jpeg',
-  lessons: [
-    {
-      id: 0,
-      title: 'Медитация 1',
-      description: 'string',
-      trainer: {
-        id: 0,
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        description: 'string',
-        path_to_avatar: 'string',
-        path_to_background: 'string',
-      },
-      course_id: 0,
-      path_to_cover: 'lesson.jpeg',
-      path_to_video: 'string',
-      path_to_audio:
-        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-      links_before: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-      links_after: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: 'Медитация 2',
-      description: 'string',
-      trainer: {
-        id: 0,
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        description: 'string',
-        path_to_avatar: 'string',
-        path_to_background: 'string',
-      },
-      course_id: 0,
-      path_to_cover: 'courses2.jpeg',
-      path_to_video: 'string',
-      path_to_audio:
-        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-      links_before: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-      links_after: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: 'Медитация 3',
-      description: 'string',
-      trainer: {
-        id: 0,
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        description: 'string',
-        path_to_avatar: 'string',
-        path_to_background: 'string',
-      },
-      course_id: 0,
-      path_to_cover: 'lesson.jpeg',
-      path_to_video: 'string',
-      path_to_audio:
-        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-      links_before: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-      links_after: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: 'Медитация 4',
-      description: 'string',
-      trainer: {
-        id: 0,
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        description: 'string',
-        path_to_avatar: 'string',
-        path_to_background: 'string',
-      },
-      course_id: 0,
-      path_to_cover: 'courses2.jpeg',
-      path_to_video: 'string',
-      path_to_audio:
-        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-      links_before: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-      links_after: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-    },
-  ],
-};
+import { useSelector } from 'react-redux';
 
 const Meditation = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-
+  const { meditation: videoCourse } = useSelector((state) => state.test);
   return (
     <>
       <ModalCalendar open={open} setOpen={setOpen} />
@@ -203,7 +66,6 @@ const Meditation = () => {
             sx={{
               display: 'flex',
               flexWrap: 'wrap',
-
               rowGap: 5,
               columnGap: 1,
               justifyContent: 'space-between',

@@ -42,6 +42,7 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
         sx={{
           display: { xs: 'block', md: 'none' },
           zIndex: 1300,
+
           backgroundColor: 'transparent',
           '& .MuiBackdrop-root': {
             backgroundColor: 'transparent',
@@ -49,7 +50,7 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: '100vw',
-            height: '92vh',
+            height: 'max-content',
             backgroundImage: 'none',
             boxShadow: 'inherit',
             backgroundColor: 'primary.main',

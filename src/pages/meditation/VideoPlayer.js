@@ -1,8 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import ReactPlayer from 'react-player/lazy';
-
 import { Box, Typography, Skeleton } from '@mui/material';
 import Controls from 'components/Controls';
+
+const throttle = (func, limit) => {
+  let inThrottle;
+  return function () {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+};
 
 const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying }) => {
   const videoRef = useRef();
@@ -12,6 +24,9 @@ const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying
   const [loading, setLoading] = useState(true);
   const [overlay, setOverlay] = useState(null);
   const [overlayVisible, setOverlayVisible] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
+  const [hideControlsTimeout, setHideControlsTimeout] = useState(null);
+  const [mouseOverControls, setMouseOverControls] = useState(false);
 
   const handlePlayPause = () => {
     setPlaying(!playing);
@@ -22,11 +37,46 @@ const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying
       setPlayedProgress(state.played);
     }
   };
-  React.useEffect(() => {
+
+  useEffect(() => {
     if (videoRef.current) {
       setDuration(videoRef.current.getDuration());
     }
   }, [loading, setDuration]);
+
+  const showControls = useCallback(() => {
+    if (hideControlsTimeout) {
+      clearTimeout(hideControlsTimeout);
+    }
+    setControlsVisible(true);
+    setHideControlsTimeout(
+      setTimeout(() => {
+        if (!mouseOverControls) {
+          setControlsVisible(false);
+          console.log('hide');
+        }
+      }, 3000),
+    );
+  }, [hideControlsTimeout, mouseOverControls]);
+
+  useEffect(() => {
+    const handleMouseMove = throttle(() => {
+      showControls();
+    }, 300);
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('mousemove', handleMouseMove);
+      container.addEventListener('touchstart', handleMouseMove);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('mousemove', handleMouseMove);
+        container.removeEventListener('touchstart', handleMouseMove);
+      }
+    };
+  }, [showControls]);
 
   return (
     <Box
@@ -50,7 +100,7 @@ const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying
         <ReactPlayer
           ref={videoRef}
           width="100%"
-          height={'100%'}
+          height="100%"
           url={path_to_video}
           playing={playing}
           onProgress={handleProgress}
@@ -122,6 +172,9 @@ const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying
           setOverlay={setOverlay}
           setOverlayVisible={setOverlayVisible}
           containerRef={containerRef}
+          visible={controlsVisible}
+          onMouseEnter={() => setMouseOverControls(true)}
+          onMouseLeave={() => setMouseOverControls(false)}
         />
       )}
     </Box>

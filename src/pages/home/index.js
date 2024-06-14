@@ -48,13 +48,13 @@ const Home = () => {
       to: '/meditation',
     },
   ];
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <>
       <MobileHeaderContent />
       <Box width="100%">
-        <Box height={{ xs: 'calc(100vh - 70px)', md: 'calc(100vh - 77px)' }} width="100vw">
+        <Box minHeight={{ xs: 'fit-content', md: 'calc(100vh - 77px)' }} width="100vw">
           <Swiper
             modules={[Pagination, A11y, Autoplay]}
             autoplay={{ delay: 5000 }}
@@ -119,6 +119,23 @@ const Home = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+          <Box
+            display={{ xs: 'flex', md: 'none' }}
+            sx={{ height: '100%', px: 2, py: 4, gap: 2, flexDirection: 'column' }}
+          >
+            <Typography
+              variant="h1"
+              fontSize="3rem"
+              textTransform="uppercase"
+              fontWeight={{ xs: 400 }}
+            >
+              Добро пожаловать{isAuthenticated && ', ' + user.first_name}!
+            </Typography>
+            <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+              Не ограничивай себя в движении,{'\n\n'}В здоровом теле здоровый дух. Регулярная
+              практика и позитивный настрой дадут тебе энергию для реализации твоей цели 🎯
+            </Typography>
+          </Box>
         </Box>
         <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 4 }} mx="auto">
           <Grid

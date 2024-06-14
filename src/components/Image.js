@@ -12,7 +12,6 @@ const Image = (props) => {
   });
 
   const onLoad = () => {
-    console.log('Image loaded:', props.src);
     setIsLoaded(true);
   };
 

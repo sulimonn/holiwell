@@ -13,8 +13,8 @@ const MeditationCard = ({ lesson, isSubscribed, index }) => {
   const [musicDuration, setMusicDuration] = useState('00:00');
 
   useEffect(() => {
-    const audio = document.createElement('audio');
-    audio.src = lesson.path_to_audio;
+    const audio = document.createElement('video');
+    audio.src = lesson.path_to_video;
 
     const updateDuration = () => {
       const formattedDuration = formatTime(audio.duration);
@@ -26,7 +26,7 @@ const MeditationCard = ({ lesson, isSubscribed, index }) => {
     return () => {
       audio.removeEventListener('loadedmetadata', updateDuration);
     };
-  }, [lesson.path_to_audio]);
+  }, [lesson.path_to_video]);
 
   return (
     <Box width={{ xs: '100%', md: 'auto' }} position={{ xs: 'relative', md: 'static' }}>

@@ -8,11 +8,13 @@ import Icon from '@ant-design/icons';
 import CalendarIcon from 'assets/images/icons/Calendar';
 import ModalCalendar from 'pages/calendar/ModalCalendar';
 import Heart from 'assets/images/icons/heart';
+import Arrow2 from 'assets/images/icons/arrow2';
 
 const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) => {
   const [open, setOpen] = React.useState(false);
   const Calendar = (props) => <Icon component={CalendarIcon} {...props} />;
   const HeartIcon = (props) => <Icon component={Heart} {...props} />;
+  const ArrowTo = (props) => <Icon component={Arrow2} {...props} />;
 
   const [isFavourite, setFavourite] = React.useState(false);
 
@@ -138,10 +140,25 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
                 textTransform="uppercase"
                 color="primary.main"
                 sx={{
-                  display: { xs: 'none', sm: 'block' },
+                  display: { xs: 'none', sm: 'flex' },
+                  textDecoration: 'none',
+                  width: 'fit-content',
+                  position: 'relative',
+                  '&:after': {
+                    content: '""',
+                    position: 'absolute',
+                    width: '100%',
+                    height: '1px',
+                    backgroundColor: 'primary.main',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                  },
+                  alignItems: 'baseline',
+                  gap: 0.5,
                 }}
               >
-                Подробнее
+                Подробнее <ArrowTo fontSize="5.5rem" />
               </Typography>
             </Box>
             <br />
@@ -156,8 +173,22 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
                 variant="body2"
                 textTransform="uppercase"
                 color="primary.main"
+                sx={{
+                  textDecoration: 'none',
+                  position: 'relative',
+                  '&:after': {
+                    content: '""',
+                    position: 'absolute',
+                    width: '100%',
+                    height: '1px',
+                    backgroundColor: 'primary.main',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                  },
+                }}
               >
-                Подробнее
+                Подробнее <ArrowTo fontSize="inherit" />
               </Typography>
             </Box>
           </Box>

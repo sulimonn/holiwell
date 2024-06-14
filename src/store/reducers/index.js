@@ -8,6 +8,7 @@ import { apiSlice } from './apiSlice';
 import courses from './courses';
 import trainers from './trainers';
 import subscription from './subscription';
+import test from './testSlice';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -18,6 +19,7 @@ const reducers = combineReducers({
   [courses.reducerPath]: courses.reducer,
   [trainers.reducerPath]: trainers.reducer,
   subscription,
+  test,
 });
 
 export default reducers;
