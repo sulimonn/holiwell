@@ -54,9 +54,9 @@ const Image = (props) => {
         onError={onError}
         style={{
           ...props.style,
-          display: isLoaded ? 'block' : 'none',
+          display: { xs: 'inherit', md: isLoaded ? 'block' : 'none' },
           transition: 'opacity 0.5s ease-in-out',
-          opacity: isLoaded ? 1 : 0,
+          opacity: { xs: 1, md: isLoaded ? 1 : 0 },
         }}
       />
 
