@@ -5,37 +5,37 @@ import { useGetTrainersQuery } from 'store/reducers/trainers';
 import Back from 'components/Back';
 
 const Trainers = () => {
-  //const { data: trainers = [] } = useGetTrainersQuery()
-  const trainers = [
-    {
-      id: 1,
-      first_name: 'Имя',
-      last_name: 'Фамилия',
-      path_to_avatar: 'avatar-1.png',
-      slogan: '',
-    },
-    {
-      id: 2,
-      first_name: 'Имя',
-      last_name: 'Фамилия',
-      path_to_avatar: 'avatar-2.png',
-      slogan: '',
-    },
-    {
-      id: 3,
-      first_name: 'Имя',
-      last_name: 'Фамилия',
-      path_to_avatar: 'avatar-1.png',
-      slogan: '',
-    },
-    {
-      id: 4,
-      first_name: 'Имя',
-      last_name: 'Фамилия',
-      path_to_avatar: 'avatar-2.png',
-      slogan: '',
-    },
-  ];
+  const { data: trainers = [] } = useGetTrainersQuery();
+  // const trainers = [
+  //   {
+  //     id: 1,
+  //     first_name: 'Имя',
+  //     last_name: 'Фамилия',
+  //     path_to_avatar: 'avatar-1.png',
+  //     slogan: '',
+  //   },
+  //   {
+  //     id: 2,
+  //     first_name: 'Имя',
+  //     last_name: 'Фамилия',
+  //     path_to_avatar: 'avatar-2.png',
+  //     slogan: '',
+  //   },
+  //   {
+  //     id: 3,
+  //     first_name: 'Имя',
+  //     last_name: 'Фамилия',
+  //     path_to_avatar: 'avatar-1.png',
+  //     slogan: '',
+  //   },
+  //   {
+  //     id: 4,
+  //     first_name: 'Имя',
+  //     last_name: 'Фамилия',
+  //     path_to_avatar: 'avatar-2.png',
+  //     slogan: '',
+  //   },
+  // ];
 
   return (
     <Box width="100%" py={8}>
@@ -56,11 +56,6 @@ const Trainers = () => {
           sx={{ my: 2 }}
         >
           {trainers.map((trainer) => (
-            <Grid item xs={6} sm={4} md={3} key={trainer.id}>
-              <TrainerCard trainer={trainer} />
-            </Grid>
-          ))}
-          {[...trainers].reverse().map((trainer) => (
             <Grid item xs={6} sm={4} md={3} key={trainer.id}>
               <TrainerCard trainer={trainer} />
             </Grid>

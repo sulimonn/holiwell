@@ -50,7 +50,7 @@ const TrainCard = ({
   const props = isSubscribed
     ? {
         component: Link,
-        to: `/training/${course.id}`,
+        to: `/${course.course_type_slug}`,
         sx: { textDecoration: 'none', color: 'inherit' },
       }
     : {};
@@ -67,7 +67,7 @@ const TrainCard = ({
         justifyContent="center"
       >
         <Image
-          src={require('assets/images/girls/' + course.path_to_cover + '')}
+          src={course.path_to_cover}
           alt={course.title}
           style={{ width: '100%', height: '100%', objectFit: 'cover', flex: 1 }}
         />

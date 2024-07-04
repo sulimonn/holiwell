@@ -3,19 +3,18 @@ import React, { useRef } from 'react';
 import { Box, Container, Typography, Divider, Button } from '@mui/material';
 import ListenItem from './ListenItem';
 import Image from 'components/Image';
-import { formatDuration } from 'utils/formatTime';
+import { addSeconds, formatDuration, timeToSeconds } from 'utils/formatTime';
 import TrainersList from 'components/TrainersList';
 import Back from 'components/Back';
-import { useSelector } from 'react-redux';
 import ModalCalendar from 'pages/calendar/ModalCalendar';
+import { useGetCourseQuery } from 'store/reducers/courses';
 
 const ListenList = () => {
-  const { listen: audioCourse } = useSelector((state) => state.test);
-
+  const { data: audioCourse = {}, isFetching } = useGetCourseQuery(1);
   const audioRef = useRef(new Audio());
   const [playing, setPlaying] = React.useState(null);
   const [open, setOpen] = React.useState(false);
-  const [totalDuration, setTotalDuration] = React.useState({ total: 0, items: [] });
+  const [totalDuration, setTotalDuration] = React.useState(0);
 
   const handleOpen = () => setOpen(true);
   const handlePlayPause = (id, audioPath) => {
@@ -35,10 +34,16 @@ const ListenList = () => {
 
   React.useEffect(() => {
     const audio = audioRef.current;
+    if (audioCourse?.lessons?.length > 0) {
+      setTotalDuration((prev) =>
+        addSeconds(audioCourse.lessons.map((lesson) => timeToSeconds(lesson.audio_length))),
+      );
+    }
     return () => {
       if (audio) audio.pause();
     };
-  }, []);
+  }, [audioCourse]);
+  if (isFetching) return;
 
   return (
     <>
@@ -52,7 +57,7 @@ const ListenList = () => {
           mt={{ xs: 7, sm: 0 }}
         >
           <Image
-            src={require(`assets/images/girls/${audioCourse.path_to_cover}`)}
+            src={audioCourse.path_to_cover}
             alt="listen"
             style={{
               width: '100%',
@@ -94,7 +99,7 @@ const ListenList = () => {
             textTransform="uppercase"
             my={2}
           >
-            {formatDuration(totalDuration.total)}
+            {formatDuration(totalDuration)}
           </Typography>
 
           <Button variant="contained" onClick={handleOpen}>
@@ -115,7 +120,6 @@ const ListenList = () => {
               lesson={lesson}
               handlePlayPause={handlePlayPause}
               playing={playing}
-              setTotalDuration={setTotalDuration}
             />
           ))}
         </Box>

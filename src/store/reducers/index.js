@@ -9,6 +9,7 @@ import courses from './courses';
 import trainers from './trainers';
 import subscription from './subscription';
 import test from './testSlice';
+import user from './userApi';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -18,6 +19,7 @@ const reducers = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   [courses.reducerPath]: courses.reducer,
   [trainers.reducerPath]: trainers.reducer,
+  [user.reducerPath]: user.reducer,
   subscription,
   test,
 });

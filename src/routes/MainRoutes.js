@@ -50,11 +50,11 @@ const MainRoutes = {
       element: <MeditationsList />,
     },
     {
-      path: '/training',
+      path: '/courses',
       element: <Train />,
     },
     {
-      path: '/training/:id',
+      path: '/training',
       element: <TrainPage />,
     },
     {

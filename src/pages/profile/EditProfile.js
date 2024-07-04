@@ -1,45 +1,27 @@
 import React from 'react';
-
-// material-ui
 import {
   Box,
   Button,
   FormHelperText,
-  IconButton,
   InputLabel,
-  InputAdornment,
   Input,
   Stack,
   Typography,
   Container,
   Divider,
 } from '@mui/material';
-
-// third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// project import
-import AnimateButton from 'components/@extended/AnimateButton';
 import Back from 'components/Back';
 import Image from 'components/Image';
-
-// assets
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { useAuth } from 'contexts/AuthContext';
 import Default from 'assets/images/users/default.png';
+import { useEditProfileMutation, useUpdateAvatarMutation } from 'store/reducers/userApi';
 
 const EditProfile = () => {
-  const { user, login } = useAuth();
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const { user } = useAuth();
+  const [editProfile] = useEditProfileMutation();
+  const [updateAvatar] = useUpdateAvatarMutation();
 
   return (
     <Box width="100%">
@@ -58,27 +40,23 @@ const EditProfile = () => {
         <Box maxWidth={580} mx="auto" pt={{ xs: 10, md: 6 }} pb={10}>
           <Formik
             initialValues={{
-              first_name: user.first_name,
-              last_name: user.last_name,
-              email: user.email,
-              password: '',
+              first_name: user?.first_name || '',
+              last_name: user?.last_name || '',
+              email: user?.email || '',
               submit: null,
+              path_to_avatar: user?.path_to_avatar || '',
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string()
                 .email('Email-адрес введен некорректно')
                 .max(255)
                 .required('Email обязателен'),
-              password: Yup.string().max(255).required('Пароль обязателен'),
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
               try {
-                const response = await login({
-                  username: values.email,
-                  password: values.password,
-                });
+                const response = await editProfile({ ...values });
                 if (response.error) {
-                  if (response.error && response.error.status === 400) {
+                  if (response.error.status === 400) {
                     setErrors({
                       email: true,
                       password: true,
@@ -87,9 +65,10 @@ const EditProfile = () => {
                   }
                   setStatus({ success: false });
                   setSubmitting(false);
+                } else {
+                  setStatus({ success: true });
+                  setSubmitting(false);
                 }
-                setStatus({ success: false });
-                setSubmitting(false);
               } catch (err) {
                 setStatus({ success: false });
                 setErrors({ submit: err.message });
@@ -106,7 +85,7 @@ const EditProfile = () => {
               touched,
               values,
             }) => (
-              <form noValidate onSubmit={handleSubmit}>
+              <form noValidate onChange={handleSubmit}>
                 <Stack spacing={{ xs: 0.4, md: 1 }} direction="column">
                   <Stack direction="column" alignItems="center" spacing={2} sx={{ pb: 3 }}>
                     <Box
@@ -118,15 +97,14 @@ const EditProfile = () => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         mb: 1,
+                        overflow: 'hidden',
                       }}
                     >
-                      <Typography variant="h6" component="div">
-                        <Image
-                          src={values.path_to_avatar || Default}
-                          alt="Profile"
-                          style={{ width: '100%', height: '100%' }}
-                        />
-                      </Typography>
+                      <Image
+                        src={values.path_to_avatar || Default}
+                        alt="Profile"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
                     </Box>
                     <Button sx={{ position: 'relative' }}>
                       <input
@@ -143,18 +121,14 @@ const EditProfile = () => {
                         multiple={false}
                         name="path_to_avatar"
                         id="path_to_avatar"
-                        onChange={(e) => {
-                          const event = {
-                            ...e,
-                            target: {
-                              ...e.target,
-                              value: URL.createObjectURL(e.target.files[0]),
-                              name: 'path_to_avatar',
-                              id: 'path_to_avatar',
-                            },
-                          };
-                          console.log(event);
-                          handleChange(event);
+                        onChange={async (e) => {
+                          const file = e.target.files[0];
+                          const formData = new FormData();
+                          formData.append('avatar', file);
+                          const response = await updateAvatar(formData);
+                          if (!response.error) {
+                            console.log(response);
+                          }
                         }}
                       />
                       <Typography variant="body2" color="text.primary">
@@ -166,14 +140,10 @@ const EditProfile = () => {
                   <Stack
                     spacing={5}
                     direction="row"
-                    sx={{
-                      fontSize: '1rem',
-                      py: '10px',
-                      alignItems: 'baseline',
-                    }}
+                    sx={{ fontSize: '1rem', py: '10px', alignItems: 'baseline' }}
                   >
                     <InputLabel
-                      sx={{ width: { xs: '110px', md: '300px' }, color: 'text.secondary' }}
+                      sx={{ width: { xs: '110px', sm: '300px' }, color: 'text.secondary' }}
                       htmlFor="first_name"
                     >
                       Имя
@@ -200,14 +170,10 @@ const EditProfile = () => {
                   <Stack
                     spacing={5}
                     direction="row"
-                    sx={{
-                      fontSize: '1rem',
-                      py: '10px',
-                      alignItems: 'baseline',
-                    }}
+                    sx={{ fontSize: '1rem', py: '10px', alignItems: 'baseline' }}
                   >
                     <InputLabel
-                      sx={{ width: { xs: '110px', md: '300px' }, color: 'text.secondary' }}
+                      sx={{ width: { xs: '110px', sm: '300px' }, color: 'text.secondary' }}
                       htmlFor="last_name"
                     >
                       Фамилия
@@ -234,14 +200,10 @@ const EditProfile = () => {
                   <Stack
                     spacing={5}
                     direction="row"
-                    sx={{
-                      fontSize: '1rem',
-                      py: '10px',
-                      alignItems: 'baseline',
-                    }}
+                    sx={{ fontSize: '1rem', py: '10px', alignItems: 'baseline' }}
                   >
                     <InputLabel
-                      sx={{ width: { xs: '110px', md: '300px' }, color: 'text.secondary' }}
+                      sx={{ width: { xs: '110px', sm: '300px' }, color: 'text.secondary' }}
                       htmlFor="email"
                     >
                       Email
@@ -265,71 +227,11 @@ const EditProfile = () => {
                     )}
                   </Stack>
                   <Divider sx={{ width: '100%' }} />
-                  <Stack
-                    spacing={5}
-                    direction="row"
-                    sx={{
-                      fontSize: '1rem',
-                      py: '10px',
-                      alignItems: 'baseline',
-                    }}
-                  >
-                    <InputLabel
-                      sx={{ width: { xs: '110px', md: '300px' }, color: 'text.secondary' }}
-                      htmlFor="password"
-                    >
-                      Пароль
-                    </InputLabel>
-                    <Input
-                      fullWidth
-                      error={Boolean(touched.password && errors.password)}
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      value={values.password}
-                      name="password"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                            size="large"
-                          >
-                            {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      placeholder="Пароль"
-                      disableUnderline
-                    />
-                    {touched.password && errors.password && (
-                      <FormHelperText error id="standard-weight-helper-text-password-edit">
-                        {errors.password}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                  <Divider sx={{ width: '100%' }} />
                   {errors.submit && (
                     <Stack>
                       <FormHelperText error>{errors.submit}</FormHelperText>
                     </Stack>
                   )}
-                  <AnimateButton>
-                    <Button
-                      disableElevation
-                      disabled={isSubmitting}
-                      fullWidth
-                      size="large"
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                    >
-                      Сохранить
-                    </Button>
-                  </AnimateButton>
                 </Stack>
               </form>
             )}

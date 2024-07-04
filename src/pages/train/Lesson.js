@@ -9,6 +9,7 @@ import LessonCard from './LessonCard';
 import TrainersList from 'components/TrainersList';
 import { subscribe } from 'store/reducers/subscription';
 import Image from 'components/Image';
+import { useGetCourseQuery } from 'store/reducers/courses';
 
 const Lesson = () => {
   const { isSubscribed } = useSelector((state) => state.subscription);
@@ -16,136 +17,7 @@ const Lesson = () => {
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
   const [isPlaying, setPlaying] = React.useState(false);
 
-  const courses = [
-    {
-      id: 0,
-      title: 'Урок 1 : Название урока',
-      description: 'string',
-      trainer: {
-        id: 0,
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        description: 'string',
-        path_to_avatar: 'string',
-        path_to_background: 'string',
-      },
-      course_id: 0,
-      path_to_cover: 'courses2.jpeg',
-      path_to_video: 'string',
-      path_to_audio:
-        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-      links_before: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-      links_after: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: 'Урок 1 : Название урока',
-      description: 'string',
-      trainer: {
-        id: 0,
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        description: 'string',
-        path_to_avatar: 'string',
-        path_to_background: 'string',
-      },
-      course_id: 0,
-      path_to_cover: 'lesson.jpeg',
-      path_to_video: 'string',
-      path_to_audio:
-        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-      links_before: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-      links_after: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: 'Урок 1 : Название урока',
-      description: 'string',
-      trainer: {
-        id: 0,
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        description: 'string',
-        path_to_avatar: 'string',
-        path_to_background: 'string',
-      },
-      course_id: 0,
-      path_to_cover: 'lesson.jpeg',
-      path_to_video: 'string',
-      path_to_audio:
-        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-      links_before: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-      links_after: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: 'Урок 1 : Название урока',
-      description: 'string',
-      trainer: {
-        id: 0,
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        description: 'string',
-        path_to_avatar: 'string',
-        path_to_background: 'string',
-      },
-      course_id: 0,
-      path_to_cover: 'courses2.jpeg',
-      path_to_video: 'string',
-      path_to_audio:
-        'https://muzma.net/uploads/music/2023/01/Darkvidez_The_Hills_x_The_Color_Violet_x_Creepin_Tiktok_Remix.mp3',
-      links_before: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-      links_after: [
-        {
-          id: 0,
-          lesson_id: 0,
-          linked_lesson_id: 0,
-        },
-      ],
-    },
-  ];
+  const { data: course = {} } = useGetCourseQuery(1);
 
   const handleSubscription = () => {
     dispatch(subscribe());
@@ -281,14 +153,15 @@ const Lesson = () => {
           borderBottom="1px solid"
           borderColor="divider"
         >
-          {courses.map((course, index) => (
-            <LessonCard
-              key={course.id}
-              course={course}
-              index={index + 1}
-              isSubscribed={isSubscribed}
-            />
-          ))}
+          {course.lessons &&
+            course?.lessons.map((course, index) => (
+              <LessonCard
+                key={course.id}
+                course={course}
+                index={index + 1}
+                isSubscribed={isSubscribed}
+              />
+            ))}
         </Box>
       </Container>
 

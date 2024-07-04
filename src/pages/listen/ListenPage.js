@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
 import LessonPageBase from 'components/LessonPageBase';
 import Controls from 'components/Controls';
 import Image from 'components/Image';
+import { useGetLessonQuery } from 'store/reducers/courses';
 
 const throttle = (func, limit) => {
   let inThrottle;
@@ -22,10 +22,7 @@ const throttle = (func, limit) => {
 
 const ListenPage = () => {
   const { id } = useParams();
-  const lesson = useSelector((state) => state.test.listen).lessons.find(
-    (lesson) => lesson.id === parseInt(id),
-  );
-
+  const { data: lesson = {}, isFetching } = useGetLessonQuery(id);
   const [duration, setDuration] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [playedProgress, setPlayedProgress] = useState(0);
@@ -110,6 +107,9 @@ const ListenPage = () => {
       }
     };
   }, [showControls]);
+  if (isFetching) {
+    return null;
+  }
 
   return (
     <LessonPageBase
@@ -136,7 +136,7 @@ const ListenPage = () => {
           >
             <Box component="audio" ref={audioRef} sx={{ display: 'none' }} />
             <Image
-              src={require(`assets/images/girls/${lesson.path_to_cover}`)}
+              src={lesson.path_to_cover}
               alt="cover"
               style={{
                 width: '100%',

@@ -2,12 +2,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_API_URL,
+    baseUrl: '',
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   reducerPath: 'authApi',
-
-  tagTypes: ['User'],
-
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => {
@@ -37,17 +41,12 @@ export const authApi = createApi({
       }),
       invalidatesTags: ['User'],
     }),
-    getMe: builder.query({
-      query: () => '/users/me',
-      providesTags: ['User'],
-    }),
     logout: builder.mutation({
       query: () => ({
         url: '/auth/jwt/logout',
         method: 'POST',
         credentials: 'include',
       }),
-      invalidatesTags: ['User'],
     }),
     resetPassword: builder.mutation({
       query: (credentials) => ({
@@ -55,17 +54,15 @@ export const authApi = createApi({
         method: 'POST',
         body: { ...credentials },
       }),
-      invalidatesTags: ['User'],
     }),
   }),
 });
 
-export default authApi;
-
 export const {
   useLoginMutation,
   useRegisterMutation,
-  useGetMeQuery,
   useLogoutMutation,
   useResetPasswordMutation,
 } = authApi;
+
+export default authApi;

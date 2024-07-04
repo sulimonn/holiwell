@@ -7,6 +7,7 @@ import { apiSlice } from './reducers/apiSlice';
 import authApi from './reducers/authApi';
 import courses from './reducers/courses';
 import trainers from './reducers/trainers';
+import user from './reducers/userApi';
 
 // ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
 
@@ -18,6 +19,7 @@ const store = configureStore({
       authApi.middleware,
       courses.middleware,
       trainers.middleware,
+      user.middleware,
     ),
   devTools: true,
 });

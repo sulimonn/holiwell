@@ -1,7 +1,8 @@
 import Loader from 'components/Loader';
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLoginMutation, useGetMeQuery, useLogoutMutation } from 'store/reducers/authApi';
+import { useLoginMutation, useLogoutMutation } from 'store/reducers/authApi';
+import { useGetMeQuery } from 'store/reducers/userApi';
 
 const AuthContext = createContext();
 
@@ -18,7 +19,7 @@ const AuthProvider = ({ children }) => {
     isFetching,
     isLoading,
   } = useGetMeQuery(null, {
-    skip: isAuthenticated,
+    skip: isAuthenticated || !localStorage.getItem('authToken'),
   });
   const [logout] = useLogoutMutation();
 
@@ -34,7 +35,8 @@ const AuthProvider = ({ children }) => {
 
   const handleLogin = async (credentials) => {
     try {
-      await login(credentials).unwrap();
+      const { access_token } = await login(credentials).unwrap();
+      localStorage.setItem('authToken', access_token);
       refetch();
       navigate('/');
     } catch (error) {
@@ -44,10 +46,10 @@ const AuthProvider = ({ children }) => {
       return error;
     }
   };
-
   const handleLogout = async () => {
     try {
       await logout().unwrap();
+      localStorage.removeItem('authToken');
       setIsAuthenticated(false);
       setUser(null);
       navigate('/login');
@@ -66,7 +68,13 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, login: handleLogin, logout: handleLogout, refreshAuthState }}
+      value={{
+        isAuthenticated,
+        user,
+        login: handleLogin,
+        logout: handleLogout,
+        refreshAuthState,
+      }}
     >
       {children}
     </AuthContext.Provider>

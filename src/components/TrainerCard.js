@@ -9,7 +9,14 @@ const TeamCard = ({ trainer }) => {
     <Link to={`/trainers/${trainer.id}`} style={{ textDecoration: 'none' }}>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Avatar avatar={trainer.path_to_avatar} />
-        <Typography variant="h5" fontWeight="300" textAlign="center" mt={1} color="primary.main">
+        <Typography
+          variant="h5"
+          fontWeight="300"
+          textAlign="center"
+          mt={1}
+          color="primary.main"
+          sx={{ whiteSpace: 'wrap', maxWidth: { xs: '160px', sm: '270px' } }}
+        >
           {trainer.first_name} {trainer.last_name}
         </Typography>
       </Box>

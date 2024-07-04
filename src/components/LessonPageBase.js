@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Container, Typography, Divider, Button, IconButton } from '@mui/material';
-import { formatTime } from 'utils/formatTime';
+import { formatTime } from 'utils/formatTime'; // eslint-disable-next-line
 import Avatar from './Avatar';
 import Icon from '@ant-design/icons';
 import CalendarIcon from 'assets/images/icons/Calendar';
@@ -110,7 +110,7 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
             gap={{ xs: 0.5, md: 3 }}
             flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
           >
-            <Avatar avatar={lesson.trainer.path_to_avatar} />
+            {/* <Avatar avatar={require(`assets/images/girls/${lesson.trainer.path_to_avatar}`)} /> */}
             <Box
               textAlign="left"
               display="flex"

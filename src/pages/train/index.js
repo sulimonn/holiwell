@@ -3,35 +3,11 @@ import React from 'react';
 import { Box } from '@mui/material';
 import Lessons from 'components/LessonsBase';
 import CourseCard from './TrainCard';
+import { useGetCoursesQuery } from 'store/reducers/courses';
 
 const Train = () => {
   const [sortOption, setSortOption] = React.useState('default');
-  const courses = [
-    {
-      id: 0,
-      title: 'Тренировки для тела',
-      description: 'string',
-      path_to_cover: 'courses2.jpeg',
-    },
-    {
-      id: 1,
-      title: 'Выдающийся рельеф',
-      description: '',
-      path_to_cover: 'lesson.jpeg',
-    },
-    {
-      id: 2,
-      title: 'Тренировки для тела',
-      description: 'string',
-      path_to_cover: 'courses2.jpeg',
-    },
-    {
-      id: 3,
-      title: 'Выдающийся рельеф',
-      description: 'string',
-      path_to_cover: 'lesson.jpeg',
-    },
-  ];
+  const { data: courses = [] } = useGetCoursesQuery();
   return (
     <Lessons title="ТРЕНИРУЙСЯ" sortOption={sortOption} setSortOption={setSortOption}>
       <Box

@@ -1,14 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactCalendar from 'react-calendar';
+
+//material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import Icon from '@ant-design/icons';
 import down from 'assets/images/icons/down';
 import './Calendar.css';
+
+//utils
 import { formatDateToLocalISO } from 'utils/formatTime';
+import { useGetCalendarQuery } from 'store/reducers/userApi';
 
 const Calendar = () => {
+  const { data: myCalendar = [] } = useGetCalendarQuery();
   const theme = useTheme();
   const navigate = useNavigate();
   const [localdate, setDate] = React.useState(new Date());
@@ -18,6 +24,8 @@ const Calendar = () => {
   const onChange = (newDate) => {
     setDate(newDate);
   };
+
+  console.log(myCalendar);
   return (
     <Box
       sx={{
@@ -65,32 +73,35 @@ const Calendar = () => {
         minDetail="month"
         nextLabel={<ArrowIcon style={{ transform: 'rotate(-90deg)', opacity: 0.5 }} />}
         prevLabel={<ArrowIcon style={{ transform: 'rotate(90deg)', opacity: 0.5 }} />}
-        tileContent={({ date, view }) =>
-          view === 'month' && (
-            <Box
-              width="10px"
-              height="10px"
-              borderRadius="50%"
-              mt={1}
-              mx="auto"
-              sx={{ overflow: 'hidden', border: '1px solid', borderColor: 'background.default' }}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
+        tileContent={({ date, view }) => {
+          console.log(date);
+          return (
+            view === 'month' && (
               <Box
-                bgcolor={view === 'month' ? 'primary.lighter' : null}
-                width="100%"
-                height="100%"
-              ></Box>
-              <Box
-                bgcolor={view === 'month' ? 'error.light' : null}
-                width="100%"
-                height="100%"
-              ></Box>
-            </Box>
-          )
-        }
+                width="10px"
+                height="10px"
+                borderRadius="50%"
+                mt={1}
+                mx="auto"
+                sx={{ overflow: 'hidden', border: '1px solid', borderColor: 'background.default' }}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Box
+                  bgcolor={view === 'month' ? 'primary.lighter' : null}
+                  width="100%"
+                  height="100%"
+                ></Box>
+                <Box
+                  bgcolor={view === 'month' ? 'error.light' : null}
+                  width="100%"
+                  height="100%"
+                ></Box>
+              </Box>
+            )
+          );
+        }}
         navigationLabel={({ date, label, locale, view }) =>
           view === 'month' ? date.toLocaleDateString(locale, { month: 'long' }) : label
         }

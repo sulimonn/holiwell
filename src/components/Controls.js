@@ -210,10 +210,11 @@ const Controls = ({
       alignItems="center"
       gap={0}
       zIndex={5}
-      height={visible ? 'auto' : 0}
       sx={{
+        opacity: visible ? 1 : 0,
         transition: 'all 0.3s',
         overflow: 'hidden',
+        pointerEvents: visible ? 'auto' : 'none',
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

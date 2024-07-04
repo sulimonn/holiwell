@@ -18,9 +18,9 @@ const Avatar = ({ avatar, border }) => {
         }}
       >
         <Image
-          src={require(`assets/images/users/${avatar}`)}
+          src={avatar}
           alt="team"
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
         />
       </Box>
     </div>

@@ -9,7 +9,8 @@ export function formatTime(duration) {
 export const formatDuration = (seconds) => {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
-  return `${h} ${h % 10 === 0 ? '' : h % 10 === 1 ? 'час' : h % 10 > 4 ? 'часов' : 'часa'} ${m.toString().padStart(2, '0')} ${m % 10 === 0 ? '' : m % 10 === 1 ? 'минута' : m % 10 > 4 ? 'минут' : 'минуты'}`;
+  console.log(h, m, seconds);
+  return `${h === 0 ? '' : h} ${h % 10 === 0 ? '' : h % 10 === 1 ? 'час' : h % 10 > 4 ? 'часов' : 'часa'} ${m.toString().padStart(2, '0')} ${m % 10 === 0 ? '' : m % 10 === 1 ? 'минута' : m % 10 > 4 ? 'минут' : 'минуты'}`;
 };
 
 export function formatDateToLocalISO(date) {
@@ -17,4 +18,18 @@ export function formatDateToLocalISO(date) {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
+}
+export function timeToSeconds(time) {
+  const parts = time.split(':');
+  const hours = parseInt(parts[0], 10);
+  const minutes = parseInt(parts[1], 10);
+  const seconds = parseInt(parts[2], 10);
+
+  return hours * 3600 + minutes * 60 + seconds;
+}
+
+export function addSeconds(secondsArray) {
+  return secondsArray.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue;
+  }, 0);
 }
