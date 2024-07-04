@@ -14,7 +14,7 @@ import { formatDateToLocalISO } from 'utils/formatTime';
 import { useGetCalendarQuery } from 'store/reducers/userApi';
 
 const Calendar = () => {
-  const { data: myCalendar = [] } = useGetCalendarQuery();
+  const { data: myCalendar = [], isFetching } = useGetCalendarQuery();
   const theme = useTheme();
   const navigate = useNavigate();
   const [localdate, setDate] = React.useState(new Date());
@@ -24,8 +24,7 @@ const Calendar = () => {
   const onChange = (newDate) => {
     setDate(newDate);
   };
-
-  console.log(myCalendar);
+  if (isFetching) return null;
   return (
     <Box
       sx={{
@@ -74,7 +73,10 @@ const Calendar = () => {
         nextLabel={<ArrowIcon style={{ transform: 'rotate(-90deg)', opacity: 0.5 }} />}
         prevLabel={<ArrowIcon style={{ transform: 'rotate(90deg)', opacity: 0.5 }} />}
         tileContent={({ date, view }) => {
-          console.log(date);
+          const isPlanned = myCalendar.find((lesson) => {
+            console.log(lesson.timestamp, date.toISOString());
+            return lesson.timestamp.slice(0, 10) === date.toISOString().slice(0, 10);
+          });
           return (
             view === 'month' && (
               <Box
@@ -89,12 +91,9 @@ const Calendar = () => {
                 alignItems="center"
               >
                 <Box
-                  bgcolor={view === 'month' ? 'primary.lighter' : null}
-                  width="100%"
-                  height="100%"
-                ></Box>
-                <Box
-                  bgcolor={view === 'month' ? 'error.light' : null}
+                  bgcolor={
+                    view === 'month' ? (isPlanned ? 'error.light' : 'background.default') : null
+                  }
                   width="100%"
                   height="100%"
                 ></Box>

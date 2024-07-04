@@ -20,7 +20,7 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
 
   return (
     <>
-      <ModalCalendar open={open} setOpen={setOpen} />
+      <ModalCalendar lesson_id={lesson.id} open={open} setOpen={setOpen} />
       <Box width="100%">
         <Container maxWidth="lg" sx={{ px: { xs: 0, md: 2 } }}>
           {cover}
@@ -65,7 +65,9 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
                 size="small"
                 endIcon={<Calendar style={{ opacity: 0.5 }} />}
                 sx={{ p: 1, mt: 3 }}
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                  setOpen(true);
+                }}
               >
                 <Typography sx={{ opacity: 0.5 }} variant="subtitle1">
                   Запланировать

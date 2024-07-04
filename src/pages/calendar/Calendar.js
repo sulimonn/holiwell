@@ -6,6 +6,7 @@ import { Box, Container, Typography } from '@mui/material';
 import './Calendar.css';
 import Back from 'components/Back';
 import { formatDateToLocalISO } from 'utils/formatTime';
+import { useGetCalendarQuery } from 'store/reducers/userApi';
 
 const Calendar = () => {
   const theme = useTheme();
@@ -13,6 +14,9 @@ const Calendar = () => {
   const [localdate, setDate] = React.useState(new Date());
   const [localnextdate, setNextDate] = React.useState(localdate);
   const [local2nextdate, set2NextDate] = React.useState(localdate);
+
+  const { data: myCalendar = [], isFetching } = useGetCalendarQuery();
+
   React.useEffect(() => {
     setNextDate(() => {
       let newDate = new Date(localdate);
@@ -28,6 +32,7 @@ const Calendar = () => {
   const onChange = (newDate) => {
     setDate(newDate);
   };
+  if (isFetching) return null;
   return (
     <Box width="100%">
       <Box py={{ xs: 2, md: 6 }} bgcolor="background.paper" display={{ xs: 'none', md: 'block' }}>
@@ -101,36 +106,39 @@ const Calendar = () => {
             showDoubleView={false}
             maxDetail="month"
             minDetail="month"
-            tileContent={({ date, view }) =>
-              view === 'month' && (
-                <Box
-                  width="10px"
-                  height="10px"
-                  borderRadius="50%"
-                  mt={1}
-                  mx="auto"
-                  sx={{
-                    overflow: 'hidden',
-                    border: '1px solid',
-                    borderColor: 'background.default',
-                  }}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
+            tileContent={({ date, view }) => {
+              const isPlanned = myCalendar.find((lesson) => {
+                console.log(lesson.timestamp, date.toISOString());
+                return lesson.timestamp.slice(0, 10) === date.toISOString().slice(0, 10);
+              });
+              return (
+                view === 'month' && (
                   <Box
-                    bgcolor={view === 'month' ? 'primary.lighter' : null}
-                    width="100%"
-                    height="100%"
-                  ></Box>
-                  <Box
-                    bgcolor={view === 'month' ? 'error.light' : null}
-                    width="100%"
-                    height="100%"
-                  ></Box>
-                </Box>
-              )
-            }
+                    width="10px"
+                    height="10px"
+                    borderRadius="50%"
+                    mt={1}
+                    mx="auto"
+                    sx={{
+                      overflow: 'hidden',
+                      border: '1px solid',
+                      borderColor: 'background.default',
+                    }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Box
+                      bgcolor={
+                        view === 'month' ? (isPlanned ? 'error.light' : 'background.default') : null
+                      }
+                      width="100%"
+                      height="100%"
+                    ></Box>
+                  </Box>
+                )
+              );
+            }}
             navigationLabel={({ date, label, locale, view }) =>
               view === 'month' ? date.toLocaleDateString(locale, { month: 'long' }) : label
             }
@@ -143,36 +151,39 @@ const Calendar = () => {
             showDoubleView={false}
             maxDetail="month"
             minDetail="month"
-            tileContent={({ date, view }) =>
-              view === 'month' && (
-                <Box
-                  width="10px"
-                  height="10px"
-                  borderRadius="50%"
-                  mt={1}
-                  mx="auto"
-                  sx={{
-                    overflow: 'hidden',
-                    border: '1px solid',
-                    borderColor: 'background.default',
-                  }}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
+            tileContent={({ date, view }) => {
+              const isPlanned = myCalendar.find((lesson) => {
+                console.log(lesson.timestamp, date.toISOString());
+                return lesson.timestamp.slice(0, 10) === date.toISOString().slice(0, 10);
+              });
+              return (
+                view === 'month' && (
                   <Box
-                    bgcolor={view === 'month' ? 'primary.lighter' : null}
-                    width="100%"
-                    height="100%"
-                  ></Box>
-                  <Box
-                    bgcolor={view === 'month' ? 'error.light' : null}
-                    width="100%"
-                    height="100%"
-                  ></Box>
-                </Box>
-              )
-            }
+                    width="10px"
+                    height="10px"
+                    borderRadius="50%"
+                    mt={1}
+                    mx="auto"
+                    sx={{
+                      overflow: 'hidden',
+                      border: '1px solid',
+                      borderColor: 'background.default',
+                    }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Box
+                      bgcolor={
+                        view === 'month' ? (isPlanned ? 'error.light' : 'background.default') : null
+                      }
+                      width="100%"
+                      height="100%"
+                    ></Box>
+                  </Box>
+                )
+              );
+            }}
             navigationLabel={({ date, label, locale, view }) =>
               view === 'month' ? date.toLocaleDateString(locale, { month: 'long' }) : label
             }
@@ -187,36 +198,39 @@ const Calendar = () => {
             showDoubleView={false}
             maxDetail="month"
             minDetail="month"
-            tileContent={({ date, view }) =>
-              view === 'month' && (
-                <Box
-                  width="10px"
-                  height="10px"
-                  borderRadius="50%"
-                  mt={1}
-                  mx="auto"
-                  sx={{
-                    overflow: 'hidden',
-                    border: '1px solid',
-                    borderColor: 'background.default',
-                  }}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
+            tileContent={({ date, view }) => {
+              const isPlanned = myCalendar.find((lesson) => {
+                console.log(lesson.timestamp, date.toISOString());
+                return lesson.timestamp.slice(0, 10) === date.toISOString().slice(0, 10);
+              });
+              return (
+                view === 'month' && (
                   <Box
-                    bgcolor={view === 'month' ? 'primary.lighter' : null}
-                    width="100%"
-                    height="100%"
-                  ></Box>
-                  <Box
-                    bgcolor={view === 'month' ? 'error.light' : null}
-                    width="100%"
-                    height="100%"
-                  ></Box>
-                </Box>
-              )
-            }
+                    width="10px"
+                    height="10px"
+                    borderRadius="50%"
+                    mt={1}
+                    mx="auto"
+                    sx={{
+                      overflow: 'hidden',
+                      border: '1px solid',
+                      borderColor: 'background.default',
+                    }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Box
+                      bgcolor={
+                        view === 'month' ? (isPlanned ? 'error.light' : 'background.default') : null
+                      }
+                      width="100%"
+                      height="100%"
+                    ></Box>
+                  </Box>
+                )
+              );
+            }}
             navigationLabel={({ date, label, locale, view }) =>
               view === 'month' ? date.toLocaleDateString(locale, { month: 'long' }) : label
             }

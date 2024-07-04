@@ -8,6 +8,8 @@ import Icon from '@ant-design/icons';
 import down from 'assets/images/icons/down';
 import './Calendar.css';
 import Delete from 'assets/images/icons/Delete';
+import { usePlanLessonMutation } from 'store/reducers/userApi';
+import { formatDateToLocalISO } from 'utils/formatTime';
 
 const style = {
   position: 'absolute',
@@ -27,10 +29,22 @@ const style = {
   pb: 3,
 };
 
-const ModalCalendar = ({ open, setOpen }) => {
-  const handleClose = () => setOpen(false);
+const ModalCalendar = ({ open, setOpen, lesson_id }) => {
   const theme = useTheme();
   const [localdate, setDate] = React.useState(new Date());
+
+  const [planLesson, { isLoading }] = usePlanLessonMutation();
+
+  const handleClose = async () => {
+    const form = new FormData();
+    form.append('lesson_id', lesson_id);
+    form.append('timestamp', formatDateToLocalISO(localdate) + ' 00:00:00');
+
+    const response = await planLesson(form);
+    if (!response?.error) {
+      setOpen(false);
+    }
+  };
 
   const ArrowIcon = (props) => <Icon component={down} {...props} />;
   const CloseIcon = (props) => <Icon component={Delete} {...props} />;
@@ -48,7 +62,7 @@ const ModalCalendar = ({ open, setOpen }) => {
       <Box sx={style}>
         <IconButton
           aria-label="close"
-          onClick={handleClose}
+          onClick={() => setOpen(false)}
           sx={{
             position: 'absolute',
             right: { xs: '-5px', sm: '-35px' },
@@ -137,6 +151,7 @@ const ModalCalendar = ({ open, setOpen }) => {
           variant="contained"
           onClick={handleClose}
           sx={{ width: { xs: '248px', md: '300px' } }}
+          disabled={isLoading}
         >
           Выбрать
         </Button>
