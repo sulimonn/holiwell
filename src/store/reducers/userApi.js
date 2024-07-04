@@ -27,6 +27,14 @@ const user = apiSlice.injectEndpoints({
       query: () => '/users/my-calendar',
       providesTags: ['User'],
     }),
+    planLesson: builder.mutation({
+      query: (data) => ({
+        url: '/users/plan-lesson',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['User'],
+    }),
   }),
 });
 
@@ -35,6 +43,7 @@ export const {
   useGetMeQuery,
   useEditProfileMutation,
   useGetCalendarQuery,
+  usePlanLessonMutation,
 } = user;
 
 export default user;
