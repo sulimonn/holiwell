@@ -11,6 +11,15 @@ const auth = {
       type: 'item',
       url: '/login',
       mobile: false,
+      isAuth: false,
+    },
+    {
+      id: 'logout1',
+      title: 'ВЫЙТИ',
+      type: 'item',
+      url: '/logout',
+      mobile: false,
+      isAuth: true,
     },
   ],
 };

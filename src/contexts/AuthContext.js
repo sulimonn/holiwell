@@ -37,6 +37,7 @@ const AuthProvider = ({ children }) => {
     try {
       const { access_token } = await login(credentials).unwrap();
       localStorage.setItem('authToken', access_token);
+      console.log('Login successful');
       const { data } = await refetch();
       setUser(() => data);
       setIsAuthenticated(true);

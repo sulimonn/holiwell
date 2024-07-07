@@ -8,11 +8,13 @@ import { ListItemButton, ListItemText, Typography } from '@mui/material';
 
 // project import
 import { activeItem, openDrawer } from 'store/reducers/menu';
+import { useAuth } from 'contexts/AuthContext';
 
 // ==============================|| NAVIGATION - LIST ITEM ||============================== //
 
 const NavItem = ({ item, level }) => {
   const dispatch = useDispatch();
+  const { logout } = useAuth();
   const { pathname } = useLocation();
 
   const { drawerOpen, openItem } = useSelector((state) => state.menu);
@@ -46,12 +48,17 @@ const NavItem = ({ item, level }) => {
   }, [pathname]);
 
   const textColor = 'primary.contrastText';
-
+  listItemProps = item.id === 'logout1' ? {} : { ...listItemProps };
   return (
     <ListItemButton
       {...listItemProps}
       disabled={item.disabled}
-      onClick={() => itemHandler(item.id)}
+      onClick={async () => {
+        itemHandler(item.id);
+        if (item.id === 'logout1') {
+          await logout();
+        }
+      }}
       selected={isSelected}
       sx={{
         zIndex: 1201,
