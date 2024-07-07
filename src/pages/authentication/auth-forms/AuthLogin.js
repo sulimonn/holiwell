@@ -61,7 +61,7 @@ const AuthLogin = () => {
               username: values.email,
               password: values.password,
             });
-            if (response.error) {
+            if (response?.error) {
               if (response.error && response.error.status === 400) {
                 setErrors({
                   email: true,
@@ -75,6 +75,7 @@ const AuthLogin = () => {
             setStatus({ success: false });
             setSubmitting(false);
           } catch (err) {
+            console.log(err);
             setStatus({ success: false });
             setErrors({ submit: err.message });
             setSubmitting(false);

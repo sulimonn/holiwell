@@ -37,10 +37,11 @@ const AuthProvider = ({ children }) => {
     try {
       const { access_token } = await login(credentials).unwrap();
       localStorage.setItem('authToken', access_token);
-      refetch();
+      const { data } = await refetch();
+      setUser(() => data);
+      setIsAuthenticated(true);
       navigate('/');
     } catch (error) {
-      console.error('Failed to login:', error);
       setIsAuthenticated(false);
       setUser(null);
       return error;
