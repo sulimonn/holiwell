@@ -37,6 +37,9 @@ const HeaderContent = () => {
         )
         .filter((child) => !child.mobile)
         .map((child, i) => {
+          if (child.id === 'logout1') {
+            return null;
+          }
           return (
             <Typography
               component={Link}
