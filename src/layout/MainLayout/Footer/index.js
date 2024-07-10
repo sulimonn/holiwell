@@ -22,6 +22,7 @@ const Footer = () => {
       borderColor="divider"
       pt={6.5}
       pb={3.5}
+      display={{ xs: 'none', sm: 'block' }}
     >
       <Container maxWidth="lg">
         <Grid container spacing={4}>
@@ -55,11 +56,7 @@ const Footer = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={7.5} textAlign="center">
-            <Typography variant="body2" color="textSecondary">
-              © 2022. All rights reserved
-            </Typography>
-          </Grid>
+          <Grid item xs={7.5} textAlign="center"></Grid>
         </Grid>
       </Container>
     </Box>

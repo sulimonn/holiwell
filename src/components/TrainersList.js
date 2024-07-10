@@ -19,11 +19,16 @@ const TrainersList = ({ wrap = true }) => {
         width="100%"
         mx="auto"
       >
-        <Box sx={{ py: 12, mb: { xs: 6, md: 12 } }} display="flex" flexDirection="column" gap={4}>
+        <Box
+          sx={{ py: 12, mb: { xs: 6, md: 12 } }}
+          display="flex"
+          flexDirection="column"
+          gap={4}
+          px={{ xs: 2, sm: 0 }}
+        >
           <Box
             display="flex"
             justifyContent={{ xs: wrap ? 'center' : 'space-between', md: 'space-between' }}
-            px={{ xs: 2, sm: 0 }}
           >
             <Typography
               variant="h3"
@@ -74,7 +79,7 @@ const TrainersList = ({ wrap = true }) => {
               display="flex"
               flexWrap={{ xs: wrap ? 'wrap' : 'nowrap', md: 'nowrap' }}
               justifyContent={{ xs: wrap ? 'space-evenly' : 'flex-start', md: 'flex-start' }}
-              columnGap={{ xs: wrap ? 0 : 1, md: 8 }}
+              columnGap={{ xs: wrap ? 2 : 4, sm: 8 }}
               rowGap={{ xs: 3, md: 4 }}
               overflow="visible"
               position="relative"

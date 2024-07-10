@@ -9,7 +9,6 @@ import down from 'assets/images/icons/down';
 import './Calendar.css';
 import Delete from 'assets/images/icons/Delete';
 import { usePlanLessonMutation } from 'store/reducers/userApi';
-import { formatDateToLocalISO } from 'utils/formatTime';
 
 const style = {
   position: 'absolute',
@@ -38,7 +37,7 @@ const ModalCalendar = ({ open, setOpen, lesson_id }) => {
   const handleClose = async () => {
     const form = new FormData();
     form.append('lesson_id', lesson_id);
-    form.append('timestamp', formatDateToLocalISO(localdate) + ' 00:00:00');
+    form.append('timestamp', localdate.toISOString());
 
     const response = await planLesson(form);
     if (!response?.error) {

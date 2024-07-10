@@ -16,7 +16,6 @@ const Image = (props) => {
   };
 
   const onError = () => {
-    console.log('Image failed to load:', props.src);
     setHasError(true);
   };
 

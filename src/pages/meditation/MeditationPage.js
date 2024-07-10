@@ -5,27 +5,26 @@ import { Button } from '@mui/material';
 
 import LessonPageBase from 'components/LessonPageBase';
 import VideoPlayer from './VideoPlayer';
-import { useSelector } from 'react-redux';
+import { useGetLessonQuery } from 'store/reducers/courses';
+import { timeToSeconds } from 'utils/formatTime';
 
 const MeditionPage = () => {
   const { id } = useParams();
   const [playing, setPlaying] = useState(false);
-  const [duration, setDuration] = useState(0);
-  const lesson = useSelector((state) => state.test.meditation).lessons.find(
-    (lesson) => lesson.id === parseInt(id),
-  );
+  const { data: lesson = {}, isFetching } = useGetLessonQuery(id);
+
+  if (isFetching) return null;
   return (
     <LessonPageBase
       cover={
         <VideoPlayer
           path_to_video={lesson.path_to_video}
-          duration={duration}
-          setDuration={setDuration}
+          duration={timeToSeconds(lesson.video_length)}
           playing={playing}
           setPlaying={setPlaying}
         />
       }
-      duration={duration}
+      duration={lesson.video_length}
       lesson={lesson}
       btnContained={
         <Button

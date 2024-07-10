@@ -2,23 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Typography } from '@mui/material';
-import { formatTime } from 'utils/formatTime';
+import { convertTime } from 'utils/formatTime';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
 import Image from 'components/Image';
 
 const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
-  const [musicDuration, setMusicDuration] = React.useState('00:00');
   const objectUrl = course.path_to_audio;
 
   const audio = document.createElement('audio');
   audio.src = objectUrl;
-
-  audio.addEventListener('loadedmetadata', () => {
-    const formattedDuration = formatTime(audio.duration);
-    setMusicDuration(formattedDuration);
-  });
 
   React.useEffect(() => {
     return () => {
@@ -28,9 +22,9 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
     };
   }, [objectUrl]);
   return (
-    <Box flex={1} minWidth={{ xs: '100%', sm: '45%' }}>
+    <Box flex={1} minWidth={{ xs: '100%', sm: '45%' }} maxWidth={{ xs: '100%', sm: '45%' }}>
       <Link
-        to={`/lessons/${isSubscribed ? course.id : null}`}
+        to={`/training/${isSubscribed ? course.id : null}`}
         style={{ textDecoration: 'none', pointerEvents: isSubscribed ? 'all' : 'none' }}
       >
         <Box
@@ -67,7 +61,7 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
           {!isSubscribed && <LockedIcon fontSize="large" />}
           <Box px={1} py={0.5} m={2.5} backgroundColor="background.default" width="min-content">
             <Typography variant="h5" fontWeight="100">
-              {musicDuration}
+              {convertTime(course.video_length)}
             </Typography>
           </Box>
         </Box>

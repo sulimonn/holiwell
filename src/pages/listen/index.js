@@ -10,7 +10,7 @@ import ModalCalendar from 'pages/calendar/ModalCalendar';
 import { useGetCourseQuery } from 'store/reducers/courses';
 
 const ListenList = () => {
-  const { data: audioCourse = {}, isFetching } = useGetCourseQuery(1);
+  const { data: audioCourse = {}, isFetching } = useGetCourseQuery(3);
   const audioRef = useRef(new Audio());
   const [playing, setPlaying] = React.useState(null);
   const [open, setOpen] = React.useState(false);

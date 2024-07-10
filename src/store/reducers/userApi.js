@@ -35,6 +35,36 @@ const user = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
+    likeLesson: builder.mutation({
+      query: (data) => ({
+        url: '/users/like-lesson',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    unlikeLesson: builder.mutation({
+      query: (data) => ({
+        url: '/users/like-lesson',
+        method: 'DELETE',
+        body: data,
+      }),
+    }),
+    getFavourites: builder.query({
+      query: () => '/users/my-favorite',
+      providesTags: ['User'],
+    }),
+    watchLesson: builder.mutation({
+      query: (data) => ({
+        url: '/users/watch-lesson',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    myViewed: builder.query({
+      query: () => '/users/my-viewed',
+      providesTags: ['User'],
+    }),
   }),
 });
 
@@ -44,6 +74,11 @@ export const {
   useEditProfileMutation,
   useGetCalendarQuery,
   usePlanLessonMutation,
+  useLikeLessonMutation,
+  useUnlikeLessonMutation,
+  useGetFavouritesQuery,
+  useWatchLessonMutation,
+  useMyViewedQuery,
 } = user;
 
 export default user;

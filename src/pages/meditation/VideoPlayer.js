@@ -16,7 +16,7 @@ const throttle = (func, limit) => {
   };
 };
 
-const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying }) => {
+const VideoPlayer = ({ path_to_video, duration, playing, setPlaying }) => {
   const videoRef = useRef();
   const containerRef = useRef();
 
@@ -37,12 +37,6 @@ const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying
       setPlayedProgress(state.played);
     }
   };
-
-  useEffect(() => {
-    if (videoRef.current) {
-      setDuration(videoRef.current.getDuration());
-    }
-  }, [loading, setDuration]);
 
   const showControls = useCallback(() => {
     if (hideControlsTimeout) {
@@ -107,7 +101,6 @@ const VideoPlayer = ({ path_to_video, duration, setDuration, playing, setPlaying
           controls={false}
           onReady={(e) => {
             setLoading(false);
-            setDuration(e.getDuration());
           }}
         />
       </Box>

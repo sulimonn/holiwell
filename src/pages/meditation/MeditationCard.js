@@ -75,7 +75,7 @@ const MeditationCard = ({ lesson, isSubscribed, index }) => {
               sx={{ filter: isSubscribed ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
             >
               <Image
-                src={require('assets/images/girls/' + lesson.path_to_cover)}
+                src={lesson.path_to_cover}
                 alt="data"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 loading="lazy"

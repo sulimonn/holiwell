@@ -73,8 +73,7 @@ const Calendar = () => {
         nextLabel={<ArrowIcon style={{ transform: 'rotate(-90deg)', opacity: 0.5 }} />}
         prevLabel={<ArrowIcon style={{ transform: 'rotate(90deg)', opacity: 0.5 }} />}
         tileContent={({ date, view }) => {
-          const isPlanned = myCalendar.find((lesson) => {
-            console.log(lesson.timestamp, date.toISOString());
+          const planneds = myCalendar.filter((lesson) => {
             return lesson.timestamp.slice(0, 10) === date.toISOString().slice(0, 10);
           });
           return (
@@ -90,13 +89,32 @@ const Calendar = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Box
-                  bgcolor={
-                    view === 'month' ? (isPlanned ? 'error.light' : 'background.default') : null
-                  }
-                  width="100%"
-                  height="100%"
-                ></Box>
+                {planneds.map((plan) => (
+                  <React.Fragment>
+                    {plan.lesson.course_type_slug === 'training' && (
+                      <Box
+                        bgcolor={view === 'month' ? 'error.light' : null}
+                        width="100%"
+                        height="100%"
+                      />
+                    )}
+
+                    {plan.lesson.course_type_slug === 'listening' && (
+                      <Box
+                        bgcolor={view === 'month' ? 'common.gray' : null}
+                        width="100%"
+                        height="100%"
+                      />
+                    )}
+                    {plan.lesson.course_type_slug === 'meditation' && (
+                      <Box
+                        bgcolor={view === 'month' ? 'common.blue' : null}
+                        width="100%"
+                        height="100%"
+                      />
+                    )}
+                  </React.Fragment>
+                ))}
               </Box>
             )
           );

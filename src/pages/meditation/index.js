@@ -5,12 +5,14 @@ import TrainersList from 'components/TrainersList';
 import Image from 'components/Image';
 import ModalCalendar from 'pages/calendar/ModalCalendar';
 import Back from 'components/Back';
-import { useSelector } from 'react-redux';
+import { useGetCourseQuery } from 'store/reducers/courses';
 
 const Meditation = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const { meditation: videoCourse } = useSelector((state) => state.test);
+  const { data: videoCourse, isFetching } = useGetCourseQuery(2);
+  if (isFetching) return null;
+
   return (
     <>
       <ModalCalendar open={open} setOpen={setOpen} />
@@ -18,7 +20,7 @@ const Meditation = () => {
       <Box width="100%">
         <Box width="100%" height={{ xs: '360px', sm: '420px', md: '500px' }}>
           <Image
-            src={require('assets/images/girls/' + videoCourse.path_to_cover)}
+            src={videoCourse.path_to_cover}
             alt="cover"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             load="lazy"

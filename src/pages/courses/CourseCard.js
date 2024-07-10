@@ -5,7 +5,7 @@ import { Box, Typography, Button } from '@mui/material';
 import Image from 'components/Image';
 import { useSelector } from 'react-redux';
 
-const TrainCard = ({
+const CourseCard = ({
   course = {
     id: 0,
     title: 'string',
@@ -88,4 +88,4 @@ const TrainCard = ({
   );
 };
 
-export default TrainCard;
+export default CourseCard;

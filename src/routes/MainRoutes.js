@@ -7,8 +7,9 @@ import PrivateRoute from 'components/PrivateRoute';
 
 // render - dashboard
 const Home = Loadable(lazy(() => import('pages/home')));
+const Courses = Loadable(lazy(() => import('pages/courses')));
 const Train = Loadable(lazy(() => import('pages/train')));
-const TrainPage = Loadable(lazy(() => import('pages/train/Lesson')));
+//const TrainPage = Loadable(lazy(() => import('pages/train/Lesson')));
 const Subscription = Loadable(lazy(() => import('pages/subscription')));
 const PrivacyPolicy = Loadable(lazy(() => import('pages/other/PrivacyPolicy')));
 const ListenList = Loadable(lazy(() => import('pages/listen')));
@@ -51,11 +52,11 @@ const MainRoutes = {
     },
     {
       path: '/courses',
-      element: <Train />,
+      element: <Courses />,
     },
     {
       path: '/training',
-      element: <TrainPage />,
+      element: <Train />,
     },
     {
       path: '/subscription/:id',
@@ -71,7 +72,7 @@ const MainRoutes = {
       element: <PrivateRoute element={<MeditationPage />} />,
     },
     {
-      path: '/listen/:id',
+      path: '/listening/:id',
       element: <PrivateRoute element={<ListenPage />} />,
     },
     {

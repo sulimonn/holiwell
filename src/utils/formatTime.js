@@ -20,6 +20,7 @@ export function formatDateToLocalISO(date) {
   return `${year}-${month}-${day}`;
 }
 export function timeToSeconds(time) {
+  if (!time) return 0;
   const parts = time.split(':');
   const hours = parseInt(parts[0], 10);
   const minutes = parseInt(parts[1], 10);
@@ -27,6 +28,14 @@ export function timeToSeconds(time) {
 
   return hours * 3600 + minutes * 60 + seconds;
 }
+export const convertTime = (time) => {
+  const [hours, minutes, seconds] = time.split(':').map(Number);
+
+  if (hours === 0) {
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
+  return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+};
 
 export function addSeconds(secondsArray) {
   return secondsArray.reduce((accumulator, currentValue) => {

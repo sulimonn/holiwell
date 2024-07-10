@@ -40,7 +40,8 @@ const Controls = ({
   const handleSeekChange = (event, newValue) => {
     setPlayedProgress(newValue / 100);
     if (media === 'audio') {
-      mediaRef.current.currentTime = parseInt(newValue) * (duration / 100);
+      const currentTime = parseInt(newValue) * (duration / 100);
+      mediaRef.current.currentTime = currentTime;
     } else {
       mediaRef.current.seekTo(newValue / 100);
     }

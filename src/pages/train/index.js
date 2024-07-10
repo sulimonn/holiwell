@@ -1,28 +1,171 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Box, Typography, Container, Button } from '@mui/material';
+import Icon from '@ant-design/icons';
+import lock from 'assets/images/icons/lock';
+import PlayPauseButton from 'components/PlayPauseButton';
+import LessonCard from './LessonCard';
+import TrainersList from 'components/TrainersList';
+import { subscribe } from 'store/reducers/subscription';
+import Image from 'components/Image';
+import { useGetCourseQuery } from 'store/reducers/courses';
 
-import { Box } from '@mui/material';
-import Lessons from 'components/LessonsBase';
-import CourseCard from './TrainCard';
-import { useGetCoursesQuery } from 'store/reducers/courses';
+const Lesson = () => {
+  const { isSubscribed } = useSelector((state) => state.subscription);
+  const dispatch = useDispatch();
+  const LockedIcon = (props) => <Icon component={lock} {...props} />;
+  const [isPlaying, setPlaying] = React.useState(false);
 
-const Train = () => {
-  const [sortOption, setSortOption] = React.useState('default');
-  const { data: courses = [] } = useGetCoursesQuery();
+  const { data: course = {}, isFetching } = useGetCourseQuery(1);
+
+  const handleSubscription = () => {
+    dispatch(subscribe());
+  };
+
+  if (isFetching) return null;
   return (
-    <Lessons title="ТРЕНИРУЙСЯ" sortOption={sortOption} setSortOption={setSortOption}>
+    <Box width="100%">
       <Box
-        display="grid"
-        gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
-        gap={4}
-        flexWrap="wrap"
-        py={{ xs: 2, sm: 3, md: 5 }}
+        width="100%"
+        position="relative"
+        height={{ xs: '360px', sm: '450px', md: '500px' }}
+        overflow="hidden"
+        sx={{
+          '& img': {
+            objectPosition: { xs: 'center', md: 'top center' },
+            mb: { xs: 3, md: 4 },
+          },
+        }}
       >
-        {courses.map((course) => (
-          <CourseCard course={course} key={course.id} />
-        ))}
+        <Image
+          src={course.path_to_cover}
+          alt="girl"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            position: 'absolute',
+            filter: isSubscribed ? 'none' : 'brightness(0.6)',
+            zIndex: 1,
+          }}
+        />
+        {!isSubscribed && (
+          <Box
+            position="relative"
+            zIndex={2}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            gap={1.5}
+            height="100%"
+          >
+            <LockedIcon fontSize="large" />
+            <Typography
+              color="primary.contrastText"
+              variant="h4"
+              fontWeight="400"
+              textTransform="uppercase"
+            >
+              Разблокируйте курс
+            </Typography>
+          </Box>
+        )}
       </Box>
-    </Lessons>
+      <Container maxWidth="lg">
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap={{ xs: 2, md: 4 }}
+          textAlign="center"
+          alignItems="center"
+          py={{ xs: 3, md: 6 }}
+          borderBottom="1px solid"
+          borderColor="divider"
+        >
+          <Typography
+            variant="h1"
+            textTransform="uppercase"
+            fontWeight={{ xs: 400, md: '500' }}
+            fontSize={{ xs: 25, md: '2.5rem' }}
+          >
+            {course.title}
+          </Typography>
+          <Typography variant="body1" fontWeight={{ xs: 100, sm: '300' }}>
+            Курс тренировок
+          </Typography>
+          {isSubscribed ? (
+            <Typography variant="h4" fontWeight="400">
+              Дисциплина - ключ к успеху
+            </Typography>
+          ) : (
+            <Button variant="contained" onClick={handleSubscription}>
+              АКТИВИРОВАТЬ ДОСТУП
+            </Button>
+          )}
+        </Box>
+        <Box
+          display="flex"
+          py={10}
+          gap={3}
+          borderBottom="1px solid"
+          borderColor="divider"
+          flexDirection={{ xs: 'column', md: 'row' }}
+        >
+          <Box flex={1}>
+            <Typography variant="h3" textTransform="uppercase">
+              О курсе
+            </Typography>
+            <Typography variant="h5" component="p" sx={{ mt: 1.5, whiteSpace: 'pre-line' }}>
+              {course.description}
+            </Typography>
+          </Box>
+          <Box flex={1} display="flex" justifyContent="center" alignItems="center">
+            <Button
+              onClick={() => setPlaying(!isPlaying)}
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                borderRadius: '50px',
+                border: '1px solid',
+                borderColor: 'divider',
+                px: 1,
+                py: 1,
+              }}
+              fullWidth
+            >
+              <PlayPauseButton isPlaying={isPlaying} sx={{ width: '50px', height: '50px' }} />
+              <Typography variant="body1" textTransform="none" sx={{ ml: 1 }}>
+                Аудио запись
+              </Typography>
+            </Button>
+          </Box>
+        </Box>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          py={10}
+          alignItems="center"
+          justifyContent="space-between"
+          gap={4}
+          borderBottom="1px solid"
+          borderColor="divider"
+        >
+          {course.lessons &&
+            course?.lessons.map((course, index) => (
+              <LessonCard
+                key={course.id}
+                course={course}
+                index={index + 1}
+                isSubscribed={isSubscribed}
+              />
+            ))}
+        </Box>
+      </Container>
+
+      <TrainersList />
+    </Box>
   );
 };
 
-export default Train;
+export default Lesson;

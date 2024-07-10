@@ -5,10 +5,15 @@ import DefaultAvatar from 'assets/images/users/default.png';
 import { useAuth } from 'contexts/AuthContext';
 import Calendar from 'pages/calendar/index';
 import MobileHeaderContent from 'layout/MainLayout/Header/MobileHeaderContent/index';
+import { useGetFavouritesQuery, useMyViewedQuery } from 'store/reducers/userApi';
+import ProfileLesson from './ProfileLesson';
 
 const ProfilePage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { data: favorites = [], isFetching: isFavoritesFetching } = useGetFavouritesQuery();
+  const { data: myVieweds = [], isFetching: isMyViewFetching } = useMyViewedQuery();
+  if (!user) return null;
   return (
     <>
       <MobileHeaderContent color="black" />
@@ -48,7 +53,9 @@ const ProfilePage = () => {
             my={{ xs: 3, md: 7 }}
           >
             <Box width="100%" flex={1}>
-              <Typography variant="h2">Календарь</Typography>
+              <Typography variant="h3" textTransform="uppercase">
+                Календарь
+              </Typography>
               <Typography variant="body2" my={2}>
                 Откройте для себя преимущества регулярной медитации на нашем курсе, направленном на
                 улучшение физического и эмоционального благополучия...
@@ -60,7 +67,42 @@ const ProfilePage = () => {
             <Calendar />
           </Box>
           <Divider />
-          <Box display="flex" justifyContent="space-between" width="100%" gap={10} my={7}></Box>
+          <Box
+            display="grid"
+            gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
+            width="100%"
+            gap={10}
+            my={7}
+          >
+            <Box sx={{ overflow: 'hidden' }}>
+              <Box>
+                <Typography variant="h3" textTransform="uppercase" fontWeight="300">
+                  Избранное
+                </Typography>
+              </Box>
+              <Box mt={2} display="flex" gap={5} sx={{ overflow: 'auto' }}>
+                {isFavoritesFetching ? (
+                  <Box>Загрузка...</Box>
+                ) : (
+                  favorites.map((lesson) => <ProfileLesson lesson={lesson} key={lesson.id} />)
+                )}
+              </Box>
+            </Box>
+            <Box sx={{ overflow: 'hidden' }}>
+              <Box>
+                <Typography variant="h3" textTransform="uppercase" fontWeight="300">
+                  Просмотренное
+                </Typography>
+              </Box>
+              <Box mt={2} display="flex" gap={5} sx={{ overflow: 'auto' }}>
+                {isMyViewFetching ? (
+                  <Box>Загрузка...</Box>
+                ) : (
+                  myVieweds.map((lesson) => <ProfileLesson lesson={lesson} key={lesson.id} />)
+                )}
+              </Box>
+            </Box>
+          </Box>
         </Container>
       </Box>
     </>

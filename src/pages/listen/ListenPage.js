@@ -6,6 +6,7 @@ import LessonPageBase from 'components/LessonPageBase';
 import Controls from 'components/Controls';
 import Image from 'components/Image';
 import { useGetLessonQuery } from 'store/reducers/courses';
+import { timeToSeconds } from 'utils/formatTime';
 
 const throttle = (func, limit) => {
   let inThrottle;
@@ -23,7 +24,7 @@ const throttle = (func, limit) => {
 const ListenPage = () => {
   const { id } = useParams();
   const { data: lesson = {}, isFetching } = useGetLessonQuery(id);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(lesson.audio_length);
   const [playing, setPlaying] = useState(false);
   const [playedProgress, setPlayedProgress] = useState(0);
   const [overlay, setOverlay] = useState(null);
@@ -52,18 +53,15 @@ const ListenPage = () => {
   useEffect(() => {
     audioRef.current = new Audio(lesson.path_to_audio);
     const audio = audioRef.current;
-
-    audio.addEventListener('loadedmetadata', () => {
-      setDuration(audio.duration);
-    });
-
     audio.addEventListener('timeupdate', handleProgress);
+
+    setDuration(lesson.audio_length);
 
     return () => {
       audio.pause();
       audio.removeEventListener('timeupdate', handleProgress);
     };
-  }, [handleProgress, lesson.path_to_audio]);
+  }, [handleProgress, lesson]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -107,6 +105,7 @@ const ListenPage = () => {
       }
     };
   }, [showControls]);
+
   if (isFetching) {
     return null;
   }
@@ -142,7 +141,7 @@ const ListenPage = () => {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                objectPosition: 'center top',
+                objectPosition: 'center',
               }}
             />
           </Box>
@@ -193,7 +192,7 @@ const ListenPage = () => {
           </Box>
           {
             <Controls
-              duration={duration}
+              duration={timeToSeconds(duration)}
               playing={playing}
               setPlaying={setPlaying}
               mediaRef={audioRef}
@@ -222,7 +221,7 @@ const ListenPage = () => {
         </Button>
       }
       btnOutlined={<Button variant="outlined">В избранное</Button>}
-      duration={duration}
+      duration={timeToSeconds(lesson.audio_length)}
     />
   );
 };

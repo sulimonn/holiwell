@@ -9,15 +9,32 @@ import CalendarIcon from 'assets/images/icons/Calendar';
 import ModalCalendar from 'pages/calendar/ModalCalendar';
 import Heart from 'assets/images/icons/heart';
 import Arrow2 from 'assets/images/icons/arrow2';
+import {
+  useLikeLessonMutation,
+  useUnlikeLessonMutation,
+  useWatchLessonMutation,
+} from 'store/reducers/userApi';
 
-const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) => {
+const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained }) => {
   const [open, setOpen] = React.useState(false);
+  const [watchLesson, { isLoading }] = useWatchLessonMutation();
+  const [likeLesson, { isLoading: isLoadingLike }] = useLikeLessonMutation();
+  const [unlikeLesson] = useUnlikeLessonMutation();
+
   const Calendar = (props) => <Icon component={CalendarIcon} {...props} />;
   const HeartIcon = (props) => <Icon component={Heart} {...props} />;
   const ArrowTo = (props) => <Icon component={Arrow2} {...props} />;
 
-  const [isFavourite, setFavourite] = React.useState(false);
+  const [isFavourite, setFavourite] = React.useState(lesson?.is_favorite);
 
+  React.useEffect(() => {
+    const watchThisLesson = async () => {
+      const formData = new FormData();
+      formData.append('lesson_id', lesson.id);
+      await watchLesson(formData);
+    };
+    if (!lesson.is_viewed) watchThisLesson();
+  }, [lesson, watchLesson]);
   return (
     <>
       <ModalCalendar lesson_id={lesson.id} open={open} setOpen={setOpen} />
@@ -42,7 +59,13 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
                 {isFavourite ? (
                   <IconButton
                     size="large"
-                    onClick={() => setFavourite(false)}
+                    onClick={async () => {
+                      const formData = new FormData();
+                      formData.append('lesson_id', lesson.id);
+                      const response = await unlikeLesson(formData);
+                      if (!response?.error) setFavourite(false);
+                    }}
+                    disabled={isLoading || isLoadingLike}
                     sx={{
                       '& svg': { width: { xs: 30, md: 40 }, height: { xs: 30, md: 40 } },
                       height: '100%',
@@ -54,7 +77,13 @@ const LessonPageBase = ({ cover, lesson, duration, btnOutlined, btnContained }) 
                 ) : (
                   <Button
                     variant="outlined"
-                    onClick={() => setFavourite(true)}
+                    disabled={isLoading || isLoadingLike}
+                    onClick={async () => {
+                      const formData = new FormData();
+                      formData.append('lesson_id', lesson.id);
+                      const response = await likeLesson(formData);
+                      if (!response?.error) setFavourite(true);
+                    }}
                     sx={{ width: { xs: '100%', md: 'auto' }, whiteSpace: 'nowrap' }}
                   >
                     В избранное
