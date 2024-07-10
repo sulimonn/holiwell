@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import {
   Box,
@@ -25,6 +25,9 @@ import Plus from 'assets/images/icons/plus';
 import down from 'assets/images/icons/down';
 import CheckBoxChecked from 'assets/images/icons/RadioChecked';
 import Radio from 'assets/images/icons/radio';
+import {} from 'store/reducers/courses';
+import { useGetCalendarQuery } from 'store/reducers/userApi';
+import { typeOfLesson } from 'utils/other';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -87,48 +90,9 @@ const Day = () => {
   const navigate = useNavigate();
   const { date } = useParams();
   const day = new Date(date);
-  const [lessons, setLessons] = React.useState([
-    {
-      id: 0,
-      title: 'Заголовок',
-      trainer: {
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        path_to_avatar: 'avatar-1.png',
-        slogan: '',
-      },
-      path_to_cover: 'courses2.jpeg',
-      type: 'training',
-      checked: false,
-    },
-    {
-      id: 1,
-      title: 'Заголовок',
-      trainer: {
-        first_name: 'Имя',
-        last_name: 'Фамилия',
-        path_to_avatar: 'avatar-1.png',
-        slogan: '',
-      },
-      path_to_cover: 'intro.jpeg',
-      type: 'training',
-      checked: false,
-    },
-  ]);
+  const { data: lessons = [] } = useGetCalendarQuery();
 
-  const handleChange = (event, id) => {
-    setLessons(
-      lessons.map((lesson) => {
-        if (lesson.id === id) {
-          return {
-            ...lesson,
-            checked: event.target.checked,
-          };
-        }
-        return lesson;
-      }),
-    );
-  };
+  const handleChange = (event, id) => {};
 
   const [open, setOpen] = React.useState(false);
   const menu = [
@@ -142,24 +106,23 @@ const Day = () => {
     },
     {
       title: 'Аудио-курсы',
-      to: `/listen`,
+      to: `/listening`,
     },
   ];
 
   const handleCardClick = (id) => {
-    setLessons(
-      lessons.map((lesson) => {
-        if (lesson.id === id) {
-          return {
-            ...lesson,
-            checked: !lesson.checked,
-          };
-        }
-        return lesson;
-      }),
-    );
+    // setLessons(
+    //   lessons.map((lesson) => {
+    //     if (lesson.id === id) {
+    //       return {
+    //         ...lesson,
+    //         checked: !lesson.checked,
+    //       };
+    //     }
+    //     return lesson;
+    //   }),
+    // );
   };
-
   return (
     <>
       <Box width="100%">
@@ -185,37 +148,44 @@ const Day = () => {
               component="fieldset"
               sx={{ width: '100%', maxWidth: { xs: '100%', sm: 580 } }}
             >
-              {lessons.map((course, index) => (
-                <React.Fragment key={index}>
-                  {index > 0 && <Divider sx={{ mb: 2 }} />}
-                  <StyledCard onClick={() => handleCardClick(course.id)}>
-                    <StyledCardMedia
-                      image={require('assets/images/girls/' + course.path_to_cover)}
-                      title={course.title}
-                    />
-                    <StyledCardContent>
-                      <Typography component="h5" variant="h5">
-                        {course.title}
-                      </Typography>
-                      <Typography variant="subtitle1" color="textSecondary">
-                        {course.type}
-                      </Typography>
-                    </StyledCardContent>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checkedIcon={<CheckBoxChecked />}
-                          icon={<Radio />}
-                          checked={course.checked}
-                          onChange={(event) => handleChange(event, course.id)}
+              {lessons
+                .filter((lesson) => lesson?.timestamp.includes(date))
+                .map((lesson, index) => (
+                  <React.Fragment key={index}>
+                    {index > 0 && <Divider sx={{ mb: 2 }} />}
+                    <Link
+                      to={`/${lesson.lesson.course_type_slug}/${lesson.lesson.id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <StyledCard onClick={() => handleCardClick(lesson.id)}>
+                        <StyledCardMedia
+                          image={lesson.lesson.path_to_cover}
+                          title={lesson.lesson.title}
                         />
-                      }
-                      label=""
-                      labelPlacement="start"
-                    />
-                  </StyledCard>
-                </React.Fragment>
-              ))}
+                        <StyledCardContent>
+                          <Typography component="h5" variant="h5">
+                            {lesson.lesson.title}
+                          </Typography>
+                          <Typography variant="subtitle1" color="textSecondary">
+                            {typeOfLesson(lesson.lesson.course_type_slug)}
+                          </Typography>
+                        </StyledCardContent>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checkedIcon={<CheckBoxChecked />}
+                              icon={<Radio />}
+                              checked={lesson.lesson.checked}
+                              onChange={(event) => handleChange(event, lesson.id)}
+                            />
+                          }
+                          label=""
+                          labelPlacement="start"
+                        />
+                      </StyledCard>
+                    </Link>
+                  </React.Fragment>
+                ))}
             </FormControl>
           </Box>
           <Box display="flex" alignItems="center" justifyContent="center" mb={7}>
