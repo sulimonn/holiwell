@@ -8,7 +8,7 @@ const Image = (props) => {
   const [hasError, setHasError] = useState(false);
 
   const { src } = useImage({
-    srcList: [props.src],
+    srcList: [props.src.replace('http://154.194.52.246', '')],
   });
 
   const onLoad = () => {
