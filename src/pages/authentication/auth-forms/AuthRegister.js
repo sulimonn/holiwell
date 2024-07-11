@@ -76,10 +76,18 @@ const AuthRegister = () => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             const response = await register(values).unwrap();
-            setStatus({ success: false });
-            setSubmitting(false);
-            console.log(response);
-            if (false) navigate('/', { replace: true });
+            if (response?.error) {
+              if (response.error.status === 400) {
+                setErrors({
+                  email: true,
+                  password: true,
+                  submit: 'Неправильная почта или пароль',
+                });
+              }
+              setStatus({ success: false });
+            } else {
+              navigate('/', { replace: true }); // Redirect to the main page
+            }
           } catch (err) {
             console.error(err);
             setStatus({ success: false });

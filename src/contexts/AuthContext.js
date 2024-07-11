@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
       const { data } = await refetch();
       setUser(() => data);
       setIsAuthenticated(true);
-      navigate('/');
+      return null;
     } catch (error) {
       setIsAuthenticated(false);
       setUser(null);
