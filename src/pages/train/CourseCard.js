@@ -5,73 +5,36 @@ import { Box, Typography, Button } from '@mui/material';
 import Image from 'components/Image';
 import { useSelector } from 'react-redux';
 
-const CourseCard = ({
-  course = {
-    id: 0,
-    title: 'string',
-    description: 'string',
-    path_to_cover: 'courses2.jpeg',
-    lessons: [
-      {
-        id: 0,
-        title: 'string',
-        description: 'string',
-        trainer: {
-          id: 0,
-          first_name: 'string',
-          last_name: 'string',
-          description: 'string',
-          path_to_avatar: 'string',
-          path_to_background: 'string',
-        },
-        course_id: 0,
-        path_to_cover: 'string',
-        path_to_video: 'string',
-        path_to_audio: 'string',
-        links_before: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
-        links_after: [
-          {
-            id: 0,
-            lesson_id: 0,
-            linked_lesson_id: 0,
-          },
-        ],
-      },
-    ],
-  },
-}) => {
+const CourseCard = ({ course = {} }) => {
   const { isSubscribed } = useSelector((state) => state.subscription);
   const props = isSubscribed
     ? {
         component: Link,
-        to: `/${course.course_type_slug}`,
+        to: `/${course.course_type_slug}/${course.id}`,
         sx: { textDecoration: 'none', color: 'inherit' },
       }
     : {};
   return (
     <Box width="100%" {...props}>
-      <Typography variant="h4">{course.title}</Typography>
       <Box
-        width="100%"
-        height="220px"
+        maxWidth={{ xs: '100%', md: '100%' }}
+        height={{ xs: '127px', md: '220px' }}
         overflow="hidden"
-        my={1.5}
+        py={1.5}
         display="flex"
         alignItems="center"
         justifyContent="center"
       >
         <Image
-          src={course.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
+          src={process.env.REACT_APP_BASE_URL + course.path_to_cover}
           alt={course.title}
           style={{ width: '100%', height: '100%', objectFit: 'cover', flex: 1 }}
         />
       </Box>
+      <Typography variant="h4"> {course.title}</Typography>
+      <Typography variant="body2" fontWeight="100" mt={0.5}>
+        {course.lessons[0].trainer.first_name} {course.lessons[0].trainer.last_name}
+      </Typography>
       {!isSubscribed && (
         <Button
           variant="contained"

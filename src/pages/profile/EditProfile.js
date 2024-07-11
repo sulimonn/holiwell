@@ -101,10 +101,7 @@ const EditProfile = () => {
                       }}
                     >
                       <Image
-                        src={
-                          values.path_to_avatar.replace(process.env.REACT_APP_BASE_URL, '') ||
-                          Default
-                        }
+                        src={process.env.REACT_APP_BASE_URL + values.path_to_avatar || Default}
                         alt="Profile"
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />

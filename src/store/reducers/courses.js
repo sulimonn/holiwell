@@ -7,6 +7,10 @@ const courses = apiSlice.injectEndpoints({
       query: (sotrOption) => '/courses/all' + (sotrOption ? `?sort_by=${sotrOption}` : ''),
       providesTags: ['Courses'],
     }),
+    getCourseByType: builder.query({
+      query: (type) => `/courses/course-type/${type}`,
+      providesTags: ['Courses'],
+    }),
     getCourse: builder.query({
       query: (id) => `/courses/${id}`,
       providesTags: ['Courses'],
@@ -18,6 +22,7 @@ const courses = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetCoursesQuery, useGetCourseQuery, useGetLessonQuery } = courses;
+export const { useGetCoursesQuery, useGetCourseQuery, useGetLessonQuery, useGetCourseByTypeQuery } =
+  courses;
 
 export default courses;

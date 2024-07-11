@@ -21,7 +21,7 @@ const MeditationCard = ({ lesson, isSubscribed, index }) => {
   return (
     <Box width={{ xs: '100%', md: 'auto' }} position={{ xs: 'relative', md: 'static' }}>
       <Link
-        to={isSubscribed ? `/meditation/${lesson.id}` : '#'}
+        to={isSubscribed ? `${lesson.id}` : '#'}
         style={{ textDecoration: 'none', pointerEvents: isSubscribed ? 'all' : 'none' }}
       >
         <Box
@@ -65,7 +65,7 @@ const MeditationCard = ({ lesson, isSubscribed, index }) => {
               sx={{ filter: isSubscribed ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
             >
               <Image
-                src={lesson.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
+                src={process.env.REACT_APP_BASE_URL + lesson.path_to_cover}
                 alt="data"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 loading="lazy"

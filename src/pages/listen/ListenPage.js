@@ -22,7 +22,7 @@ const throttle = (func, limit) => {
 };
 
 const ListenPage = () => {
-  const { id } = useParams();
+  const { lessonId: id } = useParams();
   const { data: lesson = {}, isFetching } = useGetLessonQuery(id);
   const [duration, setDuration] = useState(lesson.audio_length);
   const [playing, setPlaying] = useState(false);
@@ -51,7 +51,7 @@ const ListenPage = () => {
   }, []);
 
   useEffect(() => {
-    audioRef.current = new Audio(lesson.path_to_audio);
+    audioRef.current = new Audio(process.env.REACT_APP_BASE_URL + lesson.path_to_audio);
     const audio = audioRef.current;
     audio.addEventListener('timeupdate', handleProgress);
 
@@ -135,7 +135,7 @@ const ListenPage = () => {
           >
             <Box component="audio" ref={audioRef} sx={{ display: 'none' }} />
             <Image
-              src={lesson.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
+              src={process.env.REACT_APP_BASE_URL + lesson.path_to_cover}
               alt="cover"
               style={{
                 width: '100%',

@@ -9,7 +9,7 @@ import { useGetLessonQuery } from 'store/reducers/courses';
 import { timeToSeconds } from 'utils/formatTime';
 
 const MeditionPage = () => {
-  const { id } = useParams();
+  const { lessonId: id } = useParams();
   const [playing, setPlaying] = useState(false);
   const { data: lesson = {}, isFetching } = useGetLessonQuery(id);
 

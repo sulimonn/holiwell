@@ -5,7 +5,7 @@ import Image from './Image';
 
 const Avatar = ({ avatar, border }) => {
   if (!avatar) return null;
-  const ava = avatar.replace('http://154.194.52.246', '');
+  //const ava = avatar.replace('http://154.194.52.246', '');
   return (
     <div>
       <Box
@@ -19,8 +19,8 @@ const Avatar = ({ avatar, border }) => {
         }}
       >
         <Image
-          src={ava}
-          alt="team"
+          src={process.env.REACT_APP_BASE_URL + avatar}
+          alt="avatar"
           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
         />
       </Box>

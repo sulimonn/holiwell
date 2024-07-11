@@ -6,7 +6,7 @@ const Image = (props) => {
   const imageRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const source = props.src.replace('http://154.194.52.246', '');
+  const source = props.src;
   const { src } = useImage({
     srcList: [source],
   });
@@ -43,8 +43,8 @@ const Image = (props) => {
 
       <img
         ref={imageRef}
-        key={source.replace('http://154.194.52.246', '')} // Ensure React re-renders the image when the src changes
-        src={src.replace('http://154.194.52.246', '')}
+        key={source} // Ensure React re-renders the image when the src changes
+        src={src}
         alt={props.alt}
         {...props}
         loading="lazy"

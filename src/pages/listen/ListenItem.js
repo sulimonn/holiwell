@@ -22,7 +22,7 @@ const ListenItem = ({ lesson, handlePlayPause, playing }) => {
   }, [lesson]);
 
   return (
-    <Link to={`/listening/${lesson.id}`} style={{ textDecoration: 'none' }}>
+    <Link to={`${lesson.id}`} style={{ textDecoration: 'none' }}>
       <ListItem
         divider
         sx={{

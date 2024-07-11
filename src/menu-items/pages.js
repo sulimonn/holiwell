@@ -9,14 +9,14 @@ const pages = {
       id: 'training1',
       title: 'Тренируйся',
       type: 'item',
-      url: '/courses',
+      url: '/training',
       mobile: false,
     },
     {
       id: 'listening1',
       title: 'СЛУШАЙ',
       type: 'item',
-      url: '/listen',
+      url: '/listening',
       mobile: false,
     },
     {

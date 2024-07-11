@@ -7,14 +7,16 @@ import PrivateRoute from 'components/PrivateRoute';
 
 // render - dashboard
 const Home = Loadable(lazy(() => import('pages/home')));
-const Courses = Loadable(lazy(() => import('pages/courses')));
-const Train = Loadable(lazy(() => import('pages/train')));
+const Training = Loadable(lazy(() => import('pages/train')));
+const TrainingCourses = Loadable(lazy(() => import('pages/train/Courses')));
 //const TrainPage = Loadable(lazy(() => import('pages/train/Lesson')));
 const Subscription = Loadable(lazy(() => import('pages/subscription')));
 const PrivacyPolicy = Loadable(lazy(() => import('pages/other/PrivacyPolicy')));
-const ListenList = Loadable(lazy(() => import('pages/listen')));
+const Listening = Loadable(lazy(() => import('pages/listen')));
+const ListenList = Loadable(lazy(() => import('pages/listen/ListenCourse')));
 const ListenPage = Loadable(lazy(() => import('pages/listen/ListenPage')));
-const MeditationsList = Loadable(lazy(() => import('pages/meditation')));
+const Meditations = Loadable(lazy(() => import('pages/meditation')));
+const MeditationsList = Loadable(lazy(() => import('pages/meditation/MeditationCourse')));
 const MeditationPage = Loadable(lazy(() => import('pages/meditation/MeditationPage')));
 const Trainers = Loadable(lazy(() => import('pages/trainers')));
 const Trainer = Loadable(lazy(() => import('pages/trainers/Trainer')));
@@ -43,20 +45,28 @@ const MainRoutes = {
       element: <Trainer />,
     },
     {
-      path: '/listen',
+      path: '/listening',
+      element: <Listening />,
+    },
+    {
+      path: '/listening/:courseId',
       element: <ListenList />,
     },
     {
       path: '/meditation',
+      element: <Meditations />,
+    },
+    {
+      path: '/meditation/:courseId',
       element: <MeditationsList />,
     },
     {
-      path: '/courses',
-      element: <Courses />,
+      path: '/training',
+      element: <Training />,
     },
     {
-      path: '/training',
-      element: <Train />,
+      path: '/training/:courseId',
+      element: <TrainingCourses />,
     },
     {
       path: '/subscription/:id',
@@ -68,11 +78,11 @@ const MainRoutes = {
     },
     // only authenticated users can access
     {
-      path: '/meditation/:id',
+      path: '/meditation/:courseId/:lessonId',
       element: <PrivateRoute element={<MeditationPage />} />,
     },
     {
-      path: '/listening/:id',
+      path: '/listening/:courseId/:lessonId',
       element: <PrivateRoute element={<ListenPage />} />,
     },
     {

@@ -1,134 +1,30 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
-import { Box, Container, Typography, Divider, Button } from '@mui/material';
-import ListenItem from './ListenItem';
-import Image from 'components/Image';
-import { addSeconds, formatDuration, timeToSeconds } from 'utils/formatTime';
-import TrainersList from 'components/TrainersList';
-import Back from 'components/Back';
-import ModalCalendar from 'pages/calendar/ModalCalendar';
-import { useGetCourseQuery } from 'store/reducers/courses';
+import { Box } from '@mui/material';
+import Lessons from 'components/LessonsBase';
+import CourseCard from 'pages/meditation/CourseCard';
+import { useGetCourseByTypeQuery } from 'store/reducers/courses';
 
-const ListenList = () => {
-  const { data: audioCourse = {}, isFetching } = useGetCourseQuery(3);
-  const audioRef = useRef(new Audio());
-  const [playing, setPlaying] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [totalDuration, setTotalDuration] = React.useState(0);
+const Train = () => {
+  const [sortOption, setSortOption] = React.useState('new');
+  const { data: listening = {}, isSuccess } = useGetCourseByTypeQuery('listening');
 
-  const handleOpen = () => setOpen(true);
-  const handlePlayPause = (id, audioPath) => {
-    if (playing === id) {
-      audioRef.current.pause();
-      setPlaying(null);
-    } else {
-      if (audioRef.current.src !== audioPath) {
-        audioRef.current.src = audioPath;
-      }
-      audioRef.current
-        .play()
-        .then(() => setPlaying(id))
-        .catch((error) => console.error('Error playing audio:', error));
-    }
-  };
-
-  React.useEffect(() => {
-    const audio = audioRef.current;
-    if (audioCourse?.lessons?.length > 0) {
-      setTotalDuration((prev) =>
-        addSeconds(audioCourse.lessons.map((lesson) => timeToSeconds(lesson.audio_length))),
-      );
-    }
-    return () => {
-      if (audio) audio.pause();
-    };
-  }, [audioCourse]);
-  if (isFetching) return;
-
+  if (!isSuccess) return null;
   return (
-    <>
-      <Container maxWidth="lg">
-        <Back to="/" sx={{ mt: 2, display: { xs: 'inherit', sm: 'none' } }} />
-        <Box
-          height={{ xs: '220px', sm: '500px' }}
-          width={{ xs: '220px', sm: '100%' }}
-          overflow="hidden"
-          mx="auto"
-          mt={{ xs: 7, sm: 0 }}
-        >
-          <Image
-            src={audioCourse.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
-            alt="listen"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-          />
-        </Box>
-        <Box
-          my={5}
-          width={{
-            xs: '100%',
-            md: '580px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-          mx="auto"
-        >
-          <Typography variant="body1" fontWeight="300" textAlign="center">
-            Аудио-курс
-          </Typography>
-          <Typography
-            variant="h1"
-            fontWeight="500"
-            textAlign="center"
-            textTransform="uppercase"
-            my={2}
-          >
-            {audioCourse.title}
-          </Typography>
-          <Typography variant="subtitle1" fontWeight="300" textAlign="center">
-            {audioCourse.description}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            fontWeight="500"
-            textAlign="center"
-            textTransform="uppercase"
-            my={2}
-          >
-            {formatDuration(totalDuration)}
-          </Typography>
-
-          <Button variant="contained" onClick={handleOpen}>
-            Обзор курса
-          </Button>
-        </Box>
-        <Divider />
-        <Box
-          display="flex"
-          flexDirection="column"
-          mx="auto"
-          width={{ xs: '100%', md: '660px' }}
-          py={{ xs: 0, sm: 4 }}
-        >
-          {audioCourse.lessons.map((lesson) => (
-            <ListenItem
-              key={lesson.id}
-              lesson={lesson}
-              handlePlayPause={handlePlayPause}
-              playing={playing}
-            />
-          ))}
-        </Box>
-        <Divider />
-        <TrainersList />
-      </Container>
-      <ModalCalendar open={open} setOpen={setOpen} />
-    </>
+    <Lessons title="СЛУШАЙ" sortOption={sortOption} setSortOption={setSortOption}>
+      <Box
+        display="grid"
+        gridTemplateColumns={{ xs: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+        gap={{ xs: 2, md: 4 }}
+        flexWrap="wrap"
+        py={{ xs: 2, sm: 3, md: 5 }}
+      >
+        {listening.courses.map((course) => (
+          <CourseCard course={course} key={course.id} />
+        ))}
+      </Box>
+    </Lessons>
   );
 };
 
-export default ListenList;
+export default Train;

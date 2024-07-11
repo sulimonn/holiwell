@@ -94,7 +94,7 @@ const VideoPlayer = ({ path_to_video, duration, playing, setPlaying }) => {
           ref={videoRef}
           width="100%"
           height="100%"
-          url={path_to_video}
+          url={process.env.REACT_APP_BASE_URL + path_to_video}
           playing={playing}
           onProgress={handleProgress}
           playsinline
