@@ -6,7 +6,7 @@ import Image from 'components/Image';
 import { useSelector } from 'react-redux';
 
 const CourseCard = ({ course = {} }) => {
-  const { isSubscribed } = useSelector((state) => state.subscription);
+  const { isSubscribed } = useSelector((state) => state.subscription); // eslint-disable-next-line
   const navigate = useNavigate();
   const props = isSubscribed
     ? {
@@ -43,7 +43,7 @@ const CourseCard = ({ course = {} }) => {
         variant="outlined"
         color="primary"
         sx={{ width: '100%', mt: 1 }}
-        onClick={() => navigate(`/subscription/${course.id}`)}
+        //onClick={() => navigate(`/subscription/${course.id}`)}
       >
         <Typography variant="h4" textAlign="center">
           КУПИТЬ

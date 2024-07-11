@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { Box, Container, Typography, Divider, Button, IconButton } from '@mui/material';
-import { formatTime } from 'utils/formatTime'; // eslint-disable-next-line
-import Avatar from './Avatar';
+import { convertTime, timeToSeconds } from 'utils/formatTime'; // eslint-disable-next-line
 import Icon from '@ant-design/icons';
 import CalendarIcon from 'assets/images/icons/Calendar';
 import ModalCalendar from 'pages/calendar/ModalCalendar';
@@ -14,9 +13,16 @@ import {
   useUnlikeLessonMutation,
   useWatchLessonMutation,
 } from 'store/reducers/userApi';
+import { useGetLessonQuery } from 'store/reducers/courses';
+import Avatar from 'components/Avatar';
+import VideoPlayer from 'pages/meditation/VideoPlayer';
+import PrevNextLessonCard from './PrevNextLessonCard';
 
-const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained }) => {
+const TraningPage = () => {
+  const { lessonId: id } = useParams();
+  const { data: lesson = {}, isSuccess } = useGetLessonQuery(id);
   const [open, setOpen] = React.useState(false);
+  const [playing, setPlaying] = React.useState(false);
   const [watchLesson, { isLoading }] = useWatchLessonMutation();
   const [likeLesson, { isLoading: isLoadingLike }] = useLikeLessonMutation();
   const [unlikeLesson] = useUnlikeLessonMutation();
@@ -33,33 +39,43 @@ const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained
       formData.append('lesson_id', lesson.id);
       await watchLesson(formData);
     };
-    if (!lesson.is_viewed) watchThisLesson();
-  }, [lesson, watchLesson]);
+    if (!lesson.is_viewed && isSuccess) watchThisLesson();
+    if (isSuccess) setFavourite(lesson?.is_favorite);
+  }, [lesson, watchLesson, isSuccess]);
+
+  if (!isSuccess) return null;
   return (
     <>
       <ModalCalendar lesson_id={lesson.id} open={open} setOpen={setOpen} />
       <Box width="100%">
         <Container maxWidth="lg" sx={{ px: { xs: 0, md: 2 } }}>
-          {cover}
+          <VideoPlayer
+            path_to_video={lesson.path_to_video}
+            duration={timeToSeconds(lesson.video_length)}
+            playing={playing}
+            setPlaying={setPlaying}
+          />
         </Container>
         <Container maxWidth="lg">
           <Box pt={{ xs: 0, md: 5 }} pb={{ xs: 4, md: 7 }}>
             <Box display="flex" flexDirection="column" alignItems="center">
-              <Typography
-                variant="h1"
-                textTransform="uppercase"
-                textAlign={{ xs: 'center', sm: 'left' }}
-              >
+              <Typography variant="h1" textTransform="uppercase">
                 {lesson.title}
               </Typography>
               <Box display="flex" alignItems="center" my={3} gap={6}>
                 <Typography variant="body2" fontWeight="300" sx={{ textAlign: 'center' }}>
                   {lesson.trainer.first_name} {lesson.trainer.last_name}
                 </Typography>
-                <Typography variant="body2">{formatTime(duration)}</Typography>
+                <Typography variant="body2">{convertTime(lesson.video_length)}</Typography>
               </Box>
               <Box display="flex" alignItems="center" gap={2} width={{ xs: '100%', sm: 'auto' }}>
-                {btnContained}
+                <Button
+                  variant="contained"
+                  onClick={() => setPlaying(!playing)}
+                  sx={{ width: { xs: '100%', md: 'auto' } }}
+                >
+                  {playing ? 'Пауза' : 'Смотреть'}
+                </Button>
                 {isFavourite ? (
                   <IconButton
                     size="large"
@@ -136,6 +152,20 @@ const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained
             </Typography>
           </Box>
           <Divider />
+          {lesson.links_before ||
+            (lesson.links_after && (
+              <>
+                <Box
+                  py={{ xs: 4, md: 7 }}
+                  display="grid"
+                  gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }}
+                >
+                  <PrevNextLessonCard linked_lesson={lesson.links_before} title="До тренировки" />
+                  <PrevNextLessonCard linked_lesson={lesson.links_after} title="После тренировки" />
+                </Box>
+                <Divider />
+              </>
+            ))}
           <Box
             py={{ xs: 4, md: 7 }}
             textAlign="center"
@@ -152,7 +182,6 @@ const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained
               flexDirection="column"
               gap={{ xs: 1.2, md: 2 }}
               justifyContent={{ xs: 'flex-start', md: 'center' }}
-              width={{ xs: '50%', md: 'auto' }}
             >
               <Typography variant="body2" sx={{ fontSize: { xs: '1.25rem', md: 'inherit' } }}>
                 Тренер урока
@@ -199,7 +228,8 @@ const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained
                 Подробнее <ArrowTo fontSize="5.5rem" />
               </Typography>
             </Box>
-            <Box display={{ xs: 'flex', sm: 'none' }} flex={1} flexDirection="column" width="100%">
+            <br />
+            <Box display={{ xs: 'flex', sm: 'none' }} flex={1} width="100%" flexDirection="column">
               <Typography variant="body2" sx={{ whiteSpace: 'pre-line', my: 2 }} textAlign="left">
                 {lesson.trainer.description}
               </Typography>
@@ -213,6 +243,7 @@ const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained
                 sx={{
                   textDecoration: 'none',
                   position: 'relative',
+                  textAlign: 'left',
                   width: 'fit-content',
                   '&:after': {
                     content: '""',
@@ -236,4 +267,4 @@ const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained
   );
 };
 
-export default LessonPageBase;
+export default TraningPage;

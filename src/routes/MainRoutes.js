@@ -9,7 +9,7 @@ import PrivateRoute from 'components/PrivateRoute';
 const Home = Loadable(lazy(() => import('pages/home')));
 const Training = Loadable(lazy(() => import('pages/train')));
 const TrainingCourses = Loadable(lazy(() => import('pages/train/Courses')));
-//const TrainPage = Loadable(lazy(() => import('pages/train/Lesson')));
+const TrainingLesson = Loadable(lazy(() => import('pages/train/TrainingLesson')));
 const Subscription = Loadable(lazy(() => import('pages/subscription')));
 const PrivacyPolicy = Loadable(lazy(() => import('pages/other/PrivacyPolicy')));
 const Listening = Loadable(lazy(() => import('pages/listen')));
@@ -68,6 +68,7 @@ const MainRoutes = {
       path: '/training/:courseId',
       element: <TrainingCourses />,
     },
+
     {
       path: '/subscription/:id',
       element: <Subscription />,
@@ -84,6 +85,10 @@ const MainRoutes = {
     {
       path: '/listening/:courseId/:lessonId',
       element: <PrivateRoute element={<ListenPage />} />,
+    },
+    {
+      path: '/training/:courseId/:lessonId',
+      element: <PrivateRoute element={<TrainingLesson />} />,
     },
     {
       path: '/profile',
