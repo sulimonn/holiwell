@@ -7,10 +7,11 @@ const Image = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const source = props.src.replace('http://154.194.52.246', '');
-  console.log(source);
   const { src } = useImage({
     srcList: [source],
   });
+
+  console.log(src);
 
   const onLoad = () => {
     setIsLoaded(true);
