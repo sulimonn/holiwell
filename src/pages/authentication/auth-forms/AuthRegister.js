@@ -28,12 +28,12 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { useRegisterMutation } from 'store/reducers/authApi';
+import { useAuth } from 'contexts/AuthContext';
 
 // ============================|| FIREBASE - REGISTER ||============================ //
 
 const AuthRegister = () => {
-  const [register] = useRegisterMutation();
+  const { register } = useAuth();
   const navigate = useNavigate();
   const [level, setLevel] = useState();
   const [showPassword, setShowPassword] = useState(false);
@@ -75,17 +75,15 @@ const AuthRegister = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            const response = await register(values).unwrap();
-            if (response?.error) {
-              if (response.error.status === 400) {
-                setErrors({
-                  email: true,
-                  password: true,
-                  submit: 'Неправильная почта или пароль',
-                });
-              }
+            const response = await register(values);
+            if (response?.status === 400) {
+              setErrors({
+                email: true,
+                submit: 'Пользователь с таким Email уже существует',
+              });
               setStatus({ success: false });
-            } else {
+            }
+            if (response === null) {
               navigate('/', { replace: true }); // Redirect to the main page
             }
           } catch (err) {

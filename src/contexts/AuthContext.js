@@ -1,7 +1,7 @@
 import Loader from 'components/Loader';
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLoginMutation, useLogoutMutation } from 'store/reducers/authApi';
+import { useLoginMutation, useLogoutMutation, useRegisterMutation } from 'store/reducers/authApi';
 import { useGetMeQuery } from 'store/reducers/userApi';
 
 const AuthContext = createContext();
@@ -22,6 +22,7 @@ const AuthProvider = ({ children }) => {
     skip: isAuthenticated || !localStorage.getItem('authToken'),
   });
   const [logout] = useLogoutMutation();
+  const [register] = useRegisterMutation();
 
   useEffect(() => {
     if (userData) {
@@ -37,7 +38,6 @@ const AuthProvider = ({ children }) => {
     try {
       const { access_token } = await login(credentials).unwrap();
       localStorage.setItem('authToken', access_token);
-      console.log('Login successful');
       const { data } = await refetch();
       setUser(() => data);
       setIsAuthenticated(true);
@@ -64,6 +64,25 @@ const AuthProvider = ({ children }) => {
     refetch();
   }, [refetch]);
 
+  const handleRegister = async (credentials) => {
+    try {
+      await register(credentials).unwrap();
+      const { access_token } = await login({
+        username: credentials.email,
+        password: credentials.password,
+      }).unwrap();
+      localStorage.setItem('authToken', access_token);
+      const { data } = await refetch();
+      setUser(() => data);
+      setIsAuthenticated(true);
+      return null;
+    } catch (error) {
+      setIsAuthenticated(false);
+      setUser(null);
+      return error;
+    }
+  };
+
   if (isFetching || isLoading) {
     return <Loader />;
   }
@@ -75,6 +94,7 @@ const AuthProvider = ({ children }) => {
         user,
         login: handleLogin,
         logout: handleLogout,
+        register: handleRegister,
         refreshAuthState,
       }}
     >

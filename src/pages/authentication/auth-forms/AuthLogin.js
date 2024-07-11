@@ -52,16 +52,17 @@ const AuthLogin = () => {
             username: values.email,
             password: values.password,
           });
-          if (response?.error) {
-            if (response.error.status === 400) {
-              setErrors({
-                email: true,
-                password: true,
-                submit: 'Неправильная почта или пароль',
-              });
-            }
+          if (response?.status === 400) {
+            setErrors({
+              email: true,
+              password: true,
+              submit: 'Неправильная почта или пароль',
+            });
+
             setStatus({ success: false });
-          } else {
+          }
+          console.log(response);
+          if (response === null) {
             navigate('/', { replace: true }); // Redirect to the main page
           }
         } catch (err) {
