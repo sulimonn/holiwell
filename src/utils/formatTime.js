@@ -9,7 +9,6 @@ export function formatTime(duration) {
 export const formatDuration = (seconds) => {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
-  console.log(h, m, seconds);
   return `${h === 0 ? '' : h} ${h % 10 === 0 ? '' : h % 10 === 1 ? 'час' : h % 10 > 4 ? 'часов' : 'часa'} ${m.toString().padStart(2, '0')} ${m % 10 === 0 ? '' : m % 10 === 1 ? 'минута' : m % 10 > 4 ? 'минут' : 'минуты'}`;
 };
 

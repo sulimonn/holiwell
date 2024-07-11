@@ -11,8 +11,6 @@ const Image = (props) => {
     srcList: [source],
   });
 
-  console.log(src);
-
   const onLoad = () => {
     setIsLoaded(true);
   };
@@ -28,7 +26,7 @@ const Image = (props) => {
     if (img && img.complete) {
       setIsLoaded(true);
     }
-  }, [props.src]);
+  }, [source]);
 
   useEffect(() => {
     const img = imageRef.current;
@@ -45,8 +43,8 @@ const Image = (props) => {
 
       <img
         ref={imageRef}
-        key={props.src} // Ensure React re-renders the image when the src changes
-        src={src}
+        key={source.replace('http://154.194.52.246', '')} // Ensure React re-renders the image when the src changes
+        src={src.replace('http://154.194.52.246', '')}
         alt={props.alt}
         {...props}
         loading="lazy"
