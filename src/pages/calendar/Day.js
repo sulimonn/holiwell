@@ -149,7 +149,7 @@ const Day = () => {
               sx={{ width: '100%', maxWidth: { xs: '100%', sm: 580 } }}
             >
               {lessons
-                .filter((lesson) => lesson?.timestamp.includes(date))
+                .filter((lesson) => lesson?.timestamp.includes(day.toISOString().slice(0, 10)))
                 .map((lesson, index) => (
                   <React.Fragment key={index}>
                     {index > 0 && <Divider sx={{ mb: 2 }} />}

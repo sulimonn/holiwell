@@ -24,7 +24,7 @@ const MeditionPage = () => {
           setPlaying={setPlaying}
         />
       }
-      duration={lesson.video_length}
+      duration={timeToSeconds(lesson.video_length)}
       lesson={lesson}
       btnContained={
         <Button

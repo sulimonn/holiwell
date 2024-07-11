@@ -38,7 +38,6 @@ const ModalCalendar = ({ open, setOpen, lesson_id }) => {
     const form = new FormData();
     form.append('lesson_id', lesson_id);
     form.append('timestamp', localdate.toISOString());
-
     const response = await planLesson(form);
     if (!response?.error) {
       setOpen(false);

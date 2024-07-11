@@ -141,7 +141,7 @@ const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained
             gap={{ xs: 0.5, md: 3 }}
             flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
           >
-            {/* <Avatar avatar={require(`assets/images/girls/${lesson.trainer.path_to_avatar}`)} /> */}
+            <Avatar avatar={lesson.trainer.path_to_avatar} />
             <Box
               textAlign="left"
               display="flex"

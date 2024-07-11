@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { formatTime } from 'utils/formatTime';
+import { convertTime } from 'utils/formatTime';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
 
@@ -13,20 +13,10 @@ const MeditationCard = ({ lesson, isSubscribed, index }) => {
   const [musicDuration, setMusicDuration] = useState('00:00');
 
   useEffect(() => {
-    const audio = document.createElement('video');
-    audio.src = lesson.path_to_video;
-
-    const updateDuration = () => {
-      const formattedDuration = formatTime(audio.duration);
-      setMusicDuration(formattedDuration);
-    };
-
-    audio.addEventListener('loadedmetadata', updateDuration);
-
-    return () => {
-      audio.removeEventListener('loadedmetadata', updateDuration);
-    };
-  }, [lesson.path_to_video]);
+    if (lesson) {
+      setMusicDuration(convertTime(lesson.video_length));
+    }
+  }, [lesson]);
 
   return (
     <Box width={{ xs: '100%', md: 'auto' }} position={{ xs: 'relative', md: 'static' }}>
