@@ -11,7 +11,7 @@ const ProfileLesson = ({ lesson }) => {
     <Box
       minWidth={{ xs: 194, sm: 250 }}
       component={Link}
-      to={`/${lesson.course_type_slug}/${lesson.id}`}
+      to={`/${lesson.course_type_slug}/${lesson.course_id}/${lesson.id}`}
       sx={{ textDecoration: 'none' }}
     >
       <Box width="100%" height={{ xs: 194, sm: 200 }}>
