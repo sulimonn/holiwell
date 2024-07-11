@@ -20,7 +20,7 @@ const Meditation = () => {
       <Box width="100%">
         <Box width="100%" height={{ xs: '360px', sm: '420px', md: '500px' }}>
           <Image
-            src={videoCourse.path_to_cover}
+            src={videoCourse.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
             alt="cover"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             load="lazy"

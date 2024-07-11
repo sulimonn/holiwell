@@ -47,7 +47,7 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
             sx={{ filter: isSubscribed ? 'brightness(1)' : 'brightness(0.65)', zIndex: -1 }}
           >
             <Image
-              src={course.path_to_cover}
+              src={course.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
               alt="course"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />

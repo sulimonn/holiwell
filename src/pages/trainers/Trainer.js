@@ -25,7 +25,7 @@ const Trainer = () => {
       >
         {trainer.path_to_background && (
           <Image
-            src={trainer.path_to_background}
+            src={trainer.path_to_background.replace(process.env.REACT_APP_BASE_URL, '')}
             alt="background"
             style={{
               width: '100%',

@@ -135,7 +135,7 @@ const ListenPage = () => {
           >
             <Box component="audio" ref={audioRef} sx={{ display: 'none' }} />
             <Image
-              src={lesson.path_to_cover}
+              src={lesson.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
               alt="cover"
               style={{
                 width: '100%',

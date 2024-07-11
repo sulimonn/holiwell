@@ -57,7 +57,7 @@ const ListenList = () => {
           mt={{ xs: 7, sm: 0 }}
         >
           <Image
-            src={audioCourse.path_to_cover}
+            src={audioCourse.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
             alt="listen"
             style={{
               width: '100%',

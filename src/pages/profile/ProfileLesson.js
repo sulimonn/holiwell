@@ -16,7 +16,7 @@ const ProfileLesson = ({ lesson }) => {
     >
       <Box width="100%" height={{ xs: 194, sm: 200 }}>
         <Image
-          src={lesson.path_to_cover}
+          src={lesson.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
           alt={lesson.title}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />

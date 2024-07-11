@@ -67,7 +67,7 @@ const CourseCard = ({
         justifyContent="center"
       >
         <Image
-          src={course.path_to_cover}
+          src={course.path_to_cover.replace(process.env.REACT_APP_BASE_URL, '')}
           alt={course.title}
           style={{ width: '100%', height: '100%', objectFit: 'cover', flex: 1 }}
         />
