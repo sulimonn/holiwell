@@ -6,7 +6,6 @@ import Image from 'components/Image';
 
 const PrevNextLessonCard = ({ linked_lesson, title }) => {
   const { data: lesson = {}, isSuccess } = useGetLessonQuery(linked_lesson.linked_lesson_id);
-  console.log(linked_lesson);
   if (!isSuccess) return null;
   return (
     <Box width="100%">

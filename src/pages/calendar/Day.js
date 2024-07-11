@@ -90,8 +90,8 @@ const Day = () => {
   const navigate = useNavigate();
   const { date } = useParams();
   const day = new Date(date);
+  day.setDate(day.getDate() - 1);
   const { data: lessons = [] } = useGetCalendarQuery();
-
   const handleChange = (event, id) => {};
 
   const [open, setOpen] = React.useState(false);
@@ -149,12 +149,15 @@ const Day = () => {
               sx={{ width: '100%', maxWidth: { xs: '100%', sm: 580 } }}
             >
               {lessons
-                .filter((lesson) => lesson?.timestamp.includes(day.toISOString().slice(0, 10)))
+                .filter((lesson) => {
+                  const lessonday = new Date(lesson.timestamp);
+                  return day.toISOString().slice(0, 10) === lessonday.toISOString().slice(0, 10);
+                })
                 .map((lesson, index) => (
                   <React.Fragment key={index}>
                     {index > 0 && <Divider sx={{ mb: 2 }} />}
                     <Link
-                      to={`/${lesson.lesson.course_type_slug}/${lesson.lesson.id}`}
+                      to={`/${lesson.lesson.course_type_slug}/${lesson.lesson.course_id}/${lesson.lesson.id}`}
                       style={{ textDecoration: 'none' }}
                     >
                       <StyledCard onClick={() => handleCardClick(lesson.id)}>
