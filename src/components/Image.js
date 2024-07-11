@@ -6,9 +6,10 @@ const Image = (props) => {
   const imageRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-
+  const source = props.src.replace('http://154.194.52.246', '');
+  console.log(source);
   const { src } = useImage({
-    srcList: [toString(props.src).replace('http://154.194.52.246', '')],
+    srcList: [source],
   });
 
   const onLoad = () => {
