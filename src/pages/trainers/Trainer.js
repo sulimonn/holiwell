@@ -36,7 +36,7 @@ const Trainer = () => {
             }}
           />
         )}
-        <Typography variant="h1" color="common.white" sx={{ zIndex: 1 }}>
+        <Typography variant="h1" color="common.white" sx={{ zIndex: 1 }} textAlign="center">
           {trainer.first_name} {trainer.last_name}
         </Typography>
       </Box>
