@@ -142,7 +142,7 @@ const Day = () => {
           </Typography>
         </Box>
         <Container maxWidth="lg" sx={{ position: { xs: 'static', md: 'relative' } }}>
-          <Back to={`/calendar`} text={formatDateInRussian(day)} />
+          <Back sx={{ top: { xs: 20, md: 50 } }} to={`/calendar`} text={formatDateInRussian(day)} />
           <Box display="flex" alignItems="center" justifyContent="center" my={7}>
             <FormControl
               component="fieldset"
