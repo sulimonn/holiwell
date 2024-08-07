@@ -4,8 +4,6 @@ import { Box } from '@mui/material';
 import Image from './Image';
 
 const Avatar = ({ avatar, border }) => {
-  if (!avatar) return null;
-  //const ava = avatar.replace('http://154.194.52.246', '');
   return (
     <div>
       <Box
