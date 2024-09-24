@@ -6,7 +6,8 @@ import Image from 'components/Image';
 import { typeOfLesson } from 'utils/other';
 
 const ProfileLesson = ({ lesson }) => {
-  const typoflesson = typeOfLesson(lesson.course_type_slug);
+  if (!lesson?.course_type_slug) return null;
+  const typoflesson = typeOfLesson(lesson?.course_type_slug);
   return (
     <Box
       minWidth={{ xs: 194, sm: 250 }}

@@ -14,6 +14,8 @@ const ProfilePage = () => {
   const { data: favorites = [], isFetching: isFavoritesFetching } = useGetFavouritesQuery();
   const { data: myVieweds = [], isFetching: isMyViewFetching } = useMyViewedQuery();
   if (!user) return null;
+  console.log(myVieweds);
+
   return (
     <>
       <MobileHeaderContent color="black" />
@@ -83,8 +85,10 @@ const ProfilePage = () => {
               <Box mt={2} display="flex" gap={5} sx={{ overflow: 'auto' }}>
                 {isFavoritesFetching ? (
                   <Box>Загрузка...</Box>
-                ) : (
+                ) : favorites.filter((lesson) => lesson.course_type_slug).length > 0 ? (
                   favorites.map((lesson) => <ProfileLesson lesson={lesson} key={lesson.id} />)
+                ) : (
+                  <Box>Ничего не добавлено</Box>
                 )}
               </Box>
             </Box>
@@ -97,8 +101,10 @@ const ProfilePage = () => {
               <Box mt={2} display="flex" gap={5} sx={{ overflow: 'auto' }}>
                 {isMyViewFetching ? (
                   <Box>Загрузка...</Box>
-                ) : (
+                ) : myVieweds.filter((lesson) => lesson.course_type_slug).length > 0 ? (
                   myVieweds.map((lesson) => <ProfileLesson lesson={lesson} key={lesson.id} />)
+                ) : (
+                  <Box>Ничего не просмотрено</Box>
                 )}
               </Box>
             </Box>

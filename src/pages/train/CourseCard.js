@@ -33,20 +33,30 @@ const CourseCard = ({ course = {} }) => {
       </Box>
       <Typography variant="h4"> {course.title}</Typography>
       <Typography variant="body2" fontWeight="100" mt={0.5}>
-        {course.lessons[0].trainer.first_name} {course.lessons[0].trainer.last_name}
+        {course.lessons[0]?.trainer.first_name} {course.lessons[0]?.trainer.last_name}
       </Typography>
-      {!isSubscribed && (
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to={`/subscription/${course.id}`}
-          sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
+      <Button
+        variant="contained"
+        color="primary"
+        component={Link}
+        to={`/subscription/${course.id}`}
+        sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', gap: 1, mt: 0.5 }}
+      >
+        <Typography
+          variant="h4"
+          fontSize={{ xs: '12px', sm: '16px' }}
+          sx={{ whiteSpace: 'nowrap' }}
         >
-          <Typography variant="h4">КУПИТЬ КУРС</Typography>
-          <Typography variant="h4">1990 ₽</Typography>
-        </Button>
-      )}
+          КУПИТЬ КУРС
+        </Typography>
+        <Typography
+          variant="h4"
+          fontSize={{ xs: '12px', sm: '16px' }}
+          sx={{ whiteSpace: 'nowrap' }}
+        >
+          {course?.price_cource} ₽
+        </Typography>
+      </Button>
     </Box>
   );
 };

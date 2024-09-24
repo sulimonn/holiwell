@@ -8,6 +8,7 @@ import { useGetCourseByTypeQuery } from 'store/reducers/courses';
 const Train = () => {
   const [sortOption, setSortOption] = React.useState('new');
   const { data: training = {}, isSuccess } = useGetCourseByTypeQuery('training');
+  console.log(training);
 
   if (!isSuccess) return null;
   return (
@@ -19,9 +20,9 @@ const Train = () => {
         flexWrap="wrap"
         py={{ xs: 2, sm: 3, md: 5 }}
       >
-        {training.courses.map((course) => (
-          <CourseCard course={course} key={course.id} />
-        ))}
+        {training.courses.map(
+          (course) => course.lessons.length > 0 && <CourseCard course={course} key={course.id} />,
+        )}
       </Box>
     </Lessons>
   );

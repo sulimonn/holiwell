@@ -20,35 +20,55 @@ import TrainersList from 'components/TrainersList';
 import Image from 'components/Image';
 import { useAuth } from 'contexts/AuthContext';
 import MobileHeaderContent from 'layout/MainLayout/Header/MobileHeaderContent/index';
+import { useGetInfoQuery, useGetSliderQuery } from 'store/reducers/trainers';
 
 const Home = () => {
+  const { data = [], isSuccess } = useGetSliderQuery();
+  const { data: info = {}, isSuccess: infoSuccess } = useGetInfoQuery();
+
   const swiperData = [
     {
       id: 1,
       title: 'ТРЕНИРУЙСЯ',
-      decription:
-        'Отличный способ научиться сосредоточиться, снизить стресс и улучшить свое общее самочувствие',
+      decription: data[0]?.text_first,
+      photo: data[0]?.path_to_cover_first,
+    },
+    {
+      id: 2,
+      title: 'СЛУШАЙ',
+      decription: data[0]?.text_second,
+      photo: data[0]?.path_to_cover_second,
+    },
+    {
+      id: 3,
+      title: 'МЕДИТИРУЙ',
+      decription: data[0]?.text_third,
+      photo: data[0]?.path_to_cover_third,
+    },
+  ];
+  const links = [
+    {
+      id: 1,
+      title: 'ТРЕНИРУЙСЯ',
       photo: IntroGirl,
       to: '/training',
     },
     {
       id: 2,
       title: 'СЛУШАЙ',
-      decription:
-        'Отличный способ научиться сосредоточиться, снизить стресс и улучшить свое общее самочувствие',
       photo: IntroGirl,
       to: '/listening',
     },
     {
       id: 3,
       title: 'МЕДИТИРУЙ',
-      decription:
-        'Отличный способ научиться сосредоточиться, снизить стресс и улучшить свое общее самочувствие',
       photo: IntroGirl,
       to: '/meditation',
     },
   ];
   const { isAuthenticated, user } = useAuth();
+
+  if (!isSuccess || !infoSuccess) return null;
 
   return (
     <>
@@ -60,64 +80,68 @@ const Home = () => {
             autoplay={{ delay: 5000 }}
             pagination={{ clickable: true }}
           >
-            {swiperData.map((item) => (
-              <SwiperSlide key={item.id}>
-                <Box sx={{ position: 'relative' }}>
-                  <Box
-                    component={Image}
-                    src={item.photo}
-                    alt="intro"
-                    sx={{
-                      width: '100%',
-                      height: { xs: '120%', md: '125%' },
-                      position: 'absolute',
-                      objectFit: 'cover',
-                      objectPosition: 'top center',
-                      top: { xs: '-20%', md: '-25%' },
-                      left: 0,
-                      right: 0,
-                      zIndex: -1,
-                      filter: 'brightness(0.7)',
-                    }}
-                  />
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{
-                      zIndex: 1,
-                      position: 'relative',
-                      minHeight: { xs: '65vh', md: 'calc(100vh - 77px)' },
-                      top: { xs: 0, md: '-4em' },
-                      gap: 1.5,
-                    }}
-                    width="100%"
-                    maxWidth="725px"
-                    mx="auto"
-                    textAlign="center"
-                    flexDirection="column"
-                  >
-                    <Typography
-                      component="h1"
-                      fontSize={{ xs: '3rem', md: '6rem' }}
-                      fontWeight="500"
-                      color="primary.contrastText"
-                      textAlign="center"
-                      textTransform="uppercase"
-                    >
-                      {item.title}
-                    </Typography>
-                    <Typography
-                      color="primary.contrastText"
-                      fontSize={{ xs: '1.25rem', md: '1.5rem' }}
-                      fontWeight="300"
-                    >
-                      {item.decription}
-                    </Typography>
-                  </Box>
-                </Box>
-              </SwiperSlide>
-            ))}
+            {swiperData.map(
+              (item) =>
+                item.photo &&
+                item.title && (
+                  <SwiperSlide key={item.id}>
+                    <Box sx={{ position: 'relative' }}>
+                      <Box
+                        component={Image}
+                        src={item.photo}
+                        alt="intro"
+                        sx={{
+                          width: '100%',
+                          height: { xs: '120%', md: '125%' },
+                          position: 'absolute',
+                          objectFit: 'cover',
+                          objectPosition: 'top center',
+                          top: { xs: '-20%', md: '-25%' },
+                          left: 0,
+                          right: 0,
+                          zIndex: -1,
+                          filter: 'brightness(0.7)',
+                        }}
+                      />
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        sx={{
+                          zIndex: 1,
+                          position: 'relative',
+                          minHeight: { xs: '65vh', md: 'calc(100vh - 77px)' },
+                          top: { xs: 0, md: '-4em' },
+                          gap: 1.5,
+                        }}
+                        width="100%"
+                        maxWidth="725px"
+                        mx="auto"
+                        textAlign="center"
+                        flexDirection="column"
+                      >
+                        <Typography
+                          component="h1"
+                          fontSize={{ xs: '3rem', md: '6rem' }}
+                          fontWeight="500"
+                          color="primary.contrastText"
+                          textAlign="center"
+                          textTransform="uppercase"
+                        >
+                          {item?.title}
+                        </Typography>
+                        <Typography
+                          color="primary.contrastText"
+                          fontSize={{ xs: '1.25rem', md: '1.5rem' }}
+                          fontWeight="300"
+                        >
+                          {item?.decription}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </SwiperSlide>
+                ),
+            )}
           </Swiper>
           <Box
             display={{ xs: 'flex', md: 'none' }}
@@ -143,7 +167,7 @@ const Home = () => {
             spacing={2}
             sx={{ py: 12, borderBottom: '1px solid', borderColor: 'divider' }}
           >
-            {swiperData.map((item) => (
+            {links.map((item) => (
               <Grid item xs={12} sm={6} md={4} key={item.id}>
                 <Link to={item.to} style={{ textDecoration: 'none' }}>
                   <Box
@@ -218,13 +242,10 @@ const Home = () => {
                   pb={{ md: 5 }}
                 >
                   <Typography variant="h2" fontWeight="400" textTransform="uppercase">
-                    O Holiwell
+                    {info.title}
                   </Typography>
-                  <Typography variant="h5" fontWeight="300">
-                    Равным образом дальнейшее развитие различных форм деятельности влечет за собой
-                    процесс внедрения и модернизации соответствующий условий активизации.
-                    Разнообразный и богатый опыт сложившаяся структура организации представляет
-                    собой интересный эксперимент проверки форм развития.
+                  <Typography variant="h5" fontWeight="300" sx={{ whiteSpace: 'pre-line' }}>
+                    {info.text}
                   </Typography>
 
                   {!isAuthenticated && (

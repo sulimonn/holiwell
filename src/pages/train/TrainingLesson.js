@@ -66,7 +66,9 @@ const TraningPage = () => {
                 <Typography variant="body2" fontWeight="300" sx={{ textAlign: 'center' }}>
                   {lesson.trainer.first_name} {lesson.trainer.last_name}
                 </Typography>
-                <Typography variant="body2">{convertTime(lesson.video_length)}</Typography>
+                <Typography variant="body2">
+                  {convertTime(lesson.video_length || '00:00:00')}
+                </Typography>
               </Box>
               <Box display="flex" alignItems="center" gap={2} width={{ xs: '100%', sm: 'auto' }}>
                 <Button

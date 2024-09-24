@@ -21,6 +21,8 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
       }
     };
   }, [objectUrl]);
+  if (!course) return null;
+
   return (
     <Box flex={1} minWidth={{ xs: '100%', sm: '45%' }} maxWidth={{ xs: '100%', sm: '45%' }}>
       <Link
@@ -58,10 +60,10 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
             </Typography>
           </Box>
 
-          {!isSubscribed && <LockedIcon fontSize="large" />}
+          {!isSubscribed && course?.video_length && <LockedIcon fontSize="large" />}
           <Box px={1} py={0.5} m={2.5} backgroundColor="background.default" width="min-content">
             <Typography variant="h5" fontWeight="100">
-              {convertTime(course.video_length)}
+              {convertTime(course.video_length || '00:00:00')}
             </Typography>
           </Box>
         </Box>
@@ -69,7 +71,7 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
           {course.title}
         </Typography>
       </Link>
-      <Link to={`/trainers/${course.trainer.id}`} style={{ textDecoration: 'none' }}>
+      <Link to={`/trainers/${course.trainer?.id}`} style={{ textDecoration: 'none' }}>
         <Typography
           variant="body2"
           fontWeight="300"
@@ -93,7 +95,7 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
             '&:hover::after, &:focus::after, &:active::after': { right: 0 },
           }}
         >
-          {course.trainer.first_name} {course.trainer.last_name}
+          {course?.trainer?.first_name} {course.trainer?.last_name}
         </Typography>
       </Link>
     </Box>

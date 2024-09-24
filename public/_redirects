@@ -1,4 +1,4 @@
-/api/* http://holiwell.ru:8000/api/:splat 200
-/auth/* http://holiwell.ru:8000/auth/:splat 200
-/files/* http://holiwell.ru:8000/files/:splat 200
+/api/* https://holiwell.ru:8000/api/:splat 200
+/auth/* https://holiwell.ru:8000/auth/:splat 200
+/files/* https://holiwell.ru:8000/files/:splat 200
 /* /index.html 200

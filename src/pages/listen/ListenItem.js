@@ -81,7 +81,7 @@ const ListenItem = ({ lesson, handlePlayPause, playing }) => {
                 mt={0.5}
                 style={{ textDecoration: 'none', width: 'fit-content' }}
               >
-                {lesson.trainer.first_name} {lesson.trainer.last_name}
+                {lesson.trainer?.first_name} {lesson.trainer?.last_name}
               </Typography>
             }
             sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}

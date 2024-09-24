@@ -19,9 +19,9 @@ const Train = () => {
         flexWrap="wrap"
         py={{ xs: 2, sm: 3, md: 5 }}
       >
-        {listening.courses.map((course) => (
-          <CourseCard course={course} key={course.id} />
-        ))}
+        {listening.courses.map(
+          (course) => course.lessons.length > 0 && <CourseCard course={course} key={course.id} />,
+        )}
       </Box>
     </Lessons>
   );

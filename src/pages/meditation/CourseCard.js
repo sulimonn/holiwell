@@ -37,7 +37,7 @@ const CourseCard = ({ course = {} }) => {
         {course.title}
       </Typography>
       <Typography variant="h4" fontWeight="300" textAlign={{ xs: 'center', md: 'left' }}>
-        1990 ₽
+        {course.price_cource} ₽
       </Typography>
       <Button
         variant="outlined"
@@ -45,7 +45,7 @@ const CourseCard = ({ course = {} }) => {
         sx={{ width: '100%', mt: 1 }}
         //onClick={() => navigate(`/subscription/${course.id}`)}
       >
-        <Typography variant="h4" textAlign="center">
+        <Typography variant="h4" textAlign="center" fontSize={{ xs: '14px', md: 'inherit' }}>
           КУПИТЬ
         </Typography>
       </Button>

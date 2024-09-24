@@ -25,10 +25,11 @@ export default function Button(theme) {
           paddingBottom: 12.5,
           lineHeight: 0.8,
           [theme.breakpoints.down('sm')]: {
-            paddingLeft: 23,
-            paddingRight: 23,
+            paddingLeft: 17,
+            paddingRight: 17,
             paddingTop: 10,
             paddingBottom: 10,
+            fontSize: '0.75rem',
           },
         },
         contained: {

@@ -1,7 +1,7 @@
 import { apiSlice } from './apiSlice';
 
 const user = apiSlice.injectEndpoints({
-  tagTypes: ['User'],
+  tagTypes: ['User', 'Favourites'],
   endpoints: (builder) => ({
     updateAvatar: builder.mutation({
       query: (formData) => ({
@@ -41,6 +41,8 @@ const user = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+
+      invalidatesTags: ['User'],
     }),
     unlikeLesson: builder.mutation({
       query: (data) => ({
@@ -48,6 +50,8 @@ const user = apiSlice.injectEndpoints({
         method: 'DELETE',
         body: data,
       }),
+
+      invalidatesTags: ['User'],
     }),
     getFavourites: builder.query({
       query: () => '/users/my-favorite',

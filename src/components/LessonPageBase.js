@@ -17,6 +17,7 @@ import {
 
 const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained }) => {
   const [open, setOpen] = React.useState(false);
+  const [read, setRead] = React.useState(false);
   const [watchLesson, { isLoading }] = useWatchLessonMutation();
   const [likeLesson, { isLoading: isLoadingLike }] = useLikeLessonMutation();
   const [unlikeLesson] = useUnlikeLessonMutation();
@@ -54,7 +55,7 @@ const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained
               </Typography>
               <Box display="flex" alignItems="center" my={3} gap={6}>
                 <Typography variant="body2" fontWeight="300" sx={{ textAlign: 'center' }}>
-                  {lesson.trainer.first_name} {lesson.trainer.last_name}
+                  {lesson.trainer?.first_name} {lesson.trainer?.last_name}
                 </Typography>
                 <Typography variant="body2">{formatTime(duration)}</Typography>
               </Box>
@@ -129,107 +130,128 @@ const LessonPageBase = ({ cover, lesson, duration = 0, btnOutlined, btnContained
               lineHeight={1.4}
               sx={{ whiteSpace: 'pre-line' }}
             >
-              {lesson.description}
+              {read ? lesson.description : lesson.description.substring(0, 200) + '...'}
             </Typography>
-            <Typography color="primary.light" component={Link} to="/" variant="body2">
-              Читать дальше
+            <Typography
+              color="primary.light"
+              component={Button}
+              sx={{
+                textDecoration: 'underline',
+                textTransform: 'none',
+                p: 0,
+              }}
+              onClick={() => setRead(!read)}
+              variant="body2"
+            >
+              {read ? 'Скрыть' : 'Читать дальше'}
             </Typography>
           </Box>
           <Divider />
-          <Box
-            py={{ xs: 4, md: 7 }}
-            textAlign="center"
-            width={{ xs: '100%', md: '60%' }}
-            mx="auto"
-            display="flex"
-            gap={{ xs: 0.5, md: 3 }}
-            flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
-          >
-            <Avatar avatar={lesson.trainer.path_to_avatar} />
+          {lesson?.trainer && (
             <Box
-              textAlign="left"
+              py={{ xs: 4, md: 7 }}
+              textAlign="center"
+              width={{ xs: '100%', md: '60%' }}
+              mx="auto"
               display="flex"
-              flexDirection="column"
-              gap={{ xs: 1.2, md: 2 }}
-              justifyContent={{ xs: 'flex-start', md: 'center' }}
-              width={{ xs: '50%', md: 'auto' }}
+              gap={{ xs: 0.5, md: 3 }}
+              flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
             >
-              <Typography variant="body2" sx={{ fontSize: { xs: '1.25rem', md: 'inherit' } }}>
-                Тренер урока
-              </Typography>
-              <Typography
-                fontWeight="300"
-                variant="h3"
-                sx={{ fontSize: { xs: '0.85rem', md: 'inherit' } }}
+              <Avatar avatar={lesson.trainer.path_to_avatar} />
+              <Box
+                textAlign="left"
+                display="flex"
+                flexDirection="column"
+                gap={{ xs: 1.2, md: 2 }}
+                justifyContent={{ xs: 'flex-start', md: 'center' }}
+                width={{ xs: '50%', md: 'auto' }}
               >
-                {lesson.trainer.first_name} {lesson.trainer.last_name}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ whiteSpace: 'pre-line', display: { xs: 'none', sm: 'block' } }}
-              >
-                {lesson.trainer.description}
-              </Typography>
+                <Typography variant="body2" sx={{ fontSize: { xs: '1.25rem', md: 'inherit' } }}>
+                  Тренер урока
+                </Typography>
+                <Typography
+                  fontWeight="300"
+                  variant="h3"
+                  sx={{ fontSize: { xs: '0.85rem', md: 'inherit' } }}
+                >
+                  {lesson.trainer.first_name} {lesson.trainer.last_name}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ whiteSpace: 'pre-line', display: { xs: 'none', sm: 'block' } }}
+                >
+                  {lesson.trainer.description.length > 200
+                    ? `${lesson.trainer.description.substring(0, 200)}...`
+                    : lesson.trainer.description}
+                </Typography>
 
-              <Typography
-                component={Link}
-                to={`/trainers/${lesson.trainer.id}`}
-                variant="body2"
-                textTransform="uppercase"
-                color="primary.main"
-                sx={{
-                  display: { xs: 'none', sm: 'flex' },
-                  textDecoration: 'none',
-                  width: 'fit-content',
-                  position: 'relative',
-                  '&:after': {
-                    content: '""',
-                    position: 'absolute',
-                    width: '100%',
-                    height: '1px',
-                    backgroundColor: 'primary.main',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                  },
-                  alignItems: 'baseline',
-                  gap: 0.5,
-                }}
+                <Typography
+                  component={Link}
+                  to={`/trainers/${lesson.trainer.id}`}
+                  variant="body2"
+                  textTransform="uppercase"
+                  color="primary.main"
+                  sx={{
+                    display: { xs: 'none', sm: 'flex' },
+                    textDecoration: 'none',
+                    width: 'fit-content',
+                    position: 'relative',
+                    '&:after': {
+                      content: '""',
+                      position: 'absolute',
+                      width: '100%',
+                      height: '1px',
+                      backgroundColor: 'primary.main',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                    },
+                    alignItems: 'baseline',
+                    gap: 0.5,
+                  }}
+                >
+                  Подробнее <ArrowTo fontSize="5.5rem" />
+                </Typography>
+              </Box>
+              <Box
+                display={{ xs: 'flex', sm: 'none' }}
+                flex={1}
+                flexDirection="column"
+                width="100%"
               >
-                Подробнее <ArrowTo fontSize="5.5rem" />
-              </Typography>
-            </Box>
-            <Box display={{ xs: 'flex', sm: 'none' }} flex={1} flexDirection="column" width="100%">
-              <Typography variant="body2" sx={{ whiteSpace: 'pre-line', my: 2 }} textAlign="left">
-                {lesson.trainer.description}
-              </Typography>
+                <Typography variant="body2" sx={{ whiteSpace: 'pre-line', my: 2 }} textAlign="left">
+                  {lesson.trainer.description.length > 200
+                    ? `${lesson.trainer.description.substring(0, 200)}...`
+                    : lesson.trainer.description}
+                </Typography>
 
-              <Typography
-                component={Link}
-                to={`/trainers/${lesson.trainer.id}`}
-                variant="body2"
-                textTransform="uppercase"
-                color="primary.main"
-                sx={{
-                  textDecoration: 'none',
-                  position: 'relative',
-                  width: 'fit-content',
-                  '&:after': {
-                    content: '""',
-                    position: 'absolute',
-                    width: '100%',
-                    height: '1px',
-                    backgroundColor: 'primary.main',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                  },
-                }}
-              >
-                Подробнее <ArrowTo fontSize="inherit" />
-              </Typography>
+                <Typography
+                  component={Link}
+                  to={`/trainers/${lesson.trainer.id}`}
+                  variant="body2"
+                  textTransform="uppercase"
+                  color="primary.main"
+                  sx={{
+                    textDecoration: 'none',
+                    position: 'relative',
+                    width: 'fit-content',
+                    '&:after': {
+                      content: '""',
+                      position: 'absolute',
+                      width: '100%',
+                      height: '1px',
+                      backgroundColor: 'primary.main',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                    },
+                  }}
+                >
+                  Подробнее <ArrowTo fontSize="inherit" />
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          )}
         </Container>
       </Box>
     </>

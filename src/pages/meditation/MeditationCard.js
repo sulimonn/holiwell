@@ -97,7 +97,7 @@ const MeditationCard = ({ lesson, isSubscribed, index }) => {
               {lesson.title}
             </Typography>
             <Typography
-              onClick={() => navigate(`/trainers/${lesson.trainer.id}`)}
+              onClick={() => navigate(`/trainers/${lesson.trainer?.id}`)}
               variant="subtitle1"
               fontWeight="100"
               color="primary.main"
@@ -108,7 +108,7 @@ const MeditationCard = ({ lesson, isSubscribed, index }) => {
                 mx: 'auto',
               }}
             >
-              {lesson.trainer.first_name} {lesson.trainer.last_name}
+              {lesson.trainer?.first_name} {lesson.trainer?.last_name}
             </Typography>
           </Box>
         </Box>

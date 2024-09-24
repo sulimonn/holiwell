@@ -151,8 +151,8 @@ const Lesson = () => {
           borderBottom="1px solid"
           borderColor="divider"
         >
-          {course.lessons &&
-            course?.lessons.map((course, index) => (
+          {course.lessons?.length &&
+            course.lessons?.map((course, index) => (
               <LessonCard
                 key={course.id}
                 course={course}

@@ -87,7 +87,6 @@ const AuthRegister = () => {
               navigate('/', { replace: true }); // Redirect to the main page
             }
           } catch (err) {
-            console.error(err);
             setStatus({ success: false });
             setErrors({ submit: err.message });
             setSubmitting(false);
