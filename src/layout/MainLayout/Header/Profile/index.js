@@ -99,7 +99,7 @@ export default function Profile({ anchorRef }) {
               {
                 name: 'offset',
                 options: {
-                  offset: [0, 24],
+                  offset: [0, 20],
                 },
               },
             ],

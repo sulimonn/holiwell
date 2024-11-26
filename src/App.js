@@ -17,11 +17,11 @@ const App = () => {
   }, [location]);
   return (
     <ThemeCustomization>
-      <ScrollTop>
-        <AuthProvider>
+      <AuthProvider>
+        <ScrollTop>
           <Routes />
-        </AuthProvider>
-      </ScrollTop>
+        </ScrollTop>
+      </AuthProvider>
     </ThemeCustomization>
   );
 };

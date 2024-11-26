@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import { Box, Container, Typography, Divider, Button, IconButton } from '@mui/material';
-import { convertTime, timeToSeconds } from 'utils/formatTime'; // eslint-disable-next-line
+import { timeToSeconds } from 'utils/formatTime'; // eslint-disable-next-line
 import Icon from '@ant-design/icons';
 import CalendarIcon from 'assets/images/icons/Calendar';
 import ModalCalendar from 'pages/calendar/ModalCalendar';
@@ -13,19 +13,21 @@ import {
   useUnlikeLessonMutation,
   useWatchLessonMutation,
 } from 'store/reducers/userApi';
-import { useGetLessonQuery } from 'store/reducers/courses';
+import { useGetCourseQuery, useGetLessonQuery } from 'store/reducers/courses';
 import Avatar from 'components/Avatar';
 import VideoPlayer from 'pages/meditation/VideoPlayer';
 import PrevNextLessonCard from './PrevNextLessonCard';
 
 const TraningPage = () => {
   const { lessonId: id } = useParams();
-  const { data: lesson = {}, isSuccess } = useGetLessonQuery(id);
+  const { data: lesson = {}, isSuccess, isFetching } = useGetLessonQuery(id);
+  const { data: course = {} } = useGetCourseQuery(lesson?.course_id);
   const [open, setOpen] = React.useState(false);
   const [playing, setPlaying] = React.useState(false);
   const [watchLesson, { isLoading }] = useWatchLessonMutation();
   const [likeLesson, { isLoading: isLoadingLike }] = useLikeLessonMutation();
   const [unlikeLesson] = useUnlikeLessonMutation();
+  const navigate = useNavigate();
 
   const Calendar = (props) => <Icon component={CalendarIcon} {...props} />;
   const HeartIcon = (props) => <Icon component={Heart} {...props} />;
@@ -43,18 +45,20 @@ const TraningPage = () => {
     if (isSuccess) setFavourite(lesson?.is_favorite);
   }, [lesson, watchLesson, isSuccess]);
 
-  if (!isSuccess) return null;
+  if (!isSuccess || isFetching) return null;
   return (
     <>
       <ModalCalendar lesson_id={lesson.id} open={open} setOpen={setOpen} />
       <Box width="100%">
         <Container maxWidth="lg" sx={{ px: { xs: 0, md: 2 } }}>
-          <VideoPlayer
-            path_to_video={lesson.path_to_video}
-            duration={timeToSeconds(lesson.video_length)}
-            playing={playing}
-            setPlaying={setPlaying}
-          />
+          {lesson.path_to_video && (
+            <VideoPlayer
+              path_to_video={lesson.path_to_video}
+              duration={timeToSeconds(lesson.video_length)}
+              playing={playing}
+              setPlaying={setPlaying}
+            />
+          )}
         </Container>
         <Container maxWidth="lg">
           <Box pt={{ xs: 0, md: 5 }} pb={{ xs: 4, md: 7 }}>
@@ -63,11 +67,34 @@ const TraningPage = () => {
                 {lesson.title}
               </Typography>
               <Box display="flex" alignItems="center" my={3} gap={6}>
-                <Typography variant="body2" fontWeight="300" sx={{ textAlign: 'center' }}>
-                  {lesson.trainer.first_name} {lesson.trainer.last_name}
-                </Typography>
-                <Typography variant="body2">
-                  {convertTime(lesson.video_length || '00:00:00')}
+                <Typography color="text.primary" variant="body2" fontWeight="300">
+                  Курс:{' '}
+                  <Typography
+                    color="text.primary"
+                    variant="body2"
+                    fontWeight="300"
+                    component="span"
+                    sx={{ textAlign: 'center', textDecoration: 'underline', cursor: 'pointer' }}
+                    onClick={() => navigate(`/${lesson?.course_type_slug}/${lesson?.course_id}`)}
+                  >
+                    {course?.title}
+                  </Typography>{' '}
+                  , тренер:{' '}
+                  <Typography
+                    color="text.primary"
+                    variant="body2"
+                    fontWeight="300"
+                    sx={{
+                      textAlign: 'center',
+                      textDecoration: 'underline',
+                      cursor: 'pointer',
+                      textTransform: 'capitalize',
+                    }}
+                    component="span"
+                    onClick={() => navigate(`/trainers/${lesson?.trainer?.id}`)}
+                  >
+                    {lesson.trainer?.first_name} {lesson.trainer?.last_name}
+                  </Typography>
                 </Typography>
               </Box>
               <Box display="flex" alignItems="center" gap={2} width={{ xs: '100%', sm: 'auto' }}>
@@ -149,25 +176,38 @@ const TraningPage = () => {
             >
               {lesson.description}
             </Typography>
-            <Typography color="primary.light" component={Link} to="/" variant="body2">
-              Читать дальше
-            </Typography>
           </Box>
           <Divider />
-          {lesson.links_before ||
-            (lesson.links_after && (
-              <>
-                <Box
-                  py={{ xs: 4, md: 7 }}
-                  display="grid"
-                  gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }}
-                >
-                  <PrevNextLessonCard linked_lesson={lesson.links_before} title="До тренировки" />
-                  <PrevNextLessonCard linked_lesson={lesson.links_after} title="После тренировки" />
-                </Box>
-                <Divider />
-              </>
-            ))}
+          {(lesson.links_before || lesson.links_after) && (
+            <>
+              <Box
+                display="grid"
+                gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }}
+                gridTemplateRows={{ xs: 'auto', md: '1fr' }}
+                py={{ xs: 5, md: 7 }}
+                gap={{ xs: 4, md: 3 }}
+                direction={{ xs: 'column', md: 'row' }}
+              >
+                {lesson.links_before ? (
+                  <PrevNextLessonCard
+                    linked_lesson={lesson.links_before}
+                    title="Предыдущая тренировка"
+                  />
+                ) : (
+                  <div></div>
+                )}
+                {lesson.links_after ? (
+                  <PrevNextLessonCard
+                    linked_lesson={lesson.links_after}
+                    title="Следующая тренировка"
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </Box>
+              <Divider />
+            </>
+          )}
           <Box
             py={{ xs: 4, md: 7 }}
             textAlign="center"
@@ -199,7 +239,9 @@ const TraningPage = () => {
                 variant="body2"
                 sx={{ whiteSpace: 'pre-line', display: { xs: 'none', sm: 'block' } }}
               >
-                {lesson.trainer.description}
+                {lesson.trainer.description.length > 200
+                  ? `${lesson.trainer.description.substring(0, 200)}...`
+                  : lesson.trainer.description}
               </Typography>
 
               <Typography
@@ -233,7 +275,9 @@ const TraningPage = () => {
             <br />
             <Box display={{ xs: 'flex', sm: 'none' }} flex={1} width="100%" flexDirection="column">
               <Typography variant="body2" sx={{ whiteSpace: 'pre-line', my: 2 }} textAlign="left">
-                {lesson.trainer.description}
+                {lesson.trainer.description.length > 200
+                  ? `${lesson.trainer.description.substring(0, 200)}...`
+                  : lesson.trainer.description}
               </Typography>
 
               <Typography

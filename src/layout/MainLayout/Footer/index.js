@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { Box, Container, Typography, Stack } from '@mui/material';
 
 // project import
 import Logo from 'components/Logo/Logo';
-import menuItems from 'menu-items';
 
 // assets
 import GooglePlay from 'assets/images/stores/googlePlay.png';
@@ -18,7 +17,7 @@ import { openProfile } from 'store/reducers/menu';
 const Footer = () => {
   const { isAuthenticated, logout } = useAuth();
   const dispatch = useDispatch();
-
+  const { pages } = useSelector((state) => state.menu);
   return (
     <Box
       component="footer"
@@ -67,32 +66,25 @@ const Footer = () => {
             <Stack xs={7.5}>
               <Stack direction="column" spacing={6} height="100%">
                 <Stack direction="row" spacing={6} justifyContent="space-between">
-                  {menuItems.items
-                    .find((item) => item.id === 'pages')
-                    .children?.map((child, i) => {
-                      if (child.id === 'logout1') {
-                        return null;
-                      }
-                      console.log(child);
-
-                      return (
-                        <Typography
-                          component={Link}
-                          to={child.url}
-                          variant="h5"
-                          key={i}
-                          color="primary"
-                          textTransform="uppercase"
-                          sx={{
-                            textDecoration: 'none ',
-                            transition: 'color 0.2s ease',
-                            '&:hover': { color: 'text.secondary' },
-                          }}
-                        >
-                          {child.title}
-                        </Typography>
-                      );
-                    })}
+                  {pages.map((child, i) => {
+                    return (
+                      <Typography
+                        component={Link}
+                        to={'/' + child.slug}
+                        variant="h5"
+                        key={i}
+                        color="primary"
+                        textTransform="uppercase"
+                        sx={{
+                          textDecoration: 'none ',
+                          transition: 'color 0.2s ease',
+                          '&:hover': { color: 'text.secondary' },
+                        }}
+                      >
+                        {child.title}
+                      </Typography>
+                    );
+                  })}
                   <Typography
                     component={Link}
                     to={'https://t.me/holiwell'}

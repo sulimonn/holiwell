@@ -33,9 +33,13 @@ const VideoPlayer = ({ path_to_video, duration, playing, setPlaying }) => {
   };
 
   const handleProgress = (state) => {
-    if (!videoRef.current.seeking) {
+    if (!videoRef.current?.seeking) {
       setPlayedProgress(state.played);
     }
+    if (state.played >= duration) {
+      setPlaying(false);
+    }
+    console.log(videoRef.current?.player.isLoading);
   };
 
   const showControls = useCallback(() => {
@@ -101,6 +105,9 @@ const VideoPlayer = ({ path_to_video, duration, playing, setPlaying }) => {
           controls={false}
           onReady={(e) => {
             setLoading(false);
+          }}
+          onEnded={() => {
+            setPlaying(false);
           }}
         />
       </Box>

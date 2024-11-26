@@ -9,6 +9,7 @@ const initialState = {
   drawerOpen: false,
   profileOpen: false,
   componentDrawerOpen: true,
+  pages: [],
 };
 
 // ==============================|| SLICE - MENU ||============================== //
@@ -36,10 +37,19 @@ const menu = createSlice({
     openComponentDrawer(state, action) {
       state.componentDrawerOpen = action.payload.componentDrawerOpen;
     },
+    setPages: (state, action) => {
+      state.pages = action.payload;
+    },
   },
 });
 
 export default menu.reducer;
 
-export const { activeItem, activeComponent, openDrawer, openProfile, openComponentDrawer } =
-  menu.actions;
+export const {
+  activeItem,
+  activeComponent,
+  openDrawer,
+  openProfile,
+  openComponentDrawer,
+  setPages,
+} = menu.actions;

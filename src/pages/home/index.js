@@ -11,6 +11,7 @@ import './pagination.css';
 // Import images
 import IntroGirl from 'assets/images/girls/intro.jpeg';
 import Listen from 'assets/images/girls/listening.jpeg';
+import LockedIcon from 'assets/images/icons/lock';
 
 // material-ui
 import { Box, Typography, Grid, Button } from '@mui/material';
@@ -20,32 +21,15 @@ import TrainersList from 'components/TrainersList';
 import Image from 'components/Image';
 import { useAuth } from 'contexts/AuthContext';
 import MobileHeaderContent from 'layout/MainLayout/Header/MobileHeaderContent/index';
-import { useGetInfoQuery, useGetSliderQuery } from 'store/reducers/trainers';
+import { useGetInfoQuery, useGetSliderQuery, useGetSlidersQuery } from 'store/reducers/trainers';
+import { checkMediaType } from 'utils/other';
+import Loader from 'components/Loader';
 
 const Home = () => {
-  const { data = [], isSuccess } = useGetSliderQuery();
-  const { data: info = {}, isSuccess: infoSuccess } = useGetInfoQuery();
+  const { data = [], isSuccess, isFetching } = useGetSlidersQuery();
+  const { data: greeting = {} } = useGetSliderQuery(7);
+  const { data: info = {}, isSuccess: infoSuccess, isFetching: infoFetching } = useGetInfoQuery();
 
-  const swiperData = [
-    {
-      id: 1,
-      title: 'ТРЕНИРУЙСЯ',
-      decription: data[0]?.text_first,
-      photo: data[0]?.path_to_cover_first,
-    },
-    {
-      id: 2,
-      title: 'СЛУШАЙ',
-      decription: data[0]?.text_second,
-      photo: data[0]?.path_to_cover_second,
-    },
-    {
-      id: 3,
-      title: 'МЕДИТИРУЙ',
-      decription: data[0]?.text_third,
-      photo: data[0]?.path_to_cover_third,
-    },
-  ];
   const links = [
     {
       id: 1,
@@ -65,152 +49,252 @@ const Home = () => {
       photo: IntroGirl,
       to: '/meditation',
     },
+    {
+      id: 4,
+      title: 'Ешь правильно',
+      photo: IntroGirl,
+    },
   ];
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuth();
 
-  if (!isSuccess || !infoSuccess) return null;
+  if (!isSuccess || !infoSuccess || isLoading || infoFetching || isFetching) return <Loader />;
 
+  const parseGreeting = (text) => {
+    const linkPattern = /([\wа-яА-ЯёЁ]+)\/([\wа-яА-ЯёЁ-]+)/g;
+    const tagPattern = /@([a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)?)/g;
+    const parts = [];
+    let lastIndex = 0;
+
+    text.replace(linkPattern, (match, name, link, index) => {
+      if (index > lastIndex) {
+        parts.push(text.substring(lastIndex, index));
+      }
+      parts.push(
+        <Link to={link} key={index} style={{ color: 'inherit' }}>
+          {name}
+        </Link>,
+      );
+      lastIndex = index + match.length;
+      return match;
+    });
+
+    text.replace(tagPattern, (match, tag, index) => {
+      if (index > lastIndex) {
+        parts.push(text.substring(lastIndex, index));
+      }
+
+      parts.push(
+        tag === 'user.first_name'
+          ? user.first_name
+          : tag === 'user.last_name'
+            ? user.last_name
+            : user.email,
+      );
+      lastIndex = index + match.length;
+      return match;
+    });
+
+    if (lastIndex < text.length) {
+      parts.push(text.substring(lastIndex));
+    }
+
+    return parts;
+  };
   return (
     <>
       <MobileHeaderContent />
       <Box width="100%">
-        <Box minHeight={{ xs: 'fit-content', md: 'calc(100vh - 77px)' }} width="100vw">
-          <Swiper
-            modules={[Pagination, A11y, Autoplay]}
-            autoplay={{ delay: 5000 }}
-            pagination={{ clickable: true }}
-          >
-            {swiperData.map(
-              (item) =>
-                item.photo &&
-                item.title && (
-                  <SwiperSlide key={item.id}>
-                    <Box sx={{ position: 'relative' }}>
-                      <Box
-                        component={Image}
-                        src={item.photo}
-                        alt="intro"
-                        sx={{
-                          width: '100%',
-                          height: { xs: '120%', md: '125%' },
-                          position: 'absolute',
-                          objectFit: 'cover',
-                          objectPosition: 'top center',
-                          top: { xs: '-20%', md: '-25%' },
-                          left: 0,
-                          right: 0,
-                          zIndex: -1,
-                          filter: 'brightness(0.7)',
-                        }}
-                      />
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{
-                          zIndex: 1,
-                          position: 'relative',
-                          minHeight: { xs: '65vh', md: 'calc(100vh - 77px)' },
-                          top: { xs: 0, md: '-4em' },
-                          gap: 1.5,
-                        }}
-                        width="100%"
-                        maxWidth="725px"
-                        mx="auto"
-                        textAlign="center"
-                        flexDirection="column"
-                      >
-                        <Typography
-                          component="h1"
-                          fontSize={{ xs: '3rem', md: '6rem' }}
-                          fontWeight="500"
-                          color="primary.contrastText"
+        <Box maxHeight={{ xs: 'max-content' }} width="100vw">
+          <Box height={{ xs: '450px', sm: '500px', md: '600px' }}>
+            <Swiper
+              modules={[Pagination, A11y, Autoplay]}
+              //utoplay={{ delay: 5000 }}
+              pagination={{ clickable: true }}
+              style={{ height: '100%' }}
+            >
+              {data.map(
+                (item) =>
+                  item?.id !== 7 &&
+                  item?.path_to_cover_first &&
+                  item?.title_first && (
+                    <SwiperSlide key={item.id} style={{ height: '100%' }}>
+                      <Box sx={{ position: 'relative', height: '100%' }}>
+                        <Box
+                          component={
+                            checkMediaType(item?.path_to_cover_first) === 'image' ? Image : 'video'
+                          }
+                          src={item?.path_to_cover_first}
+                          alt="intro"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          loading="lazy"
+                          sx={{
+                            width: '100%',
+                            height: '100%',
+                            position: 'absolute',
+                            objectFit: 'cover',
+                            objectPosition: 'center',
+                            left: 0,
+                            right: 0,
+                            zIndex: -1,
+                            filter: 'brightness(0.7)',
+                          }}
+                        />
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          sx={{
+                            zIndex: 1,
+                            position: 'relative',
+                            gap: 1.5,
+                            px: 1,
+                          }}
+                          height="90%"
+                          width="100%"
+                          maxWidth={{ xs: '96%', md: '725px' }}
+                          mx="auto"
                           textAlign="center"
-                          textTransform="uppercase"
+                          flexDirection="column"
                         >
-                          {item?.title}
-                        </Typography>
-                        <Typography
-                          color="primary.contrastText"
-                          fontSize={{ xs: '1.25rem', md: '1.5rem' }}
-                          fontWeight="300"
-                        >
-                          {item?.decription}
-                        </Typography>
+                          <Typography
+                            component="h1"
+                            fontSize={{ xs: '3rem', md: '6rem' }}
+                            fontWeight="500"
+                            color="primary.contrastText"
+                            textAlign="center"
+                            textTransform="uppercase"
+                          >
+                            {item?.title_first}
+                          </Typography>
+                          <Typography
+                            color="primary.contrastText"
+                            fontSize={{ xs: '1.25rem', md: '1.5rem' }}
+                            fontWeight="300"
+                          >
+                            {item?.text_first}
+                          </Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                  </SwiperSlide>
-                ),
-            )}
-          </Swiper>
+                    </SwiperSlide>
+                  ),
+              )}
+            </Swiper>
+          </Box>
           <Box
-            display={{ xs: 'flex', md: 'none' }}
+            display={{ xs: 'flex' }}
             sx={{ height: '100%', px: 2, py: 4, gap: 2, flexDirection: 'column' }}
+            maxWidth={{ xs: '100vw', md: '75vw' }}
+            mx="auto"
           >
             <Typography
               variant="h1"
               fontSize="3rem"
               textTransform="uppercase"
+              whiteSpace="nowrap"
               fontWeight={{ xs: 400 }}
+              sx={{ maxWidth: { xs: '100%', md: '70%' } }}
             >
-              Добро пожаловать{isAuthenticated && ', ' + user.first_name}!
+              {isAuthenticated
+                ? parseGreeting(greeting?.title_second || '')
+                : parseGreeting(greeting?.title_first || '')}
             </Typography>
             <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
-              Не ограничивай себя в движении,{'\n\n'}В здоровом теле здоровый дух. Регулярная
-              практика и позитивный настрой дадут тебе энергию для реализации твоей цели 🎯
+              {isAuthenticated
+                ? parseGreeting(greeting?.text_second || '')
+                : parseGreeting(greeting?.text_first || '')}
             </Typography>
           </Box>
         </Box>
-        <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 4 }} mx="auto">
+        <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 5 }} mx="auto">
           <Grid
             container
             spacing={2}
             sx={{ py: 12, borderBottom: '1px solid', borderColor: 'divider' }}
           >
-            {links.map((item) => (
-              <Grid item xs={12} sm={6} md={4} key={item.id}>
-                <Link to={item.to} style={{ textDecoration: 'none' }}>
-                  <Box
-                    sx={{
-                      position: 'relative',
-                      height: '202px',
-                      overflow: 'hidden',
-                      background: 'linear-gradient(0deg, #d5d5d5 0%, #dedede 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      px: { xs: 1.5, md: 2, lg: 3 },
-                    }}
-                  >
+            {links.map((item) => {
+              const props = item?.to && {
+                to: item?.to,
+                component: Link,
+                sx: { textDecoration: 'none' },
+              };
+              return (
+                <Grid item xs={12} sm={6} key={item.id}>
+                  <Box {...props}>
                     <Box
                       sx={{
-                        width: '80%',
-                        height: 'auto',
-                        position: 'absolute',
-                        top: { xs: '-35%', md: '-25%', lg: '-45%' },
-                        right: { xs: '-20%', md: '-20%', lg: '-20%' },
-                        zIndex: 0,
+                        position: 'relative',
+                        height: { xs: '202px', sm: '272px' },
+                        overflow: 'hidden',
+                        background: 'linear-gradient(0deg, #d5d5d5 0%, #dedede 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        px: { xs: 1.5, md: 2, lg: 3 },
+                        textDecoration: 'none',
                       }}
                     >
-                      <Image
-                        src={Listen}
-                        alt="intro"
-                        loading="lazy"
-                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                      />
+                      {!item?.to && (
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            zIndex: 9,
+                          }}
+                        >
+                          <Box
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            sx={{
+                              backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                width: { xs: '50px', sm: '100px' },
+                                height: { xs: '50px', sm: '100px' },
+                              }}
+                            >
+                              <LockedIcon />
+                            </Box>
+                          </Box>
+                        </Box>
+                      )}
+                      <Box
+                        sx={{
+                          width: '80%',
+                          height: 'auto',
+                          position: 'absolute',
+                          top: { xs: '-35%', md: '-25%', lg: '-45%' },
+                          right: { xs: '-20%', md: '-20%', lg: '-20%' },
+                          zIndex: 0,
+                        }}
+                      >
+                        <Image
+                          src={Listen}
+                          alt="intro"
+                          loading="lazy"
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                        />
+                      </Box>
+                      <Typography
+                        variant="h4"
+                        fontWeight="400"
+                        color="primary.main"
+                        textTransform="uppercase"
+                        sx={{ position: 'relative', zIndex: 1 }}
+                      >
+                        {item.title}
+                      </Typography>
                     </Box>
-                    <Typography
-                      variant="h4"
-                      fontWeight="400"
-                      color="primary.main"
-                      textTransform="uppercase"
-                      sx={{ position: 'relative', zIndex: 1 }}
-                    >
-                      {item.title}
-                    </Typography>
                   </Box>
-                </Link>
-              </Grid>
-            ))}
+                </Grid>
+              );
+            })}
           </Grid>
         </Box>
         <Box maxWidth={{ xs: '100vw', md: '75vw' }} px={{ xs: 2, sm: 3, md: 4 }} mx="auto">
@@ -226,7 +310,7 @@ const Home = () => {
               <Grid item xs={12} md={5}>
                 <Box>
                   <Image
-                    src={IntroGirl}
+                    src={info?.path_to_video}
                     alt="intro"
                     style={{ width: '100%', height: '380px', objectFit: 'cover' }}
                   />

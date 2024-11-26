@@ -8,7 +8,11 @@ const TeamCard = ({ trainer }) => {
   return (
     <Link to={`/trainers/${trainer.id}`} style={{ textDecoration: 'none' }}>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Avatar avatar={trainer.path_to_avatar} />
+        <Avatar
+          width={{ xs: '120px', sm: '220px', md: '270px' }}
+          height={{ xs: '120px', sm: '220px', md: '270px' }}
+          avatar={trainer.path_to_avatar}
+        />
         <Typography
           variant="h5"
           fontWeight="300"

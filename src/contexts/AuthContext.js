@@ -1,4 +1,3 @@
-import Loader from 'components/Loader';
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation, useLogoutMutation, useRegisterMutation } from 'store/reducers/authApi';
@@ -11,15 +10,16 @@ export const useAuth = () => useContext(AuthContext);
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState('loading');
+  const [isLoading, setisLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [login] = useLoginMutation();
   const {
     data: userData,
     refetch,
     isFetching,
-    isLoading,
+    ...props
   } = useGetMeQuery(null, {
-    skip: isAuthenticated || !localStorage.getItem('authToken'),
+    skip: !localStorage.getItem('authToken') || isAuthenticated,
   });
   const [logout] = useLogoutMutation();
   const [register] = useRegisterMutation();
@@ -33,6 +33,12 @@ const AuthProvider = ({ children }) => {
       setUser(null);
     }
   }, [userData]);
+
+  useEffect(() => {
+    if (props?.status === 'uninitialized') {
+      setisLoading(false);
+    }
+  }, [props]);
 
   const handleLogin = async (credentials) => {
     try {
@@ -83,10 +89,6 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  if (isFetching || isLoading) {
-    return <Loader />;
-  }
-
   return (
     <AuthContext.Provider
       value={{
@@ -96,6 +98,9 @@ const AuthProvider = ({ children }) => {
         logout: handleLogout,
         register: handleRegister,
         refreshAuthState,
+        isUserFetching: isFetching,
+        isUserLoading: isLoading,
+        isLoading: isLoading || isAuthenticated === 'loading' || isFetching,
       }}
     >
       {children}

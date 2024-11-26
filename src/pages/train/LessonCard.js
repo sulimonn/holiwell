@@ -24,13 +24,18 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
   if (!course) return null;
 
   return (
-    <Box flex={1} minWidth={{ xs: '100%', sm: '45%' }} maxWidth={{ xs: '100%', sm: '45%' }}>
+    <Box
+      flex={1}
+      minWidth={{ xs: '100%', sm: '48%' }}
+      maxWidth={{ xs: '100%', sm: '48%' }}
+      height="100%"
+    >
       <Link
-        to={`${isSubscribed ? course.id : null}`}
+        to={isSubscribed ? `/${course.course_type_slug}/${course.course_id}/${course.id}` : null}
         style={{ textDecoration: 'none', pointerEvents: isSubscribed ? 'all' : 'none' }}
       >
         <Box
-          height={{ xs: '170px', md: size === 'large' ? '326px' : '220px' }}
+          height={{ xs: '210px', md: size === 'large' ? '326px' : '340px' }}
           sx={{
             overflow: 'hidden',
             position: 'relative',
@@ -51,7 +56,12 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
             <Image
               src={process.env.REACT_APP_BASE_URL + course.path_to_cover}
               alt="course"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+              }}
             />
           </Box>
           <Box px={2} py={1} backgroundColor="background.default" width="min-content">
@@ -60,7 +70,11 @@ const LessonCard = ({ course, index, size = 'large', isSubscribed = true }) => {
             </Typography>
           </Box>
 
-          {!isSubscribed && course?.video_length && <LockedIcon fontSize="large" />}
+          {!isSubscribed && course?.video_length && (
+            <Box sx={{ width: { xs: 60, md: 70 }, height: { xs: 60, md: 70 }, mx: 'auto' }}>
+              <LockedIcon fontSize="large" style={{ width: '100%', height: '100%' }} />
+            </Box>
+          )}
           <Box px={1} py={0.5} m={2.5} backgroundColor="background.default" width="min-content">
             <Typography variant="h5" fontWeight="100">
               {convertTime(course.video_length || '00:00:00')}

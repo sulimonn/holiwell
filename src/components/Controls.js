@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, Slider, IconButton, Typography, Menu } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Box, Slider, IconButton, Typography, Menu, useMediaQuery } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrowRounded';
 import PauseIcon from '@mui/icons-material/PauseRounded';
 import Forward10RoundedIcon from '@mui/icons-material/Forward10Rounded';
@@ -32,6 +33,9 @@ const Controls = ({
   const [played, setPlayed] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const theme = useTheme();
+  const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleVolumeChange = (event, newValue) => {
     setVolume(newValue / 100);
@@ -66,14 +70,20 @@ const Controls = ({
 
   const handleFullscreen = () => {
     if (!isFullscreen) {
-      if (containerRef.current.requestFullscreen) {
-        containerRef.current.requestFullscreen();
-      } else if (containerRef.current.webkitRequestFullscreen) {
-        /* Safari */
-        containerRef.current.webkitRequestFullscreen();
-      } else if (containerRef.current.msRequestFullscreen) {
-        /* IE11 */
-        containerRef.current.msRequestFullscreen();
+      if (matchDownSm) {
+        if (containerRef.current.requestFullscreen) {
+          containerRef.current.firstChild.firstChild.firstChild.requestFullscreen();
+        }
+      } else {
+        if (containerRef.current.requestFullscreen) {
+          containerRef.current.requestFullscreen();
+        } else if (containerRef.current.webkitRequestFullscreen) {
+          /* Safari */
+          containerRef.current.webkitRequestFullscreen();
+        } else if (containerRef.current.msRequestFullscreen) {
+          /* IE11 */
+          containerRef.current.msRequestFullscreen();
+        }
       }
     } else {
       if (document.exitFullscreen) {
@@ -109,13 +119,14 @@ const Controls = ({
   useEffect(() => {
     if (mediaRef.current) {
       if (media === 'video') {
+        mediaRef.current.onended = () => setPlaying(false);
         const currentTime = mediaRef.current.getCurrentTime();
         if (currentTime) setPlayed(currentTime);
       } else {
         setPlayed(mediaRef.current.currentTime);
       }
     }
-  }, [playedProgress, mediaRef, media]);
+  }, [playedProgress, mediaRef, media, setPlaying]);
 
   useEffect(() => {
     if (mediaRef.current) {

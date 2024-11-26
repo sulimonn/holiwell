@@ -1,5 +1,5 @@
 .swiper-pagination {
-  top: 65vh !important;
+  bottom: 50px !important;
 }
 
 .swiper-pagination-bullet {
@@ -16,5 +16,9 @@
   .swiper-pagination {
     top: auto !important;
     bottom: 3em !important;
+  }
+
+  .swiper-pagination-bullet {
+    width: 50px;
   }
 }

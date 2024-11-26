@@ -3,12 +3,12 @@ import React from 'react';
 import { Box } from '@mui/material';
 import Image from './Image';
 
-const Avatar = ({ avatar, border }) => {
+const Avatar = ({ avatar, border, width, height }) => {
   return (
     <div>
       <Box
-        width={{ xs: '160px', sm: '220px', md: '270px' }}
-        height={{ xs: '160px', sm: '220px', md: '270px' }}
+        width={width || { xs: '160px', sm: '220px', md: '270px' }}
+        height={height || { xs: '160px', sm: '220px', md: '270px' }}
         borderRadius="50%"
         sx={{
           overflow: 'hidden',

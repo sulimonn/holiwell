@@ -20,7 +20,7 @@ const TrainersList = ({ wrap = true }) => {
         mx="auto"
       >
         <Box
-          sx={{ py: 12, mb: { xs: 6, md: 12 } }}
+          sx={{ py: 12, mb: { xs: 4, md: 10 } }}
           display="flex"
           flexDirection="column"
           gap={4}
@@ -83,6 +83,7 @@ const TrainersList = ({ wrap = true }) => {
               rowGap={{ xs: 3, md: 4 }}
               overflow="visible"
               position="relative"
+              pb={2}
             >
               {trainers.map((trainer) => (
                 <TrainerCard key={trainer.id} trainer={trainer} />

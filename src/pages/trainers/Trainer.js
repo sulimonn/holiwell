@@ -8,7 +8,12 @@ import Image from 'components/Image';
 
 const Trainer = () => {
   const { id } = useParams();
-  const { data: trainer = {} } = useGetTrainerQuery(id);
+  const { data: trainer = {}, isFetching, isSuccess } = useGetTrainerQuery(id);
+
+  if (!isSuccess) return null;
+
+  if (isFetching) return null;
+
   return (
     <Box width="100%">
       <Box
@@ -34,6 +39,7 @@ const Trainer = () => {
               objectPosition: 'center',
               position: 'absolute',
             }}
+            loading="lazy"
           />
         )}
         <Typography variant="h1" color="common.white" sx={{ zIndex: 1 }} textAlign="center">

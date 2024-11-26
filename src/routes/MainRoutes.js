@@ -11,13 +11,12 @@ const Training = Loadable(lazy(() => import('pages/train')));
 const TrainingCourses = Loadable(lazy(() => import('pages/train/Courses')));
 const TrainingLesson = Loadable(lazy(() => import('pages/train/TrainingLesson')));
 const Subscription = Loadable(lazy(() => import('pages/subscription')));
+const SubscriptionToMedLis = Loadable(lazy(() => import('pages/subscription/medlis')));
 const PrivacyPolicy = Loadable(lazy(() => import('pages/other/PrivacyPolicy')));
 const Listening = Loadable(lazy(() => import('pages/listen')));
 const ListenList = Loadable(lazy(() => import('pages/listen/ListenCourse')));
-const ListenPage = Loadable(lazy(() => import('pages/listen/ListenPage')));
 const Meditations = Loadable(lazy(() => import('pages/meditation')));
 const MeditationsList = Loadable(lazy(() => import('pages/meditation/MeditationCourse')));
-const MeditationPage = Loadable(lazy(() => import('pages/meditation/MeditationPage')));
 const Trainers = Loadable(lazy(() => import('pages/trainers')));
 const Trainer = Loadable(lazy(() => import('pages/trainers/Trainer')));
 const ProfilePage = Loadable(lazy(() => import('pages/profile')));
@@ -37,10 +36,6 @@ const MainRoutes = {
       element: <Home />,
     },
     {
-      path: '/trainers',
-      element: <Trainers />,
-    },
-    {
       path: '/trainers/:id',
       element: <Trainer />,
     },
@@ -53,14 +48,6 @@ const MainRoutes = {
       element: <ListenList />,
     },
     {
-      path: '/meditation',
-      element: <Meditations />,
-    },
-    {
-      path: '/meditation/:courseId',
-      element: <MeditationsList />,
-    },
-    {
       path: '/training',
       element: <Training />,
     },
@@ -68,23 +55,21 @@ const MainRoutes = {
       path: '/training/:courseId',
       element: <TrainingCourses />,
     },
-
     {
-      path: '/subscription/:id',
+      path: '/subscription/:type/:id',
+      element: <SubscriptionToMedLis />,
+    },
+    {
+      path: '/subscription/:type',
       element: <Subscription />,
     },
     {
       path: '/privacy-policy',
       element: <PrivacyPolicy />,
     },
-    // only authenticated users can access
     {
-      path: '/meditation/:courseId/:lessonId',
-      element: <PrivateRoute element={<MeditationPage />} />,
-    },
-    {
-      path: '/listening/:courseId/:lessonId',
-      element: <PrivateRoute element={<ListenPage />} />,
+      path: '/trainers',
+      element: <Trainers />,
     },
     {
       path: '/training/:courseId/:lessonId',
@@ -105,6 +90,14 @@ const MainRoutes = {
     {
       path: '/calendar/:date',
       element: <PrivateRoute element={<Day />} />,
+    },
+    {
+      path: '/:slug',
+      element: <Meditations />,
+    },
+    {
+      path: '/:slug/:courseId',
+      element: <MeditationsList />,
     },
   ],
 };

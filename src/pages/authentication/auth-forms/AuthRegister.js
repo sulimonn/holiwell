@@ -76,18 +76,42 @@ const AuthRegister = () => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             const response = await register(values);
-            if (response?.status === 400) {
-              setErrors({
-                email: true,
-                submit: 'Пользователь с таким Email уже существует',
-              });
-              setStatus({ success: false });
+
+            if (response?.error) {
+              if (response?.status === 400) {
+                setErrors({
+                  email: true,
+                  submit: 'Пользователь с таким Email уже существует',
+                });
+                setStatus({ success: false });
+                return;
+              }
+              if (response?.status === 422) {
+                setErrors({
+                  first_name: true,
+                  last_name: true,
+                  email: true,
+                  password: true,
+                  submit: 'Введены некорректные данные',
+                });
+                setStatus({ success: false });
+              }
             }
+
+            if (response?.originalStatus === 500) {
+              setErrors({
+                submit: 'Что-то пошло не так. Попробуйте еще раз',
+              });
+            }
+            setStatus({ success: false });
+            setSubmitting(false);
+
             if (response === null) {
               navigate('/', { replace: true }); // Redirect to the main page
             }
           } catch (err) {
             setStatus({ success: false });
+
             setErrors({ submit: err.message });
             setSubmitting(false);
           }

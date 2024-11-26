@@ -8,7 +8,11 @@ const courses = apiSlice.injectEndpoints({
       providesTags: ['Courses'],
     }),
     getCourseByType: builder.query({
-      query: (type) => `/courses/course-type/${type}`,
+      query: ({ type, sort_by }) => `/courses/course-type/${type}?sort_by=${sort_by || 'new'}`,
+      providesTags: ['Courses'],
+    }),
+    getAllCourseTypes: builder.query({
+      query: () => '/courses/course-type/all',
       providesTags: ['Courses'],
     }),
     getCourse: builder.query({
@@ -19,10 +23,21 @@ const courses = apiSlice.injectEndpoints({
       query: (id) => `/lessons/${id}`,
       providesTags: ['Courses'],
     }),
+    getLessons: builder.query({
+      query: ({ course_type, sort_by }) =>
+        `/lessons/all?course_type_slug=${course_type}&sort_by=${sort_by}`,
+      providesTags: ['Courses'],
+    }),
   }),
 });
 
-export const { useGetCoursesQuery, useGetCourseQuery, useGetLessonQuery, useGetCourseByTypeQuery } =
-  courses;
+export const {
+  useGetCoursesQuery,
+  useGetCourseQuery,
+  useGetLessonQuery,
+  useGetCourseByTypeQuery,
+  useGetLessonsQuery,
+  useGetAllCourseTypesQuery,
+} = courses;
 
 export default courses;

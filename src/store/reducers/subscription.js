@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isSubscribed: true,
+  isSubscribed: false,
 };
 
 const subscriptionSlice = createSlice({

@@ -7,19 +7,62 @@ import Calendar from 'pages/calendar/index';
 import MobileHeaderContent from 'layout/MainLayout/Header/MobileHeaderContent/index';
 import { useGetFavouritesQuery, useMyViewedQuery } from 'store/reducers/userApi';
 import ProfileLesson from './ProfileLesson';
+import Loader from 'components/Loader';
+import { useGetSliderQuery } from 'store/reducers/trainers';
 
 const ProfilePage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { data: favorites = [], isFetching: isFavoritesFetching } = useGetFavouritesQuery();
   const { data: myVieweds = [], isFetching: isMyViewFetching } = useMyViewedQuery();
-  if (!user) return null;
-  console.log(myVieweds);
+  const { data: calendarInfo = {} } = useGetSliderQuery(7);
 
+  if (!user || isFavoritesFetching || isMyViewFetching) return <Loader />;
+  const parseGreeting = (text) => {
+    const linkPattern = /([\wа-яА-ЯёЁ]+)\/([\wа-яА-ЯёЁ-]+)/g;
+    const tagPattern = /@([a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)?)/g;
+    const parts = [];
+    let lastIndex = 0;
+
+    text.replace(linkPattern, (match, name, link, index) => {
+      if (index > lastIndex) {
+        parts.push(text.substring(lastIndex, index));
+      }
+      parts.push(
+        <Link to={link} key={index} style={{ color: 'inherit' }}>
+          {name}
+        </Link>,
+      );
+      lastIndex = index + match.length;
+      return match;
+    });
+
+    text.replace(tagPattern, (match, tag, index) => {
+      if (index > lastIndex) {
+        parts.push(text.substring(lastIndex, index));
+      }
+
+      parts.push(
+        tag === 'user.first_name'
+          ? user.first_name
+          : tag === 'user.last_name'
+            ? user.last_name
+            : user.email,
+      );
+      lastIndex = index + match.length;
+      return match;
+    });
+
+    if (lastIndex < text.length) {
+      parts.push(text.substring(lastIndex));
+    }
+
+    return parts;
+  };
   return (
     <>
       <MobileHeaderContent color="black" />
-      <Box width="100%" py={{ xs: 6, md: 0 }}>
+      <Box width="100%" pt={{ xs: 6, md: 0 }}>
         <Box
           height={{ xs: 'auto', md: 350, lg: '400px' }}
           bgcolor={{ xs: 'transparent', md: 'background.paper' }}
@@ -30,7 +73,7 @@ const ProfilePage = () => {
           gap={2}
           mb={{ xs: 4, md: 0 }}
         >
-          <Avatar src={user.path_to_avatar || DefaultAvatar} sx={{ width: 120, height: 120 }} />
+          <Avatar src={user?.path_to_avatar || DefaultAvatar} sx={{ width: 120, height: 120 }} />
           <Typography variant="h1" color="text.primary">
             {user.first_name} {user.last_name}
           </Typography>
@@ -55,15 +98,17 @@ const ProfilePage = () => {
             my={{ xs: 3, md: 7 }}
           >
             <Box width="100%" flex={1}>
-              <Typography variant="h3" textTransform="uppercase">
+              <Typography
+                variant="h3"
+                textTransform="uppercase"
+                component={Link}
+                to="/calendar"
+                sx={{ textDecoration: 'none', color: 'inherit' }}
+              >
                 Календарь
               </Typography>
-              <Typography variant="body2" my={2}>
-                Откройте для себя преимущества регулярной медитации на нашем курсе, направленном на
-                улучшение физического и эмоционального благополучия...
-              </Typography>
-              <Typography variant="body2" component={Link} to="/calendar" color="primary.light">
-                Читать дальше
+              <Typography variant="body2" my={2} sx={{ whiteSpace: 'pre-line' }}>
+                {parseGreeting(calendarInfo?.title_third)}
               </Typography>
             </Box>
             <Calendar />
@@ -82,7 +127,13 @@ const ProfilePage = () => {
                   Избранное
                 </Typography>
               </Box>
-              <Box mt={2} display="flex" gap={5} sx={{ overflow: 'auto' }}>
+              <Box
+                mt={2}
+                pb={1}
+                display="flex"
+                gap={5}
+                sx={{ overflowX: 'scroll', overflowY: 'hidden' }}
+              >
                 {isFavoritesFetching ? (
                   <Box>Загрузка...</Box>
                 ) : favorites.filter((lesson) => lesson.course_type_slug).length > 0 ? (
@@ -98,7 +149,13 @@ const ProfilePage = () => {
                   Просмотренное
                 </Typography>
               </Box>
-              <Box mt={2} display="flex" gap={5} sx={{ overflow: 'auto' }}>
+              <Box
+                mt={2}
+                pb={1}
+                display="flex"
+                gap={5}
+                sx={{ overflowX: 'scroll', overflowY: 'hidden' }}
+              >
                 {isMyViewFetching ? (
                   <Box>Загрузка...</Box>
                 ) : myVieweds.filter((lesson) => lesson.course_type_slug).length > 0 ? (

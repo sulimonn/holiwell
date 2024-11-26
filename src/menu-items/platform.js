@@ -12,13 +12,6 @@ const platform = {
       url: 'https://www.ozon.ru/',
       mobile: true,
     },
-    {
-      id: 'telegram1',
-      title: 'Телеграм',
-      type: 'item',
-      url: '/telegram',
-      mobile: false,
-    },
   ],
 };
 

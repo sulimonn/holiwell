@@ -90,7 +90,7 @@ const Day = () => {
   const navigate = useNavigate();
   const { date } = useParams();
   const day = new Date(date);
-  day.setDate(day.getDate() - 1);
+
   const { data: lessons = [] } = useGetCalendarQuery();
   const handleChange = (event, id) => {};
 
@@ -151,6 +151,9 @@ const Day = () => {
               {lessons
                 .filter((lesson) => {
                   const lessonday = new Date(lesson.timestamp);
+                  console.log(day.toISOString().slice(0, 10), ' ', lessonday.toISOString());
+                  lessonday.setDate(lessonday.getDate() + 1);
+
                   return day.toISOString().slice(0, 10) === lessonday.toISOString().slice(0, 10);
                 })
                 .map((lesson, index) => (

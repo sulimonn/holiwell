@@ -54,6 +54,9 @@ const ListenPage = () => {
     audioRef.current = new Audio(process.env.REACT_APP_BASE_URL + lesson.path_to_audio);
     const audio = audioRef.current;
     audio.addEventListener('timeupdate', handleProgress);
+    audio.addEventListener('ended', () => {
+      setPlaying(false);
+    });
 
     setDuration(lesson.audio_length);
 

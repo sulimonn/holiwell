@@ -14,7 +14,7 @@ import { formatDateToLocalISO } from 'utils/formatTime';
 import { useGetCalendarQuery } from 'store/reducers/userApi';
 
 const Calendar = () => {
-  const { data: myCalendar = [], isFetching } = useGetCalendarQuery();
+  const { data: myCalendar = [] } = useGetCalendarQuery();
   const theme = useTheme();
   const navigate = useNavigate();
   const [localdate, setDate] = React.useState(new Date());
@@ -24,7 +24,6 @@ const Calendar = () => {
   const onChange = (newDate) => {
     setDate(newDate);
   };
-  if (isFetching) return null;
   return (
     <Box
       sx={{
@@ -60,9 +59,11 @@ const Calendar = () => {
         '--background-paper': theme.palette.background.paper,
         '--white': theme.palette.common.white,
         '--margin': theme.spacing(2),
+        cursor: 'pointer',
       }}
       display="flex"
       justifyContent="center"
+      position="relative"
     >
       <ReactCalendar
         value={localdate}
@@ -74,7 +75,7 @@ const Calendar = () => {
         prevLabel={<ArrowIcon style={{ transform: 'rotate(90deg)', opacity: 0.5 }} />}
         tileContent={({ date, view }) => {
           const planneds = myCalendar.filter((lesson) => {
-            return lesson.timestamp.slice(0, 10) === date.toISOString().slice(0, 10);
+            return lesson?.timestamp?.slice(0, 10) === date.toISOString().slice(0, 10);
           });
           return (
             view === 'month' && (

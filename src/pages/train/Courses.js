@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, Container, Button } from '@mui/material';
 import Icon from '@ant-design/icons';
@@ -11,18 +12,42 @@ import Image from 'components/Image';
 import { useGetCourseQuery } from 'store/reducers/courses';
 
 const Lesson = () => {
+  const { courseId } = useParams();
+  const navigate = useNavigate();
   const { isSubscribed } = useSelector((state) => state.subscription);
+  const audioRef = React.useRef(null);
+
   const dispatch = useDispatch();
   const LockedIcon = (props) => <Icon component={lock} {...props} />;
   const [isPlaying, setPlaying] = React.useState(false);
 
-  const { data: course = {}, isFetching } = useGetCourseQuery(1);
+  const { data: course = {}, isFetching, isSuccess } = useGetCourseQuery(courseId);
 
   const handleSubscription = () => {
-    dispatch(subscribe());
+    if (!isSubscribed) {
+      navigate(`/subscription/${course.course_type_slug}`);
+    } else dispatch(subscribe());
   };
 
-  if (isFetching) return null;
+  React.useEffect(() => {
+    if (audioRef) {
+      audioRef.current = new Audio(course?.path_to_url_audio);
+
+      audioRef.current.onended = () => {
+        setPlaying(false);
+      };
+
+      if (isPlaying) {
+        audioRef.current.play();
+      }
+
+      return () => {
+        audioRef.current.pause();
+      };
+    }
+  }, [course, isPlaying]);
+  if (isFetching || !isSuccess) return null;
+
   return (
     <Box width="100%">
       <Box
@@ -60,7 +85,9 @@ const Lesson = () => {
             gap={1.5}
             height="100%"
           >
-            <LockedIcon fontSize="large" />
+            <Box>
+              <LockedIcon fontSize="large" style={{ width: '100px', height: '100px' }} />
+            </Box>
             <Typography
               color="primary.contrastText"
               variant="h4"
@@ -100,7 +127,7 @@ const Lesson = () => {
             </Typography>
           ) : (
             <Button variant="contained" onClick={handleSubscription}>
-              АКТИВИРОВАТЬ ДОСТУП
+              АКТИВИРОВАТЬ ДОСТУП {course.price_cource} ₽
             </Button>
           )}
         </Box>
@@ -120,44 +147,47 @@ const Lesson = () => {
               {course.description}
             </Typography>
           </Box>
-          <Box flex={1} display="flex" justifyContent="center" alignItems="center">
-            <Button
-              onClick={() => setPlaying(!isPlaying)}
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                borderRadius: '50px',
-                border: '1px solid',
-                borderColor: 'divider',
-                px: 1,
-                py: 1,
-              }}
-              fullWidth
-            >
-              <PlayPauseButton isPlaying={isPlaying} sx={{ width: '50px', height: '50px' }} />
-              <Typography variant="body1" textTransform="none" sx={{ ml: 1 }}>
-                Аудио запись
-              </Typography>
-            </Button>
-          </Box>
+          {course?.path_to_url_audio && (
+            <Box flex={1} display="flex" justifyContent="center" alignItems="center">
+              <Button
+                onClick={() => setPlaying(!isPlaying)}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  borderRadius: '50px',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  px: 1,
+                  py: 1,
+                }}
+                fullWidth
+              >
+                <PlayPauseButton isPlaying={isPlaying} sx={{ width: '50px', height: '50px' }} />
+                <Typography variant="body1" textTransform="none" sx={{ ml: 1 }}>
+                  Аудио запись
+                </Typography>
+              </Button>
+            </Box>
+          )}
         </Box>
         <Box
           display="flex"
           flexWrap="wrap"
           py={10}
-          alignItems="center"
           justifyContent="space-between"
-          gap={4}
+          rowGap={2}
+          columnGap={2}
           borderBottom="1px solid"
           borderColor="divider"
         >
           {course.lessons?.length &&
-            course.lessons?.map((course, index) => (
+            course.lessons.map((lesson, index) => (
               <LessonCard
                 key={course.id}
-                course={course}
+                course={lesson}
                 index={index + 1}
                 isSubscribed={isSubscribed}
+                size="small"
               />
             ))}
         </Box>

@@ -11,8 +11,12 @@ const trainers = apiSlice.injectEndpoints({
       query: (id) => `/trainers/${id}`,
       providesTags: ['Trainers'],
     }),
-    getSlider: builder.query({
+    getSliders: builder.query({
       query: () => '/sliders/all',
+      providesTags: ['Sliders'],
+    }),
+    getSlider: builder.query({
+      query: (id) => `/sliders/${id}`,
       providesTags: ['Sliders'],
     }),
     getInfo: builder.query({
@@ -22,7 +26,12 @@ const trainers = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetTrainersQuery, useGetTrainerQuery, useGetSliderQuery, useGetInfoQuery } =
-  trainers;
+export const {
+  useGetTrainersQuery,
+  useGetTrainerQuery,
+  useGetSlidersQuery,
+  useGetInfoQuery,
+  useGetSliderQuery,
+} = trainers;
 
 export default trainers;
