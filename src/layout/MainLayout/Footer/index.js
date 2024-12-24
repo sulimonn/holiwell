@@ -174,7 +174,7 @@ const Footer = () => {
             <Stack direction="row" spacing={2}>
               <Typography
                 component={Link}
-                to={'/privacy-policy'}
+                to="/privacy-policy"
                 variant="subtitle1"
                 color="primary"
                 sx={{
@@ -187,7 +187,7 @@ const Footer = () => {
               </Typography>
               <Typography
                 component={Link}
-                to={''}
+                to="/terms-of-use"
                 variant="subtitle1"
                 color="primary"
                 sx={{

@@ -9,8 +9,6 @@ import 'swiper/css/pagination';
 import './pagination.css';
 
 // Import images
-import IntroGirl from 'assets/images/girls/intro.jpeg';
-import Listen from 'assets/images/girls/listening.jpeg';
 import LockedIcon from 'assets/images/icons/lock';
 
 // material-ui
@@ -34,25 +32,25 @@ const Home = () => {
     {
       id: 1,
       title: 'ТРЕНИРУЙСЯ',
-      photo: IntroGirl,
+      photo: '2.jpg',
       to: '/training',
     },
     {
       id: 2,
       title: 'СЛУШАЙ',
-      photo: IntroGirl,
+      photo: '3f.jpg',
       to: '/listening',
     },
     {
       id: 3,
       title: 'МЕДИТИРУЙ',
-      photo: IntroGirl,
+      photo: '1-2.jpg',
       to: '/meditation',
     },
     {
       id: 4,
       title: 'Ешь правильно',
-      photo: IntroGirl,
+      photo: 'listening.jpeg',
     },
   ];
   const { isAuthenticated, user, isLoading } = useAuth();
@@ -231,7 +229,6 @@ const Home = () => {
                         background: 'linear-gradient(0deg, #d5d5d5 0%, #dedede 100%)',
                         display: 'flex',
                         alignItems: 'center',
-                        px: { xs: 1.5, md: 2, lg: 3 },
                         textDecoration: 'none',
                       }}
                     >
@@ -266,19 +263,17 @@ const Home = () => {
                       )}
                       <Box
                         sx={{
-                          width: '80%',
-                          height: 'auto',
+                          width: '100%',
+                          height: '100%',
                           position: 'absolute',
-                          top: { xs: '-35%', md: '-25%', lg: '-45%' },
-                          right: { xs: '-20%', md: '-20%', lg: '-20%' },
                           zIndex: 0,
                         }}
                       >
                         <Image
-                          src={Listen}
+                          src={require(`assets/images/girls/${item.photo}`)}
                           alt="intro"
                           loading="lazy"
-                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       </Box>
                       <Typography
@@ -286,7 +281,7 @@ const Home = () => {
                         fontWeight="400"
                         color="primary.main"
                         textTransform="uppercase"
-                        sx={{ position: 'relative', zIndex: 1 }}
+                        sx={{ position: 'relative', zIndex: 1, px: { xs: 1.5, md: 2, lg: 3 } }}
                       >
                         {item.title}
                       </Typography>

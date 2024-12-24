@@ -12,7 +12,9 @@ const TrainingCourses = Loadable(lazy(() => import('pages/train/Courses')));
 const TrainingLesson = Loadable(lazy(() => import('pages/train/TrainingLesson')));
 const Subscription = Loadable(lazy(() => import('pages/subscription')));
 const SubscriptionToMedLis = Loadable(lazy(() => import('pages/subscription/medlis')));
+const SubscriptionSuccess = Loadable(lazy(() => import('pages/subscription/success')));
 const PrivacyPolicy = Loadable(lazy(() => import('pages/other/PrivacyPolicy')));
+const PublicOffer = Loadable(lazy(() => import('pages/other/PublicOffer')));
 const Listening = Loadable(lazy(() => import('pages/listen')));
 const ListenList = Loadable(lazy(() => import('pages/listen/ListenCourse')));
 const Meditations = Loadable(lazy(() => import('pages/meditation')));
@@ -56,6 +58,10 @@ const MainRoutes = {
       element: <TrainingCourses />,
     },
     {
+      path: '/subscription/success',
+      element: <SubscriptionSuccess />,
+    },
+    {
       path: '/subscription/:type/:id',
       element: <SubscriptionToMedLis />,
     },
@@ -66,6 +72,10 @@ const MainRoutes = {
     {
       path: '/privacy-policy',
       element: <PrivacyPolicy />,
+    },
+    {
+      path: '/terms-of-use',
+      element: <PublicOffer />,
     },
     {
       path: '/trainers',

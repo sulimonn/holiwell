@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f4f4f4" />
     <meta name="title" content="Holiwell" />
-    <meta name="description" content="Content." />
+    <meta
+      name="description"
+      content="Holiwell -  это онлайн платформа для целостного подхода к здоровью, работа с телом, мыслями и состоянием"
+    />
     <meta
       name="keywords"
-      content="Всё, что нужно для твоего развития, уже внутри тебя. А мы предлагаем инструменты: Тренировки, аудиокурсы по психологии, медитации и советы по правильному питанию. Найди свою мотивацию и начни путь к лучшему себе прямо сейчас!"
+      content="holiwell, онлайн платформа, здоровье, подход к здоровью, тело, мысль, состояние"
     />
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -16,16 +19,22 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Holiwell" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="author" content="Sadykov S." />
-    <!-- Open Graph / Facebook -->
+    <!-- <meta name="author" content="Sadykov S." />
+    Open Graph / Facebook -->
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Holiwell" />
-    <meta property="og:description" content="Content" />
+    <meta
+      property="og:description"
+      content="Holiwell -  это онлайн платформа для целостного подхода к здоровью, работа с телом, мыслями и состоянием"
+    />
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="Holiwell" />
-    <meta property="twitter:description" content="Content" />
+    <meta
+      property="twitter:description"
+      content="Holiwell -  это онлайн платформа для целостного подхода к здоровью, работа с телом, мыслями и состоянием"
+    />
     <meta name="google-site-verification" content="Al-93uFECE_qp5tIwgWUh9qfhvKssw2getHVPF_qgVo" />
     <title>Holiwell</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,9 +43,41 @@
       href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap"
       rel="stylesheet"
     />
+    <script src="https://securepay.tinkoff.ru/html/payForm/js/tinkoff_v2.js"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- <script>
+
+      TPF.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const { description, amount, email, phone, receipt } = TPF;
+
+        if (receipt) {
+          if (!email.value && !phone.value)
+            return alert('Поле E-mail или Phone не должно быть пустым');
+
+          TPF.receipt.value = JSON.stringify({
+            EmailCompany: 'sulimonn@icloud.com',
+            Taxation: 'patent',
+            FfdVersion: '1.05',
+            Items: [
+              {
+                Name: description.value || 'Оплата',
+                Price: amount.value * 100,
+                Quantity: 1.0,
+                Amount: amount.value * 100,
+                PaymentMethod: 'full_prepayment',
+                PaymentObject: 'service',
+                Tax: 'none',
+                MeasurementUnit: 'pc',
+              },
+            ],
+          });
+        }
+        pay(TPF);
+      });
+    </script> -->
   </body>
 </html>
