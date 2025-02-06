@@ -10,7 +10,12 @@ const Page = ({ details }) => {
           {details.title}
         </Typography>
         {details.punkts.map((punkt, i) => (
-          <Box key={i} display="grid" gridTemplateColumns={{ xs: '1fr', md: '400px 1fr' }}>
+          <Box
+            key={i}
+            display="grid"
+            gridTemplateColumns={{ xs: '1fr', md: '400px 1fr' }}
+            gap={{ xs: 1, md: 0 }}
+          >
             <Typography variant="h5">
               {i + 1}. {punkt.title}
             </Typography>

@@ -61,8 +61,8 @@ export default function Profile({ anchorRef }) {
         type: 'item',
       },
       {
-        name: 'Holiwel@mail.com',
-        link: 'mailto:Holiwel@mail.com',
+        name: 'Holiwell@mail.ru',
+        link: 'mailto:Holiwell@mail.ru',
         type: 'item',
       },
     ],

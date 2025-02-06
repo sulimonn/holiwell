@@ -48,12 +48,35 @@ export const authApi = createApi({
         credentials: 'include',
       }),
     }),
-    resetPassword: builder.mutation({
+    forgotPassword: builder.mutation({
       query: (credentials) => ({
         url: '/auth/forgot-password',
         method: 'POST',
         body: { ...credentials },
       }),
+    }),
+    resetPassword: builder.mutation({
+      query: (credentials) => ({
+        url: '/auth/reset-password',
+        method: 'POST',
+        body: { ...credentials },
+      }),
+    }),
+    sendCode: builder.mutation({
+      query: (credentials) => ({
+        url: '/auth/send-code',
+        method: 'POST',
+        body: credentials,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    changePassword: builder.mutation({
+      query: (credentials) => ({
+        url: '/auth/token-and-new-password',
+        method: 'POST',
+        body: credentials,
+      }),
+      invalidatesTags: ['User'],
     }),
   }),
 });
@@ -62,7 +85,10 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
+  useForgotPasswordMutation,
   useResetPasswordMutation,
+  useSendCodeMutation,
+  useChangePasswordMutation,
 } = authApi;
 
 export default authApi;

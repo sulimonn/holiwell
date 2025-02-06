@@ -19,13 +19,7 @@ const LoaderWrapper = styled('div')(({ theme }) => ({
 
 const Loader = () => (
   <LoaderWrapper>
-    <Box
-      position="absolute"
-      bgcolor="backgound.default"
-      height="100vh"
-      width="100%"
-      inset="0"
-    ></Box>
+    <Box position="absolute" bgcolor="white" height="100vh" width="100%" inset="-1"></Box>
     <LinearProgress sx={{ mt: 0 }} color="primary" />
   </LoaderWrapper>
 );

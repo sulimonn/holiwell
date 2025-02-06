@@ -10,6 +10,8 @@ const initialState = {
   profileOpen: false,
   componentDrawerOpen: true,
   pages: [],
+  code: null,
+  email: null,
 };
 
 // ==============================|| SLICE - MENU ||============================== //
@@ -40,6 +42,14 @@ const menu = createSlice({
     setPages: (state, action) => {
       state.pages = action.payload;
     },
+    setCode: (state, action) => {
+      state.code = action.payload.code;
+      state.email = action.payload.email;
+    },
+    resetCode: (state, action) => {
+      state.code = null;
+      state.email = null;
+    },
   },
 });
 
@@ -52,4 +62,6 @@ export const {
   openProfile,
   openComponentDrawer,
   setPages,
+  setCode,
+  resetCode,
 } = menu.actions;

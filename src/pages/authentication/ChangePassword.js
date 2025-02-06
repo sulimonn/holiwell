@@ -5,23 +5,23 @@ import { Grid, Typography, Box, Divider } from '@mui/material';
 
 // project import
 import AuthWrapper from './AuthWrapper';
-import AuthPassword from './auth-forms/AuthPassword';
+import ChangePasswordForm from './auth-forms/ChangePasswordForm';
 
 // ================================|| LOGIN ||================================ //
 
-const ForgotPassword = () => {
+const ChangePassword = () => {
   const location = useLocation();
+
   return (
     <AuthWrapper>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant="h3" textAlign="center" textTransform="uppercase">
-            {location.pathname === '/update-password' ? 'Смена пароля' : 'Восстановление пароля'}
+            {location.pathname === '/change-password' ? 'Смена пароля' : 'Восстановление пароля'}
           </Typography>
         </Grid>
-
         <Grid item xs={12} sx={{ pt: '20px !important' }}>
-          <AuthPassword />
+          <ChangePasswordForm />
         </Grid>
         <Grid item xs={12} sx={{ my: 1 }}>
           <Divider>
@@ -77,4 +77,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ChangePassword;

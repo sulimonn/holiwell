@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -10,12 +11,14 @@ import {
   Container,
   Divider,
 } from '@mui/material';
+import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Back from 'components/Back';
 import Image from 'components/Image';
 import { useAuth } from 'contexts/AuthContext';
 import Default from 'assets/images/users/default.png';
+
 import { useEditProfileMutation, useUpdateAvatarMutation } from 'store/reducers/userApi';
 
 const EditProfile = () => {
@@ -232,6 +235,27 @@ const EditProfile = () => {
                       <FormHelperText error>{errors.submit}</FormHelperText>
                     </Stack>
                   )}
+
+                  <Divider sx={{ width: '100%', pt: 4 }} />
+
+                  <Button
+                    variant="standard"
+                    endIcon={<ArrowForwardIos />}
+                    sx={{
+                      justifyContent: 'space-between',
+                      paddingLeft: '0 !important',
+                      paddingRight: '0 !important',
+                      py: { xs: 2, md: 2 },
+
+                      textTransform: 'none',
+                    }}
+                    component={Link}
+                    to="/update-password"
+                  >
+                    <Typography>Сменить пароль</Typography>
+                  </Button>
+
+                  <Divider sx={{ width: '100%' }} />
                 </Stack>
               </form>
             )}

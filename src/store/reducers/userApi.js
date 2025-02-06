@@ -69,6 +69,15 @@ const user = apiSlice.injectEndpoints({
       query: () => '/users/my-viewed',
       providesTags: ['User'],
     }),
+
+    deactivateProfile: builder.mutation({
+      query: () => ({
+        url: '/users/me/deactivate',
+        method: 'PATCH',
+        credentials: 'include',
+      }),
+      invalidatesTags: ['User'],
+    }),
   }),
 });
 
@@ -83,6 +92,7 @@ export const {
   useGetFavouritesQuery,
   useWatchLessonMutation,
   useMyViewedQuery,
+  useDeactivateProfileMutation,
 } = user;
 
 export default user;

@@ -19,41 +19,44 @@ const AuthProvider = ({ children }) => {
     isFetching,
     ...props
   } = useGetMeQuery(null, {
-    skip: !localStorage.getItem('authToken') || isAuthenticated,
+    skip: !localStorage.getItem('authToken'),
   });
   const [logout] = useLogoutMutation();
   const [register] = useRegisterMutation();
 
   useEffect(() => {
-    if (userData) {
+    if (userData?.id && props?.status === 'fulfilled') {
       setUser(userData);
       setIsAuthenticated(true);
+      setisLoading(false);
     } else {
       setIsAuthenticated(false);
       setUser(null);
+      setisLoading(false);
     }
-  }, [userData]);
+  }, [userData, props]);
 
   useEffect(() => {
     if (props?.status === 'uninitialized') {
       setisLoading(false);
     }
   }, [props]);
-
   const handleLogin = async (credentials) => {
     try {
       const { access_token } = await login(credentials).unwrap();
+
+      // Store token and update state
       localStorage.setItem('authToken', access_token);
-      const { data } = await refetch();
-      setUser(() => data);
-      setIsAuthenticated(true);
-      return null;
+
+      return null; // Indicate success
     } catch (error) {
+      console.error('Login failed:', error);
       setIsAuthenticated(false);
       setUser(null);
-      return error;
+      return error; // Return error for further handling
     }
   };
+
   const handleLogout = async () => {
     try {
       await logout().unwrap();
@@ -81,6 +84,8 @@ const AuthProvider = ({ children }) => {
       const { data } = await refetch();
       setUser(() => data);
       setIsAuthenticated(true);
+      navigate('/');
+      window.location.reload();
       return null;
     } catch (error) {
       setIsAuthenticated(false);

@@ -10,7 +10,6 @@ import './pagination.css';
 
 // Import images
 import LockedIcon from 'assets/images/icons/lock';
-
 // material-ui
 import { Box, Typography, Grid, Button } from '@mui/material';
 
@@ -24,38 +23,44 @@ import { checkMediaType } from 'utils/other';
 import Loader from 'components/Loader';
 
 const Home = () => {
-  const { data = [], isSuccess, isFetching } = useGetSlidersQuery();
+  const { data = [], isFetching } = useGetSlidersQuery();
   const { data: greeting = {} } = useGetSliderQuery(7);
-  const { data: info = {}, isSuccess: infoSuccess, isFetching: infoFetching } = useGetInfoQuery();
+  const { data: info = {}, isFetching: infoFetching } = useGetInfoQuery();
 
   const links = [
     {
       id: 1,
       title: 'ТРЕНИРУЙСЯ',
       photo: '2.jpg',
+      //photo: TrainImg,
       to: '/training',
     },
     {
       id: 2,
       title: 'СЛУШАЙ',
       photo: '3f.jpg',
+      //photo: ListenImg,
       to: '/listening',
     },
     {
       id: 3,
       title: 'МЕДИТИРУЙ',
       photo: '1-2.jpg',
+      //photo: MeditationImg,
       to: '/meditation',
     },
     {
       id: 4,
       title: 'Ешь правильно',
+      to: '/training',
       photo: 'listening.jpeg',
+      //photo: ListenImg,
     },
   ];
+
   const { isAuthenticated, user, isLoading } = useAuth();
 
-  if (!isSuccess || !infoSuccess || isLoading || infoFetching || isFetching) return <Loader />;
+  if (isLoading || infoFetching || isFetching) return <Loader />;
 
   const parseGreeting = (text) => {
     const linkPattern = /([\wа-яА-ЯёЁ]+)\/([\wа-яА-ЯёЁ-]+)/g;
@@ -191,7 +196,7 @@ const Home = () => {
               variant="h1"
               fontSize="3rem"
               textTransform="uppercase"
-              whiteSpace="nowrap"
+              whiteSpace="wrap"
               fontWeight={{ xs: 400 }}
               sx={{ maxWidth: { xs: '100%', md: '70%' } }}
             >
@@ -269,9 +274,10 @@ const Home = () => {
                           zIndex: 0,
                         }}
                       >
-                        <Image
+                        <img
                           src={require(`assets/images/girls/${item.photo}`)}
-                          alt="intro"
+                          //src={item?.photo}
+                          alt={item?.title}
                           loading="lazy"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />

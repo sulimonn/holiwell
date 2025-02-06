@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Box, Container, Typography, Divider, Stack, Button } from '@mui/material';
 import ListenItem from 'components/ListenItem';
@@ -9,9 +10,11 @@ import { useGetCourseQuery } from 'store/reducers/courses';
 import PlayPauseButton from 'components/PlayPauseButton';
 import Icon from '@ant-design/icons';
 import lock from 'assets/images/icons/lock';
+import Loader from 'components/Loader';
 
 const ListenList = () => {
-  const { data: audioCourse = {}, isFetching } = useGetCourseQuery(3);
+  const { courseId } = useParams();
+  const { data: audioCourse = {}, isFetching } = useGetCourseQuery(courseId);
   const audioRef = useRef(new Audio());
   const coverRef = useRef(new Audio());
   const [isCoverPlaying, setIsCoverPlaying] = React.useState(false);
@@ -71,7 +74,7 @@ const ListenList = () => {
     }
   }, [audioCourse, isCoverPlaying]);
 
-  if (isFetching) return;
+  if (isFetching) return <Loader />;
 
   return (
     <Container maxWidth="lg">

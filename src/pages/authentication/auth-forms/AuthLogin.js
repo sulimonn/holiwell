@@ -2,7 +2,6 @@ import React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   Button,
-  Divider,
   FormHelperText,
   Grid,
   Link,
@@ -10,11 +9,9 @@ import {
   InputAdornment,
   OutlinedInput,
   Stack,
-  Typography,
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import FirebaseSocial from './FirebaseSocial';
 import AnimateButton from 'components/@extended/AnimateButton';
 import { useAuth } from 'contexts/AuthContext';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
@@ -48,25 +45,25 @@ const AuthLogin = () => {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          const response = await login({
+          // Call the handleLogin function
+          const error = await login({
             username: values.email,
             password: values.password,
           });
-          if (response?.status === 400) {
+
+          if (error) {
             setErrors({
               email: true,
               password: true,
               submit: 'Неправильная почта или пароль',
             });
-
             setStatus({ success: false });
-          }
-          console.log(response);
-          if (response === null) {
-            navigate('/', { replace: true }); // Redirect to the main page
+          } else {
+            // Navigate to the main page after successful login
+            navigate('/', { replace: true });
           }
         } catch (err) {
-          console.error(err);
+          console.error('Login error:', err);
           setStatus({ success: false });
           setErrors({ submit: err.message });
         } finally {
@@ -163,16 +160,6 @@ const AuthLogin = () => {
                   Войти
                 </Button>
               </AnimateButton>
-            </Grid>
-            <Grid item xs={12} sx={{ my: 1 }}>
-              <Divider>
-                <Typography variant="body2" fontWeight="100">
-                  Войдите с помощью
-                </Typography>
-              </Divider>
-            </Grid>
-            <Grid item xs={12}>
-              <FirebaseSocial />
             </Grid>
           </Grid>
         </form>

@@ -11,7 +11,7 @@ import AuthWrapper from './AuthWrapper';
 
 const Register = () => (
   <AuthWrapper>
-    <Grid container spacing={3}>
+    <Grid container spacing={3} my={3}>
       <Grid item xs={12}>
         <Typography variant="h3" textAlign="center" textTransform="uppercase">
           Регистрация

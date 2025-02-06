@@ -23,14 +23,14 @@ const Image = (props) => {
     setIsLoaded(false);
     setHasError(false);
     const img = imageRef.current;
-    if (img && img.complete) {
+    if (img && img?.complete) {
       setIsLoaded(true);
     }
   }, [source]);
 
   useEffect(() => {
     const img = imageRef.current;
-    if (img && img.complete) {
+    if (img && img?.complete) {
       setIsLoaded(true);
     }
   }, []);
