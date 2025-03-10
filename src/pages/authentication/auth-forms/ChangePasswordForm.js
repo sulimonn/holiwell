@@ -21,9 +21,9 @@ import { Formik } from 'formik';
 // project import
 import AnimateButton from 'components/@extended/AnimateButton';
 import { useChangePasswordMutation, useResetPasswordMutation } from 'store/reducers/authApi';
-import { resetCode } from 'store/reducers/menu';
 import { useAuth } from 'contexts/AuthContext';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import { setPasswordChanged } from 'store/reducers/menu';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -38,7 +38,9 @@ const ChangePasswordForm = () => {
   const [resetPassword] = useResetPasswordMutation();
   if (!code || !email) {
     navigate(
-      window.location.pathname === '/reset-password' ? '/forgot-password' : '/update-password',
+      window.location.pathname.includes('/reset-password')
+        ? '/forgot-password'
+        : '/update-password',
       { replace: true },
     );
   }
@@ -84,8 +86,11 @@ const ChangePasswordForm = () => {
             const resetResponse = await resetPassword({ ...response.data });
 
             if (!resetResponse?.error) {
-              await login({ username: email, password: values.password });
-              window.location.replace('/');
+              const loginResponse = await login({ username: email, password: values.password });
+              if (loginResponse === null) {
+                dispatch(setPasswordChanged(true));
+                navigate('/');
+              }
               return;
             }
           }
@@ -93,7 +98,6 @@ const ChangePasswordForm = () => {
           setErrors({ submit: err.message || 'Произошла ошибка' });
         } finally {
           setSubmitting(false);
-          dispatch(resetCode());
         }
       }}
     >

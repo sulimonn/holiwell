@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
 import {
@@ -38,7 +38,6 @@ const AuthRegister = () => {
   const [sendCode, { isLoading }] = useSendCodeMutation();
   const [codeSent, setCodeSent] = useState(false);
   const [resendTimeout, setResendTimeout] = useState(59);
-  const navigate = useNavigate();
   const [level, setLevel] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -201,7 +200,7 @@ const AuthRegister = () => {
               setSubmitting(false);
 
               if (response === null) {
-                navigate('/', { replace: true }); // Redirect to the main page
+                window.location.replace('/'); // Redirect to the main page
               }
             } catch (err) {
               setStatus({ success: false });

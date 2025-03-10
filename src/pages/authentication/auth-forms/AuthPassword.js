@@ -123,7 +123,12 @@ const AuthPassword = () => {
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <Stack spacing={0}>
+                    <Stack
+                      spacing={0}
+                      className={
+                        (errors?.code ? 'shake pin-error' : '') + (isSubmitting ? ' disabled' : '')
+                      }
+                    >
                       <OutlinedInput
                         id="email-login"
                         type="email"
@@ -198,7 +203,7 @@ const AuthPassword = () => {
                       onComplete={(code) => {
                         dispatch(setCode({ code, email: values.email }));
                         navigate(
-                          window.location.pathname === '/forgot-password'
+                          window.location.pathname.includes('/forgot-password')
                             ? '/reset-password'
                             : '/change-password',
                         );

@@ -12,6 +12,7 @@ const initialState = {
   pages: [],
   code: null,
   email: null,
+  isPasswordChanged: false,
 };
 
 // ==============================|| SLICE - MENU ||============================== //
@@ -50,6 +51,9 @@ const menu = createSlice({
       state.code = null;
       state.email = null;
     },
+    setPasswordChanged: (state, action) => {
+      state.isPasswordChanged = action.payload;
+    },
   },
 });
 
@@ -64,4 +68,5 @@ export const {
   setPages,
   setCode,
   resetCode,
+  setPasswordChanged,
 } = menu.actions;

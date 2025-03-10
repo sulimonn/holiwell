@@ -17,7 +17,9 @@ const ChangePassword = () => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant="h3" textAlign="center" textTransform="uppercase">
-            {location.pathname === '/change-password' ? 'Смена пароля' : 'Восстановление пароля'}
+            {location.pathname.includes('/change-password')
+              ? 'Смена пароля'
+              : 'Восстановление пароля'}
           </Typography>
         </Grid>
         <Grid item xs={12} sx={{ pt: '20px !important' }}>

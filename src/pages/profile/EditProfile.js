@@ -20,11 +20,19 @@ import { useAuth } from 'contexts/AuthContext';
 import Default from 'assets/images/users/default.png';
 
 import { useEditProfileMutation, useUpdateAvatarMutation } from 'store/reducers/userApi';
+import Loader from 'components/Loader';
 
 const EditProfile = () => {
   const { user } = useAuth();
+  const [userData, setUserData] = React.useState(user);
   const [editProfile] = useEditProfileMutation();
   const [updateAvatar] = useUpdateAvatarMutation();
+  React.useEffect(() => {
+    setUserData(user);
+  }, [user]);
+  if (!userData?.id) {
+    return <Loader />;
+  }
 
   return (
     <Box width="100%">
@@ -43,11 +51,11 @@ const EditProfile = () => {
         <Box maxWidth={580} mx="auto" pt={{ xs: 10, md: 6 }} pb={10}>
           <Formik
             initialValues={{
-              first_name: user?.first_name || '',
-              last_name: user?.last_name || '',
-              email: user?.email || '',
+              first_name: userData?.first_name || '',
+              last_name: userData?.last_name || '',
+              email: userData?.email || '',
               submit: null,
-              path_to_avatar: user?.path_to_avatar || '',
+              path_to_avatar: userData?.path_to_avatar || '',
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string()

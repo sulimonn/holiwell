@@ -16,7 +16,9 @@ const ForgotPassword = () => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant="h3" textAlign="center" textTransform="uppercase">
-            {location.pathname === '/update-password' ? 'Смена пароля' : 'Восстановление пароля'}
+            {location.pathname.includes('/update-password')
+              ? 'Смена пароля'
+              : 'Восстановление пароля'}
           </Typography>
         </Grid>
 

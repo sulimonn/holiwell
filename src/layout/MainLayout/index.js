@@ -3,18 +3,19 @@ import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
-import { Box, Snackbar, Alert } from '@mui/material';
+import { Box, Snackbar, Alert, Stack, Typography, Button } from '@mui/material';
 
 // project import
 import Drawer from './Drawer';
 import Header from './Header';
 
 // types
-import { openDrawer, setPages } from 'store/reducers/menu';
+import { openDrawer, resetCode, setPages } from 'store/reducers/menu';
 import MobileMenu from './MobileMenu';
 import Footer from './Footer';
 import { closeSnackbar } from 'store/reducers/snackbar';
 import { useGetAllCourseTypesQuery } from 'store/reducers/courses';
+import SuccessIcon from 'assets/images/icons/SuccessIcon';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -22,8 +23,13 @@ const MainLayout = () => {
   const dispatch = useDispatch();
   const { data: pages = [] } = useGetAllCourseTypesQuery();
 
-  const { drawerOpen } = useSelector((state) => state.menu);
+  const { drawerOpen, isPasswordChanged } = useSelector((state) => state.menu);
   const { snackbar } = useSelector((state) => state);
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   // drawer toggler
   const [open, setOpen] = useState(drawerOpen);
@@ -38,6 +44,16 @@ const MainLayout = () => {
       dispatch(setPages(pages));
     }
   }, [pages, dispatch]);
+
+  useEffect(() => {
+    dispatch(resetCode());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isPasswordChanged) {
+      handleOpenModal();
+    }
+  }, [isPasswordChanged]);
 
   useEffect(() => {
     if (open !== drawerOpen) setOpen(drawerOpen);
@@ -84,6 +100,34 @@ const MainLayout = () => {
         >
           {snackbar.message}
         </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openModal}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        autoHideDuration={2000}
+        onClose={handleCloseModal}
+      >
+        <Stack
+          sx={{
+            width: 'fit-content',
+            bgcolor: 'background.default',
+            boxShadow: 24,
+            px: { xs: 2, md: 3 },
+            py: { xs: 3, md: 4 },
+            borderRadius: 2,
+            zIndex: 100,
+          }}
+        >
+          <Stack alignItems="center" spacing={2}>
+            <SuccessIcon />
+            <Typography id="modal-modal-description" textAlign="center">
+              Пароль успешно изменен
+            </Typography>
+            <Button variant="contained" onClick={handleCloseModal}>
+              Хорошо
+            </Button>
+          </Stack>
+        </Stack>
       </Snackbar>
     </>
   );
